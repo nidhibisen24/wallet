@@ -1,0 +1,122 @@
+from django.db import models
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    PermissionsMixin,
+    BaseUserManager
+)
+
+
+class UserManager(BaseUserManager):
+
+    def create_user(self, mobile_number, password=None, role='MEMBER'):
+        if not mobile_number:
+            raise ValueError("Mobile number is required")
+
+        user = self.model(mobile_number=mobile_number, role=role)
+
+        user.set_password(password)
+        user.save(using=self._db)
+
+        return user
+
+    def create_superuser(self, mobile_number, password):
+
+        user = self.create_user(
+            mobile_number=mobile_number,
+            password=password,
+            role='ADMIN'
+        )
+
+        user.is_staff = True
+        user.is_superuser = True
+
+        user.save(using=self._db)
+
+        return user
+
+
+class User(AbstractBaseUser, PermissionsMixin):
+
+    ROLE_CHOICES = (
+        ('ADMIN', 'Admin'),
+        ('MEMBER', 'Member'),
+    )
+
+    mobile_number = models.CharField(max_length=15,unique=True)
+
+    full_name = models.CharField(max_length=100)
+
+    role = models.CharField(max_length=10,choices=ROLE_CHOICES,default='MEMBER')
+
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    fcm_token = models.TextField(
+        null=True,
+        blank=True
+    )
+
+    objects = UserManager()
+
+    USERNAME_FIELD = 'mobile_number'
+    REQUIRED_FIELDS = []
+
+    def __str__(self):
+        return self.mobile_number
+
+
+class Wallet(models.Model):
+
+    user = models.OneToOneField(User,on_delete=models.CASCADE,related_name='wallet')
+
+    balance = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
+
+    def __str__(self):
+        return f"{self.user.mobile_number} - {self.balance}"
+
+
+class Transaction(models.Model):
+
+    TYPE_CHOICES = (
+        ('ADD', 'Add Fund'),
+        ('DEDUCT', 'Deduct Fund'),
+    )
+
+    STATUS_CHOICES = (
+        ('SUCCESS', 'Success'),
+        ('FAILED', 'Failed'),
+        ('PENDING', 'Pending'),
+    )
+
+    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='transactions')
+
+    amount = models.DecimalField(max_digits=12,decimal_places=2)
+
+    transaction_type = models.CharField(max_length=20,choices=TYPE_CHOICES)
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='SUCCESS'
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def __str__(self):
+        return (
+            f"{self.user.mobile_number} "
+            f"{self.transaction_type} "
+            f"{self.amount}"
+        )
