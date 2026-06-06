@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from django.contrib import admin
-from .models import User, Wallet, Transaction
+from .models import User, Wallet, FundRequest
 
 
 @admin.register(User)
@@ -40,13 +40,13 @@ class WalletAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(Transaction)
-class TransactionAdmin(admin.ModelAdmin):
+@admin.register(FundRequest)
+class FundRequestAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'user',
         'amount',
-        'transaction_type',
+        'request_type',
         'status',
         'created_at'
     )
@@ -56,6 +56,6 @@ class TransactionAdmin(admin.ModelAdmin):
     )
 
     list_filter = (
-        'transaction_type',
+        'request_type',
         'status'
     )

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User ,Wallet
+from .models import User ,Wallet , FundRequest
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 
@@ -22,4 +22,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         }
 
 
+class FundRequestSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model = FundRequest
+        fields = '__all__'

@@ -85,29 +85,41 @@ class Wallet(models.Model):
         return f"{self.user.mobile_number} - {self.balance}"
 
 
-class Transaction(models.Model):
 
-    TYPE_CHOICES = (
+class FundRequest(models.Model):
+
+    REQUEST_TYPES = (
         ('ADD', 'Add Fund'),
-        ('DEDUCT', 'Deduct Fund'),
+        ('WITHDRAW', 'Withdraw Fund'),
     )
 
-    STATUS_CHOICES = (
-        ('SUCCESS', 'Success'),
-        ('FAILED', 'Failed'),
+    STATUS_TYPES = (
         ('PENDING', 'Pending'),
+        ('APPROVED', 'Approved'),
+        ('REJECTED', 'Rejected'),
+        
     )
 
-    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='transactions')
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='fund_requests'
+    )
 
-    amount = models.DecimalField(max_digits=12,decimal_places=2)
+    amount = models.DecimalField(
+        max_digits=12,
+        decimal_places=2
+    )
 
-    transaction_type = models.CharField(max_length=20,choices=TYPE_CHOICES)
+    request_type = models.CharField(
+        max_length=20,
+        choices=REQUEST_TYPES
+    )
 
     status = models.CharField(
         max_length=20,
-        choices=STATUS_CHOICES,
-        default='SUCCESS'
+        choices=STATUS_TYPES,
+        default='PENDING'
     )
 
     created_at = models.DateTimeField(
@@ -115,8 +127,4 @@ class Transaction(models.Model):
     )
 
     def __str__(self):
-        return (
-            f"{self.user.mobile_number} "
-            f"{self.transaction_type} "
-            f"{self.amount}"
-        )
+        return f"{self.user.mobile_number} - {self.request_type} - {self.amount}"
