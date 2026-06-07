@@ -61,12 +61,24 @@ class LoginActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             ).show()
 
-                            startActivity(
-                                Intent(
-                                    this@LoginActivity,
-                                    MainActivity::class.java
+                            if (response.body()?.role == "ADMIN") {
+
+                                startActivity(
+                                    Intent(
+                                        this@LoginActivity,
+                                        AdminDashboardActivity::class.java
+                                    )
                                 )
-                            )
+
+                            } else {
+
+                                startActivity(
+                                    Intent(
+                                        this@LoginActivity,
+                                        UserDashboardActivity::class.java
+                                    )
+                                )
+                            }
 
                             finish()
                         }
