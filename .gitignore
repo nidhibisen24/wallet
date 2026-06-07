@@ -1,6 +1,19 @@
-
 # Django
+__pycache__/
+*.pyc
+*.log
+
+# Database (optional)
+db.sqlite3
+
 
 # Android Studio
+.idea/
+.gradle/
+local.properties
+build/
+app/build/
 
+# VS Code
+.vscode/
 
