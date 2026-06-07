@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:background="#F4F7F5">
 
-    <!-- Premium Curved Header Background -->
     <View
         android:id="@+id/headerBackground"
         android:layout_width="match_parent"
@@ -17,7 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Scrollable Content -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -32,7 +30,6 @@
             android:orientation="vertical"
             android:padding="24dp">
 
-            <!-- IMPROVED: Clean & Modern Header Section -->
             <LinearLayout
                 android:id="@+id/headerLayout"
                 android:layout_width="match_parent"
@@ -73,9 +70,7 @@
                     android:alpha="0.8"/>
 
             </LinearLayout>
-
-            <!-- Main Login Card (Shifted up slightly for modern overlap feel) -->
-            <com.google.android.material.card.MaterialCardView
+           <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -109,7 +104,6 @@
                         android:layout_marginTop="2dp"
                         android:layout_marginBottom="24dp"/>
 
-                    <!-- Username / Mobile Field -->
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
@@ -134,7 +128,6 @@
                             android:textSize="16sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Password Field -->
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
@@ -162,7 +155,6 @@
                             android:textSize="16sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Remember Me & Forgot Password Row -->
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -237,7 +229,6 @@
                     android:textColor="#2E7D32"
                     android:textSize="15sp"
                     android:padding="4dp"/>
-
             </LinearLayout>
 
             <!-- Secure Access Footer -->
@@ -247,11 +238,10 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="16dp"
-                android:text="🛡️ Secure Access Portal"
+                android:text="🛡️Secure Access Portal"
                 android:textColor="#9CAF9F"
                 android:textSize="12sp"
                 android:letterSpacing="0.05"/>
-
         </LinearLayout>
 
     </ScrollView>
