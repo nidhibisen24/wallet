@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://tools.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F0F7F0"
@@ -206,17 +207,17 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:letterSpacing="0.08"
-                                android:text=" TOTAL BALANCE"
+                                android:text="PENDING REQUEST"
                                 android:textColor="#A5D6A7"
                                 android:textSize="10sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
 
                         <TextView
-                            android:id="@+id/tvTotalBalance"
+                            android:id="@+id/tvPendingRequests"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="₹45,250"
+                            android:text="45,250"
                             android:textColor="#FFFFFF"
                             android:textSize="28sp"
                             android:textStyle="bold" />
