@@ -8,6 +8,8 @@ import androidx.lifecycle.lifecycleScope
 import com.example.wallet.R
 import com.example.wallet.network.RetrofitClient
 import kotlinx.coroutines.launch
+import android.content.Intent
+import androidx.cardview.widget.CardView
 
 class AdminDashboardActivity : AppCompatActivity() {
 
@@ -22,6 +24,18 @@ class AdminDashboardActivity : AppCompatActivity() {
         tvPendingRequests = findViewById(R.id.tvPendingRequests)
 
         loadDashboardData()
+        val cardUserManagement =
+            findViewById<CardView>(R.id.cardUserManagement)
+
+        cardUserManagement.setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    AllUsersActivity::class.java
+                )
+            )
+        }
     }
 
     private fun loadDashboardData() {

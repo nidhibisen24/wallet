@@ -120,7 +120,7 @@
 
             <!-- Users RecyclerView List -->
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvAllUsers"
+                android:id="@+id/rvUsers"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scrollbars="vertical"
