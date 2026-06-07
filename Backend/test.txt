@@ -5,3 +5,22 @@ first comment
 
 
 //hye
+
+Login
+
+Admin Dashboard
+{
+Register
+User Add , remove , see balance 
+Add Fund
+Deduct Fund 
+Transaction History see balance , how many user 
+QR Management changeable
+ }
+User Dashboard
+{
+Add Fund Request
+Withdraw Request
+Transaction User History
+support 
+}
