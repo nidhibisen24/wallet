@@ -2,9 +2,11 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth.hashers import check_password
 
-from .models import User, Wallet , FundRequest
-from .serializers import RegisterSerializer , FundRequestSerializer
+from .models import User, Wallet , FundRequest ,QRCode
+from .serializers import RegisterSerializer ,QRCodeSerializer ,FundRequestSerializer, UserDashboardSerializer , UserListSerializer , UserRequestHistorySerializer,UserDetailSerializer
 from django.contrib.auth import authenticate
+from django.shortcuts import get_object_or_404
+
 
 
 #Register or SignUp
@@ -203,4 +205,180 @@ def reject_request(request):
 
     return Response({
         "message": "Request rejected successfully"
+    })
+
+
+#Admin DashBoard 
+@api_view(['GET'])
+def admin_dashboard(request):
+
+    total_users = User.objects.count()
+
+    pending_requests = FundRequest.objects.filter(
+        status='PENDING'
+    ).count()
+
+    approved_requests = FundRequest.objects.filter(
+        status='APPROVED'
+    ).count()
+
+    rejected_requests = FundRequest.objects.filter(
+        status='REJECTED'
+    ).count()
+
+    return Response({
+        "total_users": total_users,
+        "pending_requests": pending_requests,
+        "approved_requests": approved_requests,
+        "rejected_requests": rejected_requests
+    })
+
+#Pending Request 
+@api_view(['GET'])
+def pending_requests(request):
+
+    requests = FundRequest.objects.filter(
+        status='PENDING'
+    ).order_by('-created_at')
+
+    serializer = FundRequestSerializer(
+        requests,
+        many=True
+    )
+
+    return Response(serializer.data)
+
+#All Users list 
+@api_view(['GET'])
+def all_users(request):
+
+    users = User.objects.all().order_by('-id')
+
+    serializer = UserListSerializer(
+        users,
+        many=True
+    )
+
+    return Response(serializer.data)
+
+#User Details
+@api_view(['GET'])
+def user_details(request, id):
+
+    user = get_object_or_404(
+        User,
+        id=id
+    )
+
+    serializer = UserDetailSerializer(user)
+
+    return Response(serializer.data)
+
+#Search User by mobile number
+@api_view(['GET'])
+def search_user(request):
+
+    mobile = request.GET.get('mobile')
+
+    if not mobile:
+        return Response(
+            {
+                "error": "Mobile number required"
+            },
+            status=400
+        )
+
+    users = User.objects.filter(
+        mobile_number__icontains=mobile
+    )
+
+    serializer = UserListSerializer(
+        users,
+        many=True
+    )
+
+    return Response(serializer.data)
+
+
+#User Fund Request History
+@api_view(['GET'])
+def user_request_history(request, id):
+
+    user = get_object_or_404(
+        User,
+        id=id
+    )
+
+    requests = FundRequest.objects.filter(
+        user=user
+    ).order_by('-created_at')
+
+    serializer = UserRequestHistorySerializer(
+        requests,
+        many=True
+    )
+
+    return Response(serializer.data)
+
+
+
+#USer DashBoard 
+@api_view(['GET'])
+def user_dashboard(request, id):
+
+    user = get_object_or_404(
+        User,
+        id=id
+    )
+
+    serializer = UserDashboardSerializer(user)
+
+    return Response(serializer.data)
+
+
+
+
+
+
+
+#Most important thing QRCODE 
+
+#Upload QR CODE
+@api_view(['POST'])
+def upload_qr_code(request):
+
+    serializer = QRCodeSerializer(
+        data=request.data
+    )
+
+    if serializer.is_valid():
+
+        QRCode.objects.all().delete()
+
+        serializer.save()
+
+        return Response({
+            "message": "QR Code uploaded successfully"
+        })
+
+    return Response(
+        serializer.errors,
+        status=400
+    )
+
+# View QR Code 
+@api_view(['GET'])
+def get_qr_code(request):
+
+    qr = QRCode.objects.last()
+
+    if not qr:
+        return Response({
+            "error": "QR Code not found"
+        })
+
+    return Response({
+        "image": request.build_absolute_uri(
+            qr.image.url
+        )
     })

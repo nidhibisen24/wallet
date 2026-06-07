@@ -128,3 +128,18 @@ class FundRequest(models.Model):
 
     def __str__(self):
         return f"{self.user.mobile_number} - {self.request_type} - {self.amount}"
+    
+
+
+class QRCode(models.Model):
+
+    image = models.ImageField(
+        upload_to='qr_codes/'
+    )
+
+    uploaded_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def __str__(self):
+        return "Wallet QR Code"

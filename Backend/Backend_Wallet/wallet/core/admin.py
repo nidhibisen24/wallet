@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from django.contrib import admin
-from .models import User, Wallet, FundRequest
+from .models import User, Wallet, FundRequest , QRCode
 
 
 @admin.register(User)
@@ -58,4 +58,20 @@ class FundRequestAdmin(admin.ModelAdmin):
     list_filter = (
         'request_type',
         'status'
+    )
+
+@admin.register(QRCode)
+class QRCodeAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "image",
+        "uploaded_at"
+    )
+
+    search_fields = (
+        "id",
+    )
+
+    readonly_fields = (
+        "uploaded_at",
     )
