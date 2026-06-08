@@ -1,5 +1,6 @@
 package com.example.wallet.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -37,11 +38,26 @@ class AllUsersActivity : AppCompatActivity() {
                     RetrofitClient.api.getAllUsers()
 
                 rvUsers.adapter =
-                    UserAdapter(users)
+                    UserAdapter(users) { userId ->
+
+                        val intent = Intent(
+                            this@AllUsersActivity,
+                            UserDetailsActivity::class.java
+                        )
+
+                        intent.putExtra(
+                            "USER_ID",
+                            userId
+                        )
+
+                        startActivity(intent)
+                    }
 
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
+
+
 }

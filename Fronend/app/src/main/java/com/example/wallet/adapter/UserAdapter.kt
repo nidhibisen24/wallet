@@ -9,20 +9,35 @@ import com.example.wallet.R
 import com.example.wallet.data.User
 
 class UserAdapter(
-    private val users: List<User>
+    private val users: List<User>,
+    private val onUserClick: (Int) -> Unit
 ) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
-    class UserViewHolder(itemView: View) :
+    inner class UserViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        val tvUserName: TextView =
+        private val tvUserName: TextView =
             itemView.findViewById(R.id.tvUserName)
 
-        val tvMobile: TextView =
+        private val tvMobile: TextView =
             itemView.findViewById(R.id.tvMobile)
 
-        val tvBalance: TextView =
+        private val tvBalance: TextView =
             itemView.findViewById(R.id.tvBalance)
+
+        fun bind(user: User) {
+
+            tvUserName.text = user.full_name
+
+            tvMobile.text = user.mobile_number
+
+            tvBalance.text =
+                "₹${user.wallet_balance ?: "0.00"}"
+
+            itemView.setOnClickListener {
+                onUserClick(user.id)
+            }
+        }
     }
 
     override fun onCreateViewHolder(
@@ -30,8 +45,13 @@ class UserAdapter(
         viewType: Int
     ): UserViewHolder {
 
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_user, parent, false)
+        val view = LayoutInflater
+            .from(parent.context)
+            .inflate(
+                R.layout.item_user,
+                parent,
+                false
+            )
 
         return UserViewHolder(view)
     }
@@ -40,18 +60,11 @@ class UserAdapter(
         holder: UserViewHolder,
         position: Int
     ) {
-
-        val user = users[position]
-
-        holder.tvUserName.text = user.full_name
-
-        holder.tvMobile.text = user.mobile_number
-
-        holder.tvBalance.text =
-            "₹${user.wallet_balance ?: "0.00"}"
+        holder.bind(users[position])
     }
 
     override fun getItemCount(): Int {
         return users.size
     }
+
 }
