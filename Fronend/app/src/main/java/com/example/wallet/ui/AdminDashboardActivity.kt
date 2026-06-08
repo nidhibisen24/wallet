@@ -9,6 +9,7 @@ import com.example.wallet.R
 import com.example.wallet.network.RetrofitClient
 import kotlinx.coroutines.launch
 import android.content.Intent
+import android.widget.Button
 import androidx.cardview.widget.CardView
 
 class AdminDashboardActivity : AppCompatActivity() {
@@ -33,6 +34,18 @@ class AdminDashboardActivity : AppCompatActivity() {
                 Intent(
                     this,
                     AllUsersActivity::class.java
+                )
+            )
+        }
+        val btnRegisterUser =
+            findViewById<Button>(R.id.btnRegisterUser)
+
+        btnRegisterUser.setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    AddUserActivity::class.java
                 )
             )
         }

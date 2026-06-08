@@ -179,7 +179,7 @@
 
             <!-- Action Button -->
             <Button
-                android:id="@+id/btnSubmitAddUser"
+                android:id="@+id/btnAddUser"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:backgroundTint="#2E7D32"
