@@ -37,6 +37,18 @@ class AdminDashboardActivity : AppCompatActivity() {
                 )
             )
         }
+        val btnApprove =
+            findViewById<Button>(R.id.btnApprove)
+
+        btnApprove.setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    ApproveRequestsActivity::class.java
+                )
+            )
+        }
         val btnRegisterUser =
             findViewById<Button>(R.id.btnRegisterUser)
 
