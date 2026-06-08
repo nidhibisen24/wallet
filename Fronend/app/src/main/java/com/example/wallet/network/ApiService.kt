@@ -8,6 +8,7 @@ import com.example.wallet.data.LoginResponse
 import com.example.wallet.data.PendingRequest
 import com.example.wallet.data.RegisterRequest
 import com.example.wallet.data.RegisterResponse
+import com.example.wallet.data.Transaction
 import com.example.wallet.data.User
 import com.example.wallet.data.UserDetails
 import retrofit2.Call
@@ -42,6 +43,10 @@ interface ApiService {
         @Path("id") userId: Int
     ): UserDetails
 
+    @GET("my-request/{id}")
+    suspend fun getUserHistory(
+        @Path("id") userId: Int
+    ): List<Transaction>
 
     // request apis
     @GET("pending-request/")

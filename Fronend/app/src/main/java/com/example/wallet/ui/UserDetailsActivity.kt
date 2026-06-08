@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.wallet.R
+import com.example.wallet.adapter.TransactionAdapter
 import com.example.wallet.network.RetrofitClient
 import kotlinx.coroutines.launch
 
@@ -15,6 +18,8 @@ class UserDetailsActivity : AppCompatActivity() {
     private lateinit var tvRole: TextView
     private lateinit var tvBalance: TextView
     private lateinit var tvTotalRequests: TextView
+
+    private lateinit var rvTransactions: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +32,14 @@ class UserDetailsActivity : AppCompatActivity() {
         tvBalance = findViewById(R.id.tvBalance)
         tvTotalRequests = findViewById(R.id.tvTotalRequests)
 
-        val userId = intent.getIntExtra("USER_ID", 0)
+        rvTransactions =
+            findViewById(R.id.rvTransactions)
+
+        rvTransactions.layoutManager =
+            LinearLayoutManager(this)
+
+        val userId =
+            intent.getIntExtra("USER_ID", 0)
 
         if (userId != 0) {
             loadUserDetails(userId)
@@ -43,16 +55,32 @@ class UserDetailsActivity : AppCompatActivity() {
                 val user =
                     RetrofitClient.api.getUserDetails(userId)
 
-                tvName.text = user.full_name
-                tvMobile.text = user.mobile_number
-                tvRole.text = user.role
-                tvBalance.text = "₹${user.wallet_balance}"
+                tvName.text =
+                    user.full_name
+
+                tvMobile.text =
+                    user.mobile_number
+
+                tvRole.text =
+                    user.role
+
+                tvBalance.text =
+                    "₹${user.wallet_balance}"
+
                 tvTotalRequests.text =
                     user.total_requests.toString()
 
+                val transactions =
+                    RetrofitClient.api.getUserHistory(userId)
+
+                rvTransactions.adapter =
+                    TransactionAdapter(transactions)
+
             } catch (e: Exception) {
+
                 e.printStackTrace()
             }
         }
     }
+
 }
