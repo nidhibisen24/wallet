@@ -8,7 +8,6 @@
     android:orientation="vertical"
     tools:context=".AllUsersActivity">
 
-    <!--     LIGHT GREEN MINT HEADER (Top Wave)  -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +19,6 @@
         android:paddingEnd="24dp"
         android:paddingBottom="28dp">
 
-        <!-- Back Button & Subtitle Row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,7 +54,6 @@
                 android:letterSpacing="0.02" />
         </LinearLayout>
 
-        <!-- Main Title (Matching Create Account style) -->
         <TextView
             android:id="@+id/tvAllUsersTitle"
             android:layout_width="wrap_content"
@@ -68,7 +65,6 @@
             android:letterSpacing="-0.02" />
     </LinearLayout>
 
-    <!--   FLOATING CARD FOR SEARCH & LIST       -->
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -87,7 +83,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Search Field Box with Border Line -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -118,7 +113,6 @@
                     android:maxLines="1" />
             </LinearLayout>
 
-            <!-- Users RecyclerView List -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvUsers"
                 android:layout_width="match_parent"

@@ -31,7 +31,7 @@
                 app:tint="#2E7D32" />
         </androidx.cardview.widget.CardView>
 
-        <!-- Name & Phone -->
+        <!-- Name, Phone & Role Badge -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -56,6 +56,30 @@
                 android:text="+91 0000000000"
                 android:textColor="#78909C"
                 android:textSize="12sp" />
+
+            <!-- Elegant Role Badge Container -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                app:cardBackgroundColor="#E8F5E9"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="0dp">
+
+                <TextView
+                    android:id="@+id/tvItemUserRole"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="8dp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="3dp"
+                    android:text="USER"
+                    android:textColor="#2E7D32"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.04" />
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
 
         <!-- Balance Section -->

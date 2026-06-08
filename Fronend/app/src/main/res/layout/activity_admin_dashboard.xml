@@ -684,7 +684,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="44dp"
                                 android:backgroundTint="#4527A0"
-                                android:text="Change QR Code"
+                                android:text="Upload QR Code"
                                 android:textColor="#FFFFFF"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
