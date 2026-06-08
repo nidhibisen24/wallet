@@ -49,6 +49,18 @@ class AdminDashboardActivity : AppCompatActivity() {
                 )
             )
         }
+        val btnUpdateQr =
+            findViewById<Button>(R.id.btnUpdateQr)
+
+        btnUpdateQr.setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    QrManagementActivity::class.java
+                )
+            )
+        }
         val btnRegisterUser =
             findViewById<Button>(R.id.btnRegisterUser)
 

@@ -6,16 +6,20 @@ import com.example.wallet.data.ApproveRequest
 import com.example.wallet.data.LoginRequest
 import com.example.wallet.data.LoginResponse
 import com.example.wallet.data.PendingRequest
+import com.example.wallet.data.QrUploadResponse
 import com.example.wallet.data.RegisterRequest
 import com.example.wallet.data.RegisterResponse
 import com.example.wallet.data.Transaction
 import com.example.wallet.data.User
 import com.example.wallet.data.UserDetails
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 
 interface ApiService {
@@ -62,6 +66,13 @@ interface ApiService {
         @Body request: ApproveRequest
     ): Response<Unit>
 
+
+    // qr code
+    @Multipart
+    @POST("upload-qr-code/")
+    suspend fun uploadQrCode(
+        @Part image: MultipartBody.Part
+    ): Response<QrUploadResponse>
 
 
 }
