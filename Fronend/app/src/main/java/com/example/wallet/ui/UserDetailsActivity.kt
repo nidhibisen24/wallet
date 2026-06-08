@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 
 class UserDetailsActivity : AppCompatActivity() {
 
+
     private lateinit var tvName: TextView
     private lateinit var tvMobile: TextView
     private lateinit var tvRole: TextView
@@ -82,5 +83,6 @@ class UserDetailsActivity : AppCompatActivity() {
             }
         }
     }
+
 
 }
