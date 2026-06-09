@@ -49,6 +49,18 @@ class AdminDashboardActivity : AppCompatActivity() {
                 )
             )
         }
+        val btnViewHistory =
+            findViewById<Button>(R.id.btnViewHistory)
+
+        btnViewHistory.setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    AllTransactionHistoryActivity::class.java
+                )
+            )
+        }
         val btnUpdateQr =
             findViewById<Button>(R.id.btnUpdateQr)
 

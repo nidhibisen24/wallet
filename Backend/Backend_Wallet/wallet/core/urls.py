@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import register , login ,user_request_history, upload_qr_code , get_qr_code,user_dashboard,search_user,add_fund_request, withdraw_fund_request,user_details , approve_request, reject_request,all_users , admin_dashboard , pending_requests
+from .views import register , login ,user_request_history, upload_qr_code ,  all_transactions, get_qr_code,user_dashboard,search_user,add_fund_request, withdraw_fund_request,user_details , approve_request, reject_request,all_users , admin_dashboard , pending_requests
 
 urlpatterns = [
     path('register/',register,name='register'),
@@ -30,6 +30,9 @@ urlpatterns = [
     #QR Code Obito Group
     path('upload-qr-code/',upload_qr_code),
     path('qr-code/',get_qr_code),
+
+    #History Akaza Group
+    path("all-transactions/", all_transactions),
     
 
 

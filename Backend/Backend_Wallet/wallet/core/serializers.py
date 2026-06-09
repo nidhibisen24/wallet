@@ -127,3 +127,21 @@ class QRCodeSerializer(serializers.ModelSerializer):
             'id',
             'image'
         ]
+
+class TransactionHistorySerializer(serializers.ModelSerializer):
+    user_name = serializers.CharField(
+        source="user.full_name",
+        read_only=True
+    )
+
+    class Meta:
+        model = FundRequest
+        fields = [
+            "id",
+            "user_id",
+            "user_name",
+            "amount",
+            "request_type",
+            "status",
+            "created_at"
+        ]

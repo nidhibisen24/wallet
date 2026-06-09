@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from django.contrib.auth.hashers import check_password
 
 from .models import User, Wallet , FundRequest ,QRCode
-from .serializers import RegisterSerializer ,QRCodeSerializer ,FundRequestSerializer, UserDashboardSerializer , UserListSerializer , UserRequestHistorySerializer,UserDetailSerializer
+from .serializers import RegisterSerializer ,QRCodeSerializer ,FundRequestSerializer, TransactionHistorySerializer,UserDashboardSerializer , UserListSerializer , UserRequestHistorySerializer,UserDetailSerializer
 from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
 
@@ -382,3 +382,16 @@ def get_qr_code(request):
             qr.image.url
         )
     })
+
+#History 
+@api_view(["GET"])
+def all_transactions(request):
+
+    transactions = FundRequest.objects.all().order_by("-created_at")
+
+    serializer = TransactionHistorySerializer(
+        transactions,
+        many=True
+    )
+
+    return Response(serializer.data)

@@ -10,6 +10,7 @@ import com.example.wallet.data.QrUploadResponse
 import com.example.wallet.data.RegisterRequest
 import com.example.wallet.data.RegisterResponse
 import com.example.wallet.data.Transaction
+import com.example.wallet.data.TransactionHistory
 import com.example.wallet.data.User
 import com.example.wallet.data.UserDetails
 import okhttp3.MultipartBody
@@ -73,6 +74,12 @@ interface ApiService {
     suspend fun uploadQrCode(
         @Part image: MultipartBody.Part
     ): Response<QrUploadResponse>
+
+
+
+    // history
+    @GET("all-transactions/")
+    suspend fun getAllTransactions(): List<TransactionHistory>
 
 
 }
