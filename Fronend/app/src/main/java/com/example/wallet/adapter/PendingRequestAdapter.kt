@@ -17,8 +17,14 @@ class PendingRequestAdapter(
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        val tvRequestId: TextView =
-            view.findViewById(R.id.tvRequestId)
+        val tvUserName: TextView =
+            view.findViewById(R.id.tvUserName)
+
+        val tvMobile: TextView =
+            view.findViewById(R.id.tvMobile)
+
+        val tvDate: TextView =
+            view.findViewById(R.id.tvDate)
 
         val tvAmount: TextView =
             view.findViewById(R.id.tvAmount)
@@ -48,7 +54,9 @@ class PendingRequestAdapter(
         return ViewHolder(view)
     }
 
-    override fun getItemCount() = requests.size
+    override fun getItemCount(): Int {
+        return requests.size
+    }
 
     override fun onBindViewHolder(
         holder: ViewHolder,
@@ -57,11 +65,17 @@ class PendingRequestAdapter(
 
         val request = requests[position]
 
-        holder.tvRequestId.text =
-            "Request ID: ${request.id}"
+        holder.tvUserName.text =
+            request.user_name
+
+        holder.tvMobile.text =
+            request.mobile_number
+
+        holder.tvDate.text =
+            request.created_at.substring(0, 10)
 
         holder.tvAmount.text =
-            "Amount: ₹${request.amount}"
+            "₹${request.amount}"
 
         holder.tvType.text =
             request.request_type
