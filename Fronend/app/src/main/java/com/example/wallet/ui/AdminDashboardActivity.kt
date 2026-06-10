@@ -37,6 +37,18 @@ class AdminDashboardActivity : AppCompatActivity() {
                 )
             )
         }
+        val cardPendingRequest =
+            findViewById<CardView>(R.id.cardPendingRequest)
+
+        cardPendingRequest.setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    ApproveRequestsActivity::class.java
+                )
+            )
+        }
         val btnRemoveUser =
             findViewById<Button>(R.id.btnRemoveUser)
 
