@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from django.contrib.auth.hashers import check_password
 
 from .models import User, Wallet , FundRequest ,QRCode
-from .serializers import RegisterSerializer ,QRCodeSerializer ,FundRequestSerializer, TransactionHistorySerializer,UserDashboardSerializer , UserListSerializer , UserRequestHistorySerializer,UserDetailSerializer
+from .serializers import RegisterSerializer ,QRCodeSerializer,FundApprovedSerializers ,FundRequestSerializer, TransactionHistorySerializer,UserDashboardSerializer , UserListSerializer , UserRequestHistorySerializer,UserDetailSerializer
 from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
 from rest_framework import status
@@ -233,6 +233,20 @@ def reject_request(request):
         "message": "Request rejected successfully"
     })
 
+#Approved Request
+@api_view(['GET'])
+def approved_requests(request):
+
+    requests = FundRequest.objects.filter(
+        status='APPROVED'
+    ).order_by('-created_at')
+
+    serializer = FundApprovedSerializers(
+        requests,
+        many=True
+    )
+
+    return Response(serializer.data)
 
 #Admin DashBoard 
 @api_view(['GET'])

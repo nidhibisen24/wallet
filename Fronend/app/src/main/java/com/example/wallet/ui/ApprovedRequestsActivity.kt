@@ -1,21 +1,53 @@
 package com.example.wallet.ui
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.wallet.R
+import com.example.wallet.adapter.ApprovedRequestAdapter
+import com.example.wallet.network.RetrofitClient
+import kotlinx.coroutines.launch
 
 class ApprovedRequestsActivity : AppCompatActivity() {
+
+    private lateinit var rvApprovedRequests: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_approved_requests)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+
+        setContentView(
+            R.layout.activity_approved_requests
+        )
+
+        rvApprovedRequests =
+            findViewById(R.id.rvApprovedRequests)
+
+        rvApprovedRequests.layoutManager =
+            LinearLayoutManager(this)
+
+        loadApprovedRequests()
+    }
+
+    private fun loadApprovedRequests() {
+
+        lifecycleScope.launch {
+
+            try {
+
+                val requests =
+                    RetrofitClient.api
+                        .getApprovedRequests()
+
+                rvApprovedRequests.adapter =
+                    ApprovedRequestAdapter(
+                        requests
+                    )
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 }

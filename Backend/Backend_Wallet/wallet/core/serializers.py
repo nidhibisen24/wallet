@@ -164,3 +164,28 @@ class TransactionHistorySerializer(serializers.ModelSerializer):
             "status",
             "created_at"
         ]
+
+class FundApprovedSerializers(serializers.ModelSerializer):
+
+    user_name = serializers.CharField(
+        source='user.full_name',
+        read_only=True
+    )
+
+    mobile_number = serializers.CharField(
+        source='user.mobile_number',
+        read_only=True
+    )
+
+    class Meta:
+        model = FundRequest
+        fields = [
+            'id',
+            'user',
+            'user_name',
+            'mobile_number',
+            'amount',
+            'request_type',
+            'status',
+            'created_at'
+        ]

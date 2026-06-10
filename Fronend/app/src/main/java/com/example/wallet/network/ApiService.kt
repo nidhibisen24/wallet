@@ -3,6 +3,7 @@ package com.example.wallet.network
 
 import com.example.wallet.data.AdminDashboardResponse
 import com.example.wallet.data.ApproveRequest
+import com.example.wallet.data.ApprovedRequest
 import com.example.wallet.data.LoginRequest
 import com.example.wallet.data.LoginResponse
 import com.example.wallet.data.PendingRequest
@@ -67,6 +68,9 @@ interface ApiService {
     suspend fun approveRequest(
         @Body request: ApproveRequest
     ): Response<Unit>
+
+    @GET("approved-requests/")
+    suspend fun getApprovedRequests(): List<ApprovedRequest>
 
     @POST("reject-request/")
     suspend fun rejectRequest(

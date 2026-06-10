@@ -73,6 +73,18 @@ class AdminDashboardActivity : AppCompatActivity() {
                 )
             )
         }
+        val btnApproved =
+            findViewById<Button>(R.id.btnApproved)
+
+        btnApproved.setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    ApprovedRequestsActivity::class.java
+                )
+            )
+        }
         val btnViewHistory =
             findViewById<Button>(R.id.btnViewHistory)
 

@@ -456,7 +456,7 @@
                             app:cornerRadius="12dp" />
 
                         <Button
-                            android:id="@+id/btnDeductFund"
+                            android:id="@+id/btnApproved"
                             android:layout_width="0dp"
                             android:layout_height="50dp"
                             android:layout_marginStart="6dp"

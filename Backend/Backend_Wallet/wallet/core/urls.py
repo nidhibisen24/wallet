@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import register , login ,user_request_history, upload_qr_code ,  delete_user,all_transactions, get_qr_code,user_dashboard,search_user,add_fund_request, withdraw_fund_request,user_details , approve_request, reject_request,all_users , admin_dashboard , pending_requests
+from .views import register , login ,user_request_history, upload_qr_code ,approved_requests,  delete_user,all_transactions, get_qr_code,user_dashboard,search_user,add_fund_request, withdraw_fund_request,user_details , approve_request, reject_request,all_users , admin_dashboard , pending_requests
 
 urlpatterns = [
     path('register/',register,name='register'),
@@ -11,6 +11,7 @@ urlpatterns = [
     path('withdraw-fund-request/',withdraw_fund_request),
     path('approve-request/',approve_request),
     path('reject-request/',reject_request),
+    path('approved-requests/',approved_requests),
 
 
     #admin anya Group
