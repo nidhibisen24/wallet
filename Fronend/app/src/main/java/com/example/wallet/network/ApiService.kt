@@ -20,6 +20,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.DELETE
 import retrofit2.http.Part
 import retrofit2.http.Path
 
@@ -42,6 +43,11 @@ interface ApiService {
     // user apis
     @GET("all-users/")
     suspend fun getAllUsers(): List<User>
+
+    @DELETE("delete-user/{id}/")
+    suspend fun deleteUser(
+        @Path("id") userId: Int
+    ): Response<Unit>
 
     @GET("user-details/{id}")
     suspend fun getUserDetails(

@@ -1,9 +1,10 @@
 from django.urls import path
-from .views import register , login ,user_request_history, upload_qr_code ,  all_transactions, get_qr_code,user_dashboard,search_user,add_fund_request, withdraw_fund_request,user_details , approve_request, reject_request,all_users , admin_dashboard , pending_requests
+from .views import register , login ,user_request_history, upload_qr_code ,  delete_user,all_transactions, get_qr_code,user_dashboard,search_user,add_fund_request, withdraw_fund_request,user_details , approve_request, reject_request,all_users , admin_dashboard , pending_requests
 
 urlpatterns = [
     path('register/',register,name='register'),
     path('login/',login,name='login'),
+    path("delete-user/<int:user_id>/",delete_user),
 
     #Fund Alya Group
     path('add-fund-request/',add_fund_request),

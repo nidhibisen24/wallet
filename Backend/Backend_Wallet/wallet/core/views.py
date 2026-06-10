@@ -6,6 +6,7 @@ from .models import User, Wallet , FundRequest ,QRCode
 from .serializers import RegisterSerializer ,QRCodeSerializer ,FundRequestSerializer, TransactionHistorySerializer,UserDashboardSerializer , UserListSerializer , UserRequestHistorySerializer,UserDetailSerializer
 from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
+from rest_framework import status
 
 
 
@@ -83,6 +84,31 @@ def login(request):
         "role": user.role,
         "wallet_balance": wallet.balance
     })
+
+#Delete User
+@api_view(['DELETE'])
+def delete_user(request, user_id):
+
+    try:
+        user = User.objects.get(id=user_id)
+
+        user.delete()
+
+        return Response(
+            {
+                "message": "User deleted successfully"
+            },
+            status=status.HTTP_200_OK
+        )
+
+    except User.DoesNotExist:
+
+        return Response(
+            {
+                "error": "User not found"
+            },
+            status=status.HTTP_404_NOT_FOUND
+        )
 
 #Add Fund Request
 @api_view(['POST'])

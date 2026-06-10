@@ -37,6 +37,18 @@ class AdminDashboardActivity : AppCompatActivity() {
                 )
             )
         }
+        val btnRemoveUser =
+            findViewById<Button>(R.id.btnRemoveUser)
+
+        btnRemoveUser.setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    DeleteUserActivity::class.java
+                )
+            )
+        }
         val btnApprove =
             findViewById<Button>(R.id.btnApprove)
 
