@@ -13,6 +13,7 @@ import com.example.wallet.data.RegisterResponse
 import com.example.wallet.data.Transaction
 import com.example.wallet.data.TransactionHistory
 import com.example.wallet.data.User
+import com.example.wallet.data.UserDashboardResponse
 import com.example.wallet.data.UserDetails
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -40,6 +41,10 @@ interface ApiService {
     @GET("admin-dashboard/")
     suspend fun getAdminDashboard(): AdminDashboardResponse
 
+    @GET("user-dashboard/{userId}")
+    suspend fun getUserDashboard(
+        @Path("userId") userId: Int
+    ): UserDashboardResponse
 
     // user apis
     @GET("all-users/")

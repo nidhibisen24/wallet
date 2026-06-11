@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipeRefresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#F1F8E9"
-    android:fillViewport="true">
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F1F8E9"
+        android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,6 +50,17 @@
                 android:textColor="#1B5E20"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
+
+            <Button
+                android:id="@+id/btnLogout"
+                android:layout_width="90dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="#D32F2F"
+                android:text="Logout"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF" />
 
             <TextView
                 android:id="@+id/tvWelcomeText"
@@ -351,5 +369,6 @@
 
         <View android:layout_width="match_parent" android:layout_height="28dp"/>
 
-    </LinearLayout>
-</ScrollView>
+     </LinearLayout>
+    </ScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

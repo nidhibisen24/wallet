@@ -16,6 +16,7 @@ class AdminDashboardActivity : AppCompatActivity() {
 
     private lateinit var tvTotalUsers: TextView
     private lateinit var tvPendingRequests: TextView
+    private lateinit var btnLogout: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +37,29 @@ class AdminDashboardActivity : AppCompatActivity() {
                     AllUsersActivity::class.java
                 )
             )
+        }
+        btnLogout = findViewById(R.id.btnLogout)
+
+        btnLogout.setOnClickListener {
+
+            val sharedPref =
+                getSharedPreferences(
+                    "wallet_app",
+                    MODE_PRIVATE
+                )
+
+            sharedPref.edit()
+                .clear()
+                .apply()
+
+            startActivity(
+                Intent(
+                    this,
+                    LoginActivity::class.java
+                )
+            )
+
+            finishAffinity()
         }
         val cardPendingRequest =
             findViewById<CardView>(R.id.cardPendingRequest)

@@ -1,6 +1,5 @@
 package com.example.wallet.ui
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -8,12 +7,10 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-
 import com.example.wallet.R
 import com.example.wallet.data.LoginRequest
 import com.example.wallet.data.LoginResponse
 import com.example.wallet.network.RetrofitClient
-
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,11 +23,67 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val sharedPref =
+            getSharedPreferences(
+                "wallet_app",
+                MODE_PRIVATE
+            )
+
+        val isLoggedIn =
+            sharedPref.getBoolean(
+                "is_logged_in",
+                false
+            )
+
+        if (isLoggedIn) {
+
+            val role =
+                sharedPref.getString(
+                    "role",
+                    ""
+                )
+
+            if (role == "ADMIN") {
+
+                startActivity(
+                    Intent(
+                        this,
+                        AdminDashboardActivity::class.java
+                    )
+                )
+
+            } else {
+
+                val intent = Intent(
+                    this,
+                    UserDashboardActivity::class.java
+                )
+
+                intent.putExtra(
+                    "USER_ID",
+                    sharedPref.getInt(
+                        "user_id",
+                        0
+                    )
+                )
+
+                startActivity(intent)
+            }
+
+            finish()
+            return
+        }
+
         setContentView(R.layout.activity_login)
 
-        val tvRegister = findViewById<TextView>(R.id.tvRegister)
+        val tvRegister =
+            findViewById<TextView>(
+                R.id.tvRegister
+            )
 
         tvRegister.setOnClickListener {
+
             startActivity(
                 Intent(
                     this,
@@ -39,9 +92,14 @@ class LoginActivity : AppCompatActivity() {
             )
         }
 
-        etMobile = findViewById(R.id.etMobile)
-        etPassword = findViewById(R.id.etPassword)
-        btnLogin = findViewById(R.id.btnLogin)
+        etMobile =
+            findViewById(R.id.etMobile)
+
+        etPassword =
+            findViewById(R.id.etPassword)
+
+        btnLogin =
+            findViewById(R.id.btnLogin)
 
         btnLogin.setOnClickListener {
 
@@ -58,14 +116,46 @@ class LoginActivity : AppCompatActivity() {
                 )
 
             RetrofitClient.api.login(request)
-                .enqueue(object : Callback<LoginResponse> {
+                .enqueue(object :
+                    Callback<LoginResponse> {
 
                     override fun onResponse(
                         call: Call<LoginResponse>,
                         response: Response<LoginResponse>
                     ) {
 
-                        if (response.isSuccessful) {
+                        if (
+                            response.isSuccessful &&
+                            response.body() != null
+                        ) {
+
+                            val user =
+                                response.body()!!
+
+                            val sharedPref =
+                                getSharedPreferences(
+                                    "wallet_app",
+                                    MODE_PRIVATE
+                                )
+
+                            sharedPref.edit()
+                                .putBoolean(
+                                    "is_logged_in",
+                                    true
+                                )
+                                .putInt(
+                                    "user_id",
+                                    user.user_id
+                                )
+                                .putString(
+                                    "full_name",
+                                    user.full_name
+                                )
+                                .putString(
+                                    "role",
+                                    user.role
+                                )
+                                .apply()
 
                             Toast.makeText(
                                 this@LoginActivity,
@@ -73,7 +163,7 @@ class LoginActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             ).show()
 
-                            if (response.body()?.role == "ADMIN") {
+                            if (user.role == "ADMIN") {
 
                                 startActivity(
                                     Intent(
@@ -84,15 +174,29 @@ class LoginActivity : AppCompatActivity() {
 
                             } else {
 
-                                startActivity(
+                                val intent =
                                     Intent(
                                         this@LoginActivity,
                                         UserDashboardActivity::class.java
                                     )
+
+                                intent.putExtra(
+                                    "USER_ID",
+                                    user.user_id
                                 )
+
+                                startActivity(intent)
                             }
 
                             finish()
+
+                        } else {
+
+                            Toast.makeText(
+                                this@LoginActivity,
+                                "Invalid Mobile Number or Password",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
 
@@ -111,3 +215,4 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 }
+
