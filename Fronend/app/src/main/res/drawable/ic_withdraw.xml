@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="56dp"
+    android:height="56dp"
+    android:viewportWidth="56"
+    android:viewportHeight="56">
+    <path android:fillColor="#1B5E20"
+        android:pathData="M28,2A26,26 0,1 1,28,54A26,26 0,1 1,28,2Z"/>
+    <!-- Up arrow -->
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M28,14L18,24L23,24L23,34L33,34L33,24L38,24Z"/>
+    <!-- Base bar -->
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M17,37L39,37L39,40L17,40Z"/>
+</vector>

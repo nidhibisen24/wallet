@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="56dp"
+    android:height="56dp"
+    android:viewportWidth="56"
+    android:viewportHeight="56">
+    <path android:fillColor="#1B5E20"
+        android:pathData="M28,2A26,26 0,1 1,28,54A26,26 0,1 1,28,2Z"/>
+    <!-- 3 list lines -->
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M16,18L40,18L40,21L16,21Z"/>
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M16,25L40,25L40,28L16,28Z"/>
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M16,32L30,32L30,35L16,35Z"/>
+    <!-- Clock circle outline -->
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M35,30A7,7 0,1 1,35,44A7,7 0,1 1,35,30Z"/>
+    <path android:fillColor="#1B5E20"
+        android:pathData="M35,31.5A5.5,5.5 0,1 1,35,42.5A5.5,5.5 0,1 1,35,31.5Z"/>
+    <!-- Clock hands -->
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M34.2,33L35.8,33L35.8,37.5L38,37.5L38,39L34.2,39Z"/>
+</vector>

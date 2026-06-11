@@ -1,52 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://tools.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="3dp">
+    android:layout_marginStart="14dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginEnd="14dp"
+    android:layout_marginBottom="5dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="12dp">
+        android:orientation="horizontal"
+        android:padding="14dp"
+        android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/tvUserName"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lucky"
+                android:textColor="#1B5E20"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="6dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="#F1F8E9"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="0dp">
+
+                    <TextView
+                        android:id="@+id/tvRequestType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="6dp"
+                        android:paddingTop="2dp"
+                        android:paddingEnd="6dp"
+                        android:paddingBottom="2dp"
+                        android:text="ADD"
+                        android:textColor="#558B2F"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.02" />
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/tvDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="2026-06-08"
+                    android:textColor="#78909C"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lucky"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:orientation="vertical"
+            android:gravity="end">
 
-        <TextView
-            android:id="@+id/tvAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="₹200"/>
+            <TextView
+                android:id="@+id/tvAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="₹200"
+                android:textColor="#2E7D32"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvRequestType"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ADD"/>
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                app:cardBackgroundColor="#EAF2EA"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="0dp">
 
-        <TextView
-            android:id="@+id/tvStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="APPROVED"/>
-
-        <TextView
-            android:id="@+id/tvDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2026-06-08"/>
+                <TextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="8dp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="3dp"
+                    android:text="APPROVED"
+                    android:textColor="#2E7D32"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.03" />
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>
