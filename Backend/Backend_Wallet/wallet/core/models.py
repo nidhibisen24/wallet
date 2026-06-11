@@ -100,31 +100,16 @@ class FundRequest(models.Model):
         
     )
 
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='fund_requests'
-    )
+    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='fund_requests')
 
-    amount = models.DecimalField(
-        max_digits=12,
-        decimal_places=2
-    )
+    amount = models.DecimalField(max_digits=12,decimal_places=2)
 
-    request_type = models.CharField(
-        max_length=20,
-        choices=REQUEST_TYPES
-    )
+    request_type = models.CharField(max_length=20,choices=REQUEST_TYPES)
 
-    status = models.CharField(
-        max_length=20,
-        choices=STATUS_TYPES,
-        default='PENDING'
-    )
+    status = models.CharField(max_length=20,choices=STATUS_TYPES, default='PENDING')
+    utr_number = models.CharField(max_length=100,blank=True,null=True)
 
-    created_at = models.DateTimeField(
-        auto_now_add=True
-    )
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.user.mobile_number} - {self.request_type} - {self.amount}"

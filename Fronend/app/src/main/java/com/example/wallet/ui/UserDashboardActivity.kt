@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.wallet.R
@@ -70,6 +71,23 @@ class UserDashboardActivity : AppCompatActivity() {
             )
 
             finishAffinity()
+        }
+        val cardAddFundRequest =
+            findViewById<CardView>(R.id.cardAddFundRequest)
+
+        cardAddFundRequest.setOnClickListener {
+
+            val intent = Intent(
+                this,
+                AddFundUserActivity::class.java
+            )
+
+            intent.putExtra(
+                "USER_ID",
+                userId
+            )
+
+            startActivity(intent)
         }
     }
 

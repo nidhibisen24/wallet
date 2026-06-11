@@ -121,10 +121,12 @@ def add_fund_request(request):
 
     if serializer.is_valid():
         serializer.save()
-
+        
         return Response({
             "message": "Add fund request submitted"
         })
+    
+    print(serializer.errors)
 
     return Response(
         serializer.errors,

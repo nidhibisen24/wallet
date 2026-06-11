@@ -1,12 +1,15 @@
 package com.example.wallet.network
 
 
+import com.example.wallet.data.AddFundRequest
 import com.example.wallet.data.AdminDashboardResponse
 import com.example.wallet.data.ApproveRequest
 import com.example.wallet.data.ApprovedRequest
 import com.example.wallet.data.LoginRequest
 import com.example.wallet.data.LoginResponse
+import com.example.wallet.data.MessageResponse
 import com.example.wallet.data.PendingRequest
+import com.example.wallet.data.QrCodeResponse
 import com.example.wallet.data.QrUploadResponse
 import com.example.wallet.data.RegisterRequest
 import com.example.wallet.data.RegisterResponse
@@ -60,6 +63,14 @@ interface ApiService {
         @Path("id") userId: Int
     ): UserDetails
 
+    //fund
+
+    @POST("add-fund-request/")
+    suspend fun addFundRequest(
+        @Body request: AddFundRequest
+    ): MessageResponse
+
+
     @GET("my-request/{id}")
     suspend fun getUserHistory(
         @Path("id") userId: Int
@@ -89,6 +100,12 @@ interface ApiService {
     suspend fun uploadQrCode(
         @Part image: MultipartBody.Part
     ): Response<QrUploadResponse>
+
+    @GET("qr-code/")
+    suspend fun getQrCode(): QrCodeResponse
+
+
+
 
 
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F0F7F0"
-    tools:context=".AddFundActivity">
+    tools:context=".AddFundUserActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -106,6 +106,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Amount (₹)"
+
                         android:textColor="#2E7D32"
                         android:textStyle="bold"/>
 
@@ -113,7 +114,7 @@
                         android:id="@+id/etAmount"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:hint="Enter amount"
+                        android:hint="100 , 500"
                         android:inputType="number"/>
 
                     <!-- QR Section -->
@@ -165,7 +166,7 @@
             </androidx.cardview.widget.CardView>
 
             <Button
-                android:id="@+id/btnSubmitAddFund"
+                android:id="@+id/btnSubmitRequest"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:backgroundTint="#2E7D32"

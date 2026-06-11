@@ -42,6 +42,7 @@ class FundRequestSerializer(serializers.ModelSerializer):
             'user_name',
             'mobile_number',
             'amount',
+            'utr_number',
             'request_type',
             'status',
             'created_at'
