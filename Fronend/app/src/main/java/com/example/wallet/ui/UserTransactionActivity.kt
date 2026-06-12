@@ -3,6 +3,7 @@ package com.example.wallet.ui
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 class UserTransactionActivity : AppCompatActivity() {
 
     private lateinit var rvTransactions: RecyclerView
+    private lateinit var btnBack: CardView
 
     private var userId = 0
 
@@ -39,6 +41,14 @@ class UserTransactionActivity : AppCompatActivity() {
             LinearLayoutManager(this)
 
         loadTransactions()
+
+        btnBack = findViewById(R.id.btnBack)
+        btnBack.setOnClickListener {
+
+            finish()
+
+
+        }
     }
 
     private fun loadTransactions() {

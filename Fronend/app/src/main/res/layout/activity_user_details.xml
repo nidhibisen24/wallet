@@ -28,7 +28,7 @@
                 android:paddingEnd="16dp">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/btnBackToDashboard"
+                    android:id="@+id/btnBack"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:clickable="true"
