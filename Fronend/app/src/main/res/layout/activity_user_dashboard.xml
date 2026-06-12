@@ -13,362 +13,366 @@
         android:background="#F1F8E9"
         android:fillViewport="true">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <!-- HEADER -->
-        <RelativeLayout
-            android:id="@+id/layoutDashboardHeader"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#1B5E20"
-            android:paddingStart="20dp"
-            android:paddingTop="50dp"
-            android:paddingEnd="20dp"
-            android:paddingBottom="40dp">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvDashboardTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="User Dashboard"
-                android:textColor="#FFFFFF"
-                android:textSize="17sp"
-                android:textStyle="bold"/>
-
-            <!-- Profile circle -->
-            <TextView
-                android:id="@+id/tvProfileInitial"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_alignParentEnd="true"
-                android:background="@drawable/bg_profile_circle"
-                android:gravity="center"
-                android:text="U"
-                android:textColor="#1B5E20"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
-
-            <Button
-                android:id="@+id/btnLogout"
-                android:layout_width="90dp"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="16dp"
-                android:backgroundTint="#D32F2F"
-                android:text="Logout"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF" />
-
-            <TextView
-                android:id="@+id/tvWelcomeText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tvDashboardTitle"
-                android:layout_marginTop="18dp"
-                android:text="Welcome Back,"
-                android:textColor="#A5D6A7"
-                android:textSize="14sp"/>
-
-            <TextView
-                android:id="@+id/tvUserDisplayName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tvWelcomeText"
-                android:layout_marginTop="2dp"
-                android:text="Lucky!"
-                android:textColor="#FFFFFF"
-                android:textSize="28sp"
-                android:textStyle="bold"/>
-
-            <LinearLayout
-                android:id="@+id/layoutBadgeRow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tvUserDisplayName"
-                android:layout_marginTop="6dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/tvUserIdBadge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="18sp"
-                    android:textColor="#81C784"
-                    android:textSize="12sp"/>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="12dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="#4CAF50"/>
-
-                <TextView
-                    android:id="@+id/tvMembershipBadge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Premium Account Member"
-                    android:textColor="#81C784"
-                    android:textSize="12sp"/>
-            </LinearLayout>
-        </RelativeLayout>
-
-        <!-- WALLET CARD -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardWalletBalance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="-22dp"
-            android:layout_marginEnd="16dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="8dp">
-
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/layoutDashboardHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_wallet_gradient"
-                android:orientation="vertical"
-                android:padding="20dp">
+                android:background="#1B5E20"
+                android:paddingStart="20dp"
+                android:paddingTop="50dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="40dp">
 
                 <TextView
-                    android:id="@+id/tvWalletLabel"
+                    android:id="@+id/tvDashboardTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total Wallet Balance"
-                    android:textColor="#C8E6C9"
-                    android:textSize="13sp"/>
+                    android:text="User Dashboard"
+                    android:textColor="#FFFFFF"
+                    android:textSize="17sp"
+                    android:textStyle="bold"/>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_alignParentEnd="true"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
+                    <Button
+                        android:id="@+id/btnLogout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="38dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:backgroundTint="#FFFFFF"
+                        android:paddingHorizontal="20dp"
+                        android:text="Logout"
+                        android:layout_marginRight="10dp"
+                        android:textAllCaps="false"
+                        android:textColor="#1B5E20"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="20dp"
+                        app:elevation="2dp" />
+
                     <TextView
-                        android:id="@+id/tvWalletAmount"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="₹12,450.00"
-                        android:textColor="#FFFFFF"
-                        android:textSize="32sp"
+                        android:id="@+id/tvProfileInitial"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:background="@drawable/bg_profile_circle"
+                        android:gravity="center"
+                        android:text="U"
+                        android:textColor="#1B5E20"
+                        android:textSize="18sp"
                         android:textStyle="bold"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvWelcomeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvDashboardTitle"
+                    android:layout_marginTop="18dp"
+                    android:text="Welcome Back,"
+                    android:textColor="#A5D6A7"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tvUserDisplayName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvWelcomeText"
+                    android:layout_marginTop="2dp"
+                    android:text="Lucky!"
+                    android:textColor="#FFFFFF"
+                    android:textSize="28sp"
+                    android:textStyle="bold"/>
+
+                <LinearLayout
+                    android:id="@+id/layoutBadgeRow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvUserDisplayName"
+                    android:layout_marginTop="6dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tvUserIdBadge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ID: #1082"
+                        android:textColor="#81C784"
+                        android:textSize="12sp"/>
 
                     <View
-                        android:id="@+id/viewOnlineIndicator"
-                        android:layout_width="9dp"
-                        android:layout_height="9dp"
-                        android:background="@drawable/bg_online_dot"/>
+                        android:layout_width="1dp"
+                        android:layout_height="12dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="#4CAF50"/>
 
                     <TextView
-                        android:id="@+id/tvOnlineStatus"
+                        android:id="@+id/tvMembershipBadge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text="24sp"
-                        android:textColor="#A5D6A7"
-                        android:textSize="11sp"/>
+                        android:text="Premium Account Member"
+                        android:textColor="#81C784"
+                        android:textSize="12sp"/>
                 </LinearLayout>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+            </RelativeLayout>
 
-        <!-- SECTION TITLE -->
-        <TextView
-            android:id="@+id/tvSectionActions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="28dp"
-            android:layout_marginBottom="12dp"
-            android:text="Account Actions &amp; Services"
-            android:textColor="#1B5E20"
-            android:textSize="15sp"
-            android:textStyle="bold"/>
-
-        <!-- ACTION GRID -->
-        <GridLayout
-            android:id="@+id/gridAccountActions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:columnCount="2"
-            android:rowCount="2">
-
-            <!-- Add Fund -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardAddFundRequest"
-                android:layout_width="0dp"
+                android:id="@+id/cardWalletBalance"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="6dp"
-                android:clickable="true"
-                android:focusable="true"
-                app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="3dp">
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="-22dp"
+                android:layout_marginEnd="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_wallet_gradient"
                     android:orientation="vertical"
-                    android:padding="24dp">
-
-                    <ImageView
-                        android:id="@+id/ivIconAddFund"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:src="@drawable/ic_add_fund"
-                        android:contentDescription="Add Fund"/>
+                    android:padding="20dp">
 
                     <TextView
-                        android:id="@+id/tvAddFundLabel"
+                        android:id="@+id/tvWalletLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:gravity="center"
-                        android:text="Add Fund\nRequest"
-                        android:textAlignment="center"
-                        android:textColor="#1B5E20"
-                        android:textSize="13sp"
-                        android:textStyle="bold"/>
+                        android:text="Total Wallet Balance"
+                        android:textColor="#C8E6C9"
+                        android:textSize="13sp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvWalletAmount"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="₹12,450.00"
+                            android:textColor="#FFFFFF"
+                            android:textSize="32sp"
+                            android:textStyle="bold"/>
+
+                        <View
+                            android:id="@+id/viewOnlineIndicator"
+                            android:layout_width="9dp"
+                            android:layout_height="9dp"
+                            android:background="@drawable/bg_online_dot"/>
+
+                        <TextView
+                            android:id="@+id/tvOnlineStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="Online"
+                            android:textColor="#A5D6A7"
+                            android:textSize="11sp"/>
+                    </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Withdraw -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardWithdrawRequest"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/tvSectionActions"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="6dp"
-                android:clickable="true"
-                android:focusable="true"
-                app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="3dp">
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginBottom="12dp"
+                android:text="Account Actions &amp; Services"
+                android:textColor="#1B5E20"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="24dp">
-
-                    <ImageView
-                        android:id="@+id/ivIconWithdraw"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:src="@drawable/ic_withdraw"
-                        android:contentDescription="Withdraw"/>
-
-                    <TextView
-                        android:id="@+id/tvWithdrawLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:gravity="center"
-                        android:text="Withdraw\nRequest"
-                        android:textAlignment="center"
-                        android:textColor="#1B5E20"
-                        android:textSize="13sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Transaction History -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardTransactionHistory"
-                android:layout_width="0dp"
+            <GridLayout
+                android:id="@+id/gridAccountActions"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="6dp"
-                android:clickable="true"
-                android:focusable="true"
-                app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="3dp">
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:columnCount="2"
+                android:rowCount="2">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="24dp">
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardAddFundRequest"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="6dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="3dp">
 
-                    <ImageView
-                        android:id="@+id/ivIconTxnHistory"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:src="@drawable/ic_transaction_history"
-                        android:contentDescription="Transaction History"/>
-
-                    <TextView
-                        android:id="@+id/tvTxnHistoryLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Transaction\nHistory"
-                        android:textAlignment="center"
-                        android:textColor="#1B5E20"
-                        android:textSize="13sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                        android:orientation="vertical"
+                        android:padding="24dp">
 
-            <!-- Help & Support -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardHelpSupport"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="6dp"
-                android:clickable="true"
-                android:focusable="true"
-                app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="3dp">
+                        <ImageView
+                            android:id="@+id/ivIconAddFund"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:src="@drawable/ic_add_fund"
+                            android:contentDescription="Add Fund"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="24dp">
+                        <TextView
+                            android:id="@+id/tvAddFundLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            android:text="Add Fund\nRequest"
+                            android:textAlignment="center"
+                            android:textColor="#1B5E20"
+                            android:textSize="13sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
-                    <ImageView
-                        android:id="@+id/ivIconHelp"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:src="@drawable/ic_help_support"
-                        android:contentDescription="Help and Support"/>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardWithdrawRequest"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="6dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="3dp">
 
-                    <TextView
-                        android:id="@+id/tvHelpSupportLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Help &amp;\nSupport"
-                        android:textAlignment="center"
-                        android:textColor="#1B5E20"
-                        android:textSize="13sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                        android:orientation="vertical"
+                        android:padding="24dp">
 
-        </GridLayout>
+                        <ImageView
+                            android:id="@+id/ivIconWithdraw"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:src="@drawable/ic_withdraw"
+                            android:contentDescription="Withdraw"/>
 
-        <View android:layout_width="match_parent" android:layout_height="28dp"/>
+                        <TextView
+                            android:id="@+id/tvWithdrawLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            android:text="Withdraw\nRequest"
+                            android:textAlignment="center"
+                            android:textColor="#1B5E20"
+                            android:textSize="13sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
-     </LinearLayout>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardTransactionHistory"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="6dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="3dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="24dp">
+
+                        <ImageView
+                            android:id="@+id/ivIconTxnHistory"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:src="@drawable/ic_transaction_history"
+                            android:contentDescription="Transaction History"/>
+
+                        <TextView
+                            android:id="@+id/tvTxnHistoryLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            android:text="Transaction\nHistory"
+                            android:textAlignment="center"
+                            android:textColor="#1B5E20"
+                            android:textSize="13sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardHelpSupport"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="6dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="3dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="24dp">
+
+                        <ImageView
+                            android:id="@+id/ivIconHelp"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:src="@drawable/ic_help_support"
+                            android:contentDescription="Help and Support"/>
+
+                        <TextView
+                            android:id="@+id/tvHelpSupportLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            android:text="Help &amp;\nSupport"
+                            android:textAlignment="center"
+                            android:textColor="#1B5E20"
+                            android:textSize="13sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+            </GridLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="28dp"/>
+
+        </LinearLayout>
     </ScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
