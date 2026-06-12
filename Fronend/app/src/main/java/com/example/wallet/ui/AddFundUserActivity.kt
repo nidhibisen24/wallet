@@ -29,11 +29,6 @@ class AddFundUserActivity : AppCompatActivity() {
 
         userId = intent.getIntExtra("USER_ID", 0)
 
-        android.util.Log.d(
-            "ADD_FUND",
-            "USER_ID RECEIVED = $userId"
-        )
-
         etAmount = findViewById(R.id.etAmount)
         etUtr = findViewById(R.id.etUtr)
         imgQrCode = findViewById(R.id.imgQrCode)

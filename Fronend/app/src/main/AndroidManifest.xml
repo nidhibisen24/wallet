@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Wallet"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.UserTransactionActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.AddFundUserActivity"
             android:exported="false" />
         <activity
