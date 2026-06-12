@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F0F7F0"
-    tools:context=".AddFundUserActivity">
+    android:fillViewport="true"
+    tools:context=".AddFundActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,10 +36,11 @@
                     android:layout_height="36dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
+                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
                     app:cardBackgroundColor="#1B5E20"
                     app:cardCornerRadius="10dp"
-                    app:cardElevation="0dp">
+                    app:cardElevation="0dp"
+                    android:stateListAnimator="@animator/button_press_scale">
 
                     <ImageView
                         android:layout_width="24dp"
@@ -80,7 +81,6 @@
                 android:textSize="13sp" />
         </LinearLayout>
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -104,12 +104,10 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <!-- Amount -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Amount (₹)"
-
                         android:textColor="#2E7D32"
                         android:textStyle="bold"/>
 
@@ -117,10 +115,10 @@
                         android:id="@+id/etAmount"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:hint="100 , 500"
-                        android:inputType="number"/>
+                        android:hint="Enter amount"
+                        android:inputType="number"
+                        android:backgroundTint="#2E7D32"/>
 
-                    <!-- QR Section -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -138,7 +136,6 @@
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_launcher_background"/>
 
-                    <!-- UTR -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -152,9 +149,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:hint="Enter transaction UTR number"
-                        android:inputType="text"/>
-
-
+                        android:inputType="text"
+                        android:backgroundTint="#2E7D32"/>
 
                     <ImageView
                         android:id="@+id/imgPreview"
@@ -164,21 +160,23 @@
                         android:layout_gravity="center"
                         android:visibility="gone"/>
 
-
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <Button
-                android:id="@+id/btnSubmitRequest"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSubmitAddFund"
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:backgroundTint="#2E7D32"
+                android:layout_height="56dp"
+                android:backgroundTint="@color/btn_state_color_selector"
                 android:text="Confirm &amp; Deposit Fund"
                 android:textColor="#FFFFFF"
                 android:textSize="15sp"
                 android:textStyle="bold"
+                app:elevation="3dp"
+                app:pressedTranslationZ="6dp"
                 app:cornerRadius="14dp"
-                app:rippleColor="#A5D6A7" />
+                app:rippleColor="#40A5D6A7"
+                android:stateListAnimator="@animator/button_press_scale" />
 
         </LinearLayout>
     </LinearLayout>
