@@ -4,6 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="#FFFFFF"
     app:cardCornerRadius="14dp"
     app:cardElevation="2dp">
@@ -12,9 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-        <!--aistin ye side vali green line h achi lgrhi
-        thi isliye lga di agr tumko psnd nai aaegi to hta dena  -->
 
         <View
             android:layout_width="4dp"
@@ -96,8 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="end|center_vertical"
-                android:orientation="vertical"
-                android:gap="6dp">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -125,7 +124,7 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnDelete"
                     android:layout_width="90dp"
                     android:layout_height="36dp"
@@ -136,7 +135,11 @@
                     android:textColor="#C62828"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    app:cornerRadius="10dp" />
+                    app:cornerRadius="10dp"
+                    app:elevation="0dp"
+                    app:pressedTranslationZ="2dp"
+                    app:rippleColor="#40FFCDD2"
+                    android:stateListAnimator="@animator/button_press_scale" />
 
             </LinearLayout>
 

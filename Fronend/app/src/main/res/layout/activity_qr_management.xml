@@ -28,7 +28,6 @@
                 android:paddingEnd="24dp"
                 android:paddingBottom="48dp">
 
-                <!-- Back button + Title in same row -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -40,9 +39,13 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_marginEnd="12dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackgroundBorderless"
                         app:cardBackgroundColor="#FFFFFF"
                         app:cardCornerRadius="8dp"
-                        app:cardElevation="2dp">
+                        app:cardElevation="2dp"
+                        android:stateListAnimator="@animator/button_press_scale">
 
                         <ImageView
                             android:layout_width="18dp"
@@ -119,7 +122,7 @@
                                 tools:src="@android:drawable/ic_menu_report_image" />
                         </androidx.cardview.widget.CardView>
 
-                        <Button
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnSelectQr"
                             android:layout_width="match_parent"
                             android:layout_height="52dp"
@@ -129,19 +132,26 @@
                             android:textColor="#2E7D32"
                             android:textSize="15sp"
                             android:textStyle="bold"
-                            app:cornerRadius="12dp" />
+                            app:cornerRadius="12dp"
+                            app:elevation="0dp"
+                            app:pressedTranslationZ="2dp"
+                            app:rippleColor="#202E7D32"
+                            android:stateListAnimator="@animator/button_press_scale" />
 
-                        <Button
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnUploadQr"
                             android:layout_width="match_parent"
                             android:layout_height="52dp"
-                            android:backgroundTint="#2E7D32"
+                            android:backgroundTint="@color/btn_state_color_selector"
                             android:text="Upload QR Code"
                             android:textColor="#FFFFFF"
                             android:textSize="15sp"
                             android:textStyle="bold"
                             app:cornerRadius="12dp"
-                            app:rippleColor="#A5D6A7" />
+                            app:elevation="3dp"
+                            app:pressedTranslationZ="6dp"
+                            app:rippleColor="#40A5D6A7"
+                            android:stateListAnimator="@animator/button_press_scale" />
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>

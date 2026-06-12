@@ -2,19 +2,19 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://tools.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F7F5">
-
-    <View
-        android:id="@+id/headerBackground"
-        android:layout_width="match_parent"
-        android:layout_height="260dp"
-        android:background="@drawable/bg_login_header"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    android:background="#F4F7F5"
+    tools:context=".ui.ApproveRequestsActivity"> <View
+    android:id="@+id/headerBackground"
+    android:layout_width="match_parent"
+    android:layout_height="260dp"
+    android:background="@drawable/bg_login_header"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -39,7 +39,6 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="16dp">
 
-                <!-- Logo with subtle tint & dynamic styling -->
                 <ImageView
                     android:layout_width="72dp"
                     android:layout_height="72dp"
@@ -70,7 +69,7 @@
                     android:alpha="0.8"/>
 
             </LinearLayout>
-           <com.google.android.material.card.MaterialCardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -183,11 +182,13 @@
                             android:textColor="#2E7D32"
                             android:textStyle="bold"
                             android:textSize="14sp"
-                            android:padding="4dp"/>
+                            android:padding="8dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:background="?android:attr/selectableItemBackgroundBorderless"/>
 
                     </RelativeLayout>
 
-                    <!-- Login Button -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnLogin"
                         android:layout_width="match_parent"
@@ -197,15 +198,17 @@
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="#FFFFFF"
-                        android:backgroundTint="#2E7D32"
+                        android:backgroundTint="@color/btn_state_color_selector"
                         app:cornerRadius="12dp"
-                        app:elevation="2dp"/>
+                        app:elevation="2dp"
+                        app:pressedTranslationZ="5dp"
+                        app:rippleColor="#40A5D6A7"
+                        android:stateListAnimator="@animator/button_press_scale"/>
 
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Bottom Register Link -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -228,10 +231,12 @@
                     android:textStyle="bold"
                     android:textColor="#2E7D32"
                     android:textSize="15sp"
-                    android:padding="4dp"/>
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"/>
             </LinearLayout>
 
-            <!-- Secure Access Footer -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

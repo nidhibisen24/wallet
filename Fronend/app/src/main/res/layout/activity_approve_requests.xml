@@ -34,9 +34,13 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_marginEnd="12dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
                     app:cardBackgroundColor="#FFFFFF"
                     app:cardCornerRadius="8dp"
-                    app:cardElevation="2dp">
+                    app:cardElevation="2dp"
+                    android:stateListAnimator="@animator/button_press_scale">
 
                     <ImageView
                         android:layout_width="18dp"
