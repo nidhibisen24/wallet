@@ -28,16 +28,41 @@
                 android:paddingEnd="24dp"
                 android:paddingBottom="48dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <!-- Back button + Title in same row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="QR Code Setup"
-                    android:textColor="#1B5E20"
-                    android:textSize="28sp"
-                    android:textStyle="bold"
-                    android:letterSpacing="-0.02" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
-                <!-- Subtitle -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/btnBackFromApprovals"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginEnd="12dp"
+                        app:cardBackgroundColor="#FFFFFF"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="2dp">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="Go Back"
+                            android:src="@drawable/ic_back_arrow" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="QR Code Setup"
+                        android:textColor="#1B5E20"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="-0.02" />
+
+                </LinearLayout>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -45,6 +70,7 @@
                     android:text="Manage your gateway QR code for client deposits"
                     android:textColor="#43A047"
                     android:textSize="14sp" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -105,7 +131,6 @@
                             android:textStyle="bold"
                             app:cornerRadius="12dp" />
 
-                        <!-- Action 2: Upload QR (Solid Main Theme Green) -->
                         <Button
                             android:id="@+id/btnUploadQr"
                             android:layout_width="match_parent"

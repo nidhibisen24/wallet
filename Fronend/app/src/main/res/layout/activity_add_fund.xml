@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,16 +33,19 @@
                     android:id="@+id/btnBackToDashboard"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
                     app:cardBackgroundColor="#1B5E20"
                     app:cardCornerRadius="10dp"
                     app:cardElevation="0dp">
 
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:contentDescription="Go Back"
-                        android:src="@android:drawable/ic_menu_revert"
+                        android:src="@drawable/ic_back_arrow"
                         app:tint="#A5D6A7" />
                 </androidx.cardview.widget.CardView>
 
@@ -77,7 +79,6 @@
                 android:textSize="13sp" />
         </LinearLayout>
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -101,7 +102,6 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <!-- Amount -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -116,7 +116,6 @@
                         android:hint="Enter amount"
                         android:inputType="number"/>
 
-                    <!-- QR Section -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -134,7 +133,6 @@
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_launcher_background"/>
 
-                    <!-- UTR -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -150,8 +148,6 @@
                         android:hint="Enter transaction UTR number"
                         android:inputType="text"/>
 
-
-
                     <ImageView
                         android:id="@+id/imgPreview"
                         android:layout_width="120dp"
@@ -159,7 +155,6 @@
                         android:layout_marginTop="12dp"
                         android:layout_gravity="center"
                         android:visibility="gone"/>
-
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

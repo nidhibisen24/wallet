@@ -12,17 +12,51 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Top App Bar -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="64dp"
             android:background="#1B5E20"
-            android:paddingStart="8dp"
-            app:navigationIcon="@drawable/ic_arrow_back"
-            app:navigationIconTint="#E8F5E9"
-            app:title="User Details"
-            app:titleTextColor="#FFFFFF" />
+            app:contentInsetStart="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/btnBackToDashboard"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardBackgroundColor="#114215"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="0dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="Go Back"
+                        android:src="@drawable/ic_back_arrow"
+                        app:tint="#A5D6A7" />
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="User Details"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,7 +64,6 @@
             android:orientation="vertical"
             android:padding="14dp">
 
-            <!-- Hero Profile Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -45,7 +78,6 @@
                     android:orientation="vertical"
                     android:padding="18dp">
 
-                    <!-- Avatar Row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -89,7 +121,6 @@
                                 android:textSize="12sp"
                                 android:layout_marginTop="2dp" />
 
-                            <!-- Role Badge -->
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -121,14 +152,12 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <!-- Divider -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="#33FFFFFF"
                         android:layout_marginBottom="14dp" />
 
-                    <!-- Balance Section -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -159,7 +188,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Stats Row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -249,8 +277,6 @@
                 android:layout_marginStart="4dp"
                 android:letterSpacing="0.02" />
 
-            <!-- PREMIUM CONTAINER FOR TRANSACTIONS -->
-            <!-- Is card ke andar aapka recycler view seamless aur modern float hoga -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
