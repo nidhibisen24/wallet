@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 class UserDashboardActivity : AppCompatActivity() {
 
     private lateinit var tvUserName: TextView
+    private lateinit var tvProfile: TextView
     private lateinit var tvWalletBalance: TextView
     private lateinit var btnLogout: Button
     private lateinit var swipeRefresh: SwipeRefreshLayout
@@ -72,6 +73,23 @@ class UserDashboardActivity : AppCompatActivity() {
 
             finishAffinity()
         }
+        val tvProfile =
+            findViewById<TextView>(R.id.tvProfile)
+
+        tvProfile.setOnClickListener {
+
+            val intent = Intent(
+                this,
+                UserDetailsActivity::class.java
+            )
+
+            intent.putExtra(
+                "USER_ID",
+                userId
+            )
+
+            startActivity(intent)
+        }
         val cardAddFundRequest =
             findViewById<CardView>(R.id.cardAddFundRequest)
 
@@ -80,6 +98,23 @@ class UserDashboardActivity : AppCompatActivity() {
             val intent = Intent(
                 this,
                 AddFundUserActivity::class.java
+            )
+
+            intent.putExtra(
+                "USER_ID",
+                userId
+            )
+
+            startActivity(intent)
+        }
+        val cardTransactionHistory =
+            findViewById<CardView>(R.id.cardTransactionHistory)
+
+        cardTransactionHistory.setOnClickListener {
+
+            val intent = Intent(
+                this,
+                UserTransactionActivity::class.java
             )
 
             intent.putExtra(

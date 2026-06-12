@@ -16,6 +16,8 @@
         <!--aistin ye side vali green line h achi lgrhi
         thi isliye lga di agr tumko psnd nai aaegi to hta dena  -->
 
+<!--        thik hai -->
+
         <View
             android:layout_width="4dp"
             android:layout_height="match_parent"
@@ -97,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="end|center_vertical"
                 android:orientation="vertical"
-                android:gap="6dp">
+                >
 
                 <LinearLayout
                     android:layout_width="wrap_content"

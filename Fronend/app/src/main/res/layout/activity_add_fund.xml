@@ -164,7 +164,7 @@
             </androidx.cardview.widget.CardView>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSubmitAddFund"
+                android:id="@+id/btnSubmitRequest"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:backgroundTint="@color/btn_state_color_selector"
