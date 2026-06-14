@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from django.contrib import admin
-from .models import User, Wallet, FundRequest , QRCode
+from .models import User, Wallet, FundRequest , QRCode , ChatRoom , Message
 
 
 @admin.register(User)
@@ -75,3 +75,6 @@ class QRCodeAdmin(admin.ModelAdmin):
     readonly_fields = (
         "uploaded_at",
     )
+
+admin.site.register(ChatRoom)
+admin.site.register(Message)

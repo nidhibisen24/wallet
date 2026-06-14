@@ -2,8 +2,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth.hashers import check_password
 
-from .models import User, Wallet , FundRequest ,QRCode
-from .serializers import RegisterSerializer ,QRCodeSerializer,FundApprovedSerializers ,FundRequestSerializer, TransactionHistorySerializer,UserDashboardSerializer , UserListSerializer , UserRequestHistorySerializer,UserDetailSerializer
+from .models import User, Wallet , FundRequest ,QRCode , ChatRoom , Message
+from .serializers import RegisterSerializer ,QRCodeSerializer,FundApprovedSerializers,MessageSerializer ,FundRequestSerializer, TransactionHistorySerializer,UserDashboardSerializer , UserListSerializer , UserRequestHistorySerializer,UserDetailSerializer
 from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
 from rest_framework import status
@@ -433,6 +433,107 @@ def all_transactions(request):
 
     serializer = TransactionHistorySerializer(
         transactions,
+        many=True
+    )
+
+    return Response(serializer.data)
+
+
+#Chat System
+
+@api_view(['POST'])
+def create_chat_room(request):
+
+    user_id = request.data.get('user')
+
+    try:
+
+        user = User.objects.get(
+            id=user_id
+        )
+
+    except User.DoesNotExist:
+
+        return Response(
+            {
+                "error": "User not found"
+            },
+            status=404
+        )
+
+    room, created = ChatRoom.objects.get_or_create(
+        user=user
+    )
+
+    return Response(
+        {
+            "room_id": room.id,
+            "created": created
+        }
+    )
+
+@api_view(['POST'])
+def send_message(request):
+
+    serializer = MessageSerializer(
+        data=request.data
+    )
+
+    if serializer.is_valid():
+
+        serializer.save()
+
+        return Response({
+            "message": "Message sent"
+        })
+
+    return Response(
+        serializer.errors,
+        status=400
+    )
+
+@api_view(['GET'])
+def get_chat_messages(request, room_id):
+
+    messages = Message.objects.filter(
+        room_id=room_id
+    ).order_by('created_at')
+
+    serializer = MessageSerializer(
+        messages,
+        many=True
+    )
+
+    return Response(serializer.data)
+
+#Chat list to the admin
+@api_view(['GET'])
+def get_chat_rooms(request):
+
+    rooms = ChatRoom.objects.all()
+
+    data = []
+
+    for room in rooms:
+
+        data.append({
+            "room_id": room.id,
+            "user_id": room.user.id,
+            "name": room.user.full_name,
+            "mobile": room.user.mobile_number
+        })
+
+    return Response(data)
+
+@api_view(['GET'])
+def get_chat_room_messages(request, room_id):
+
+    messages = Message.objects.filter(
+        room_id=room_id
+    ).order_by('created_at')
+
+    serializer = MessageSerializer(
+        messages,
         many=True
     )
 
