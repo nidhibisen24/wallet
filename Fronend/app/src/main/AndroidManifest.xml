@@ -15,6 +15,18 @@
         android:theme="@style/Theme.Wallet"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.AdminChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.AdminChatRoomsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.HelpSupportActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.UserTransactionActivity"
             android:exported="false" />
         <activity

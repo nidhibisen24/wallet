@@ -85,6 +85,18 @@ class AdminDashboardActivity : AppCompatActivity() {
                 )
             )
         }
+        val btnChat =
+            findViewById<Button>(R.id.btnChat)
+
+        btnChat.setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    AdminChatRoomsActivity::class.java
+                )
+            )
+        }
         val btnApprove =
             findViewById<Button>(R.id.btnApprove)
 

@@ -99,14 +99,14 @@ class TransactionHistoryAdapter(
             "ADD" -> {
 
                 holder.cardTransaction.setCardBackgroundColor(
-                    Color.parseColor("#F1F8E9")
+                    Color.parseColor("#FFFFFF")
                 )
             }
 
             "WITHDRAW" -> {
 
                 holder.cardTransaction.setCardBackgroundColor(
-                    Color.parseColor("#FEE2E2")
+                    Color.parseColor("#FFFFFF")
                 )
             }
 
