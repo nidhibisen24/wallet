@@ -3,6 +3,7 @@ package com.example.wallet.ui
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,7 @@ class UserDetailsActivity : AppCompatActivity() {
     private lateinit var tvRole: TextView
     private lateinit var tvBalance: TextView
     private lateinit var tvTotalRequests: TextView
+    private lateinit var btnBack: CardView
 
     private lateinit var rvTransactions: RecyclerView
 
@@ -44,6 +46,13 @@ class UserDetailsActivity : AppCompatActivity() {
 
         if (userId != 0) {
             loadUserDetails(userId)
+        }
+        btnBack = findViewById(R.id.btnBack)
+        btnBack.setOnClickListener {
+
+            finish()
+
+
         }
     }
 

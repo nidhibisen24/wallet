@@ -5,6 +5,10 @@ import com.example.wallet.data.AddFundRequest
 import com.example.wallet.data.AdminDashboardResponse
 import com.example.wallet.data.ApproveRequest
 import com.example.wallet.data.ApprovedRequest
+import com.example.wallet.data.ChatMessage
+import com.example.wallet.data.ChatRoom
+import com.example.wallet.data.CreateRoomRequest
+import com.example.wallet.data.CreateRoomResponse
 import com.example.wallet.data.LoginRequest
 import com.example.wallet.data.LoginResponse
 import com.example.wallet.data.MessageResponse
@@ -13,6 +17,7 @@ import com.example.wallet.data.QrCodeResponse
 import com.example.wallet.data.QrUploadResponse
 import com.example.wallet.data.RegisterRequest
 import com.example.wallet.data.RegisterResponse
+import com.example.wallet.data.SendMessageRequest
 import com.example.wallet.data.Transaction
 import com.example.wallet.data.TransactionHistory
 import com.example.wallet.data.User
@@ -113,6 +118,28 @@ interface ApiService {
     @GET("all-transactions/")
     suspend fun getAllTransactions(): List<TransactionHistory>
 
+
+
+
+    //chat System
+    @POST("create-chat-room/")
+    fun createChatRoom(
+        @Body request: CreateRoomRequest
+    ): Call<CreateRoomResponse>
+
+
+    @GET("chat-room-messages/{roomId}/")
+    fun getMessages(
+        @Path("roomId") roomId: Int
+    ): Call<List<ChatMessage>>
+
+    @POST("send-message/")
+    fun sendMessage(
+        @Body request: SendMessageRequest
+    ): Call<Void>
+
+    @GET("chat-rooms/")
+    fun getChatRooms(): Call<List<ChatRoom>>
 
 }
 

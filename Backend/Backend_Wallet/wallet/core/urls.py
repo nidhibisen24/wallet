@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import register , login ,user_request_history, upload_qr_code ,approved_requests,  delete_user,all_transactions, get_qr_code,user_dashboard,search_user,add_fund_request, withdraw_fund_request,user_details , approve_request, reject_request,all_users , admin_dashboard , pending_requests
+from .views import register , login ,user_request_history,get_chat_room_messages, upload_qr_code, get_chat_rooms,send_message,get_chat_messages ,create_chat_room,approved_requests,  delete_user,all_transactions, get_qr_code,user_dashboard,search_user,add_fund_request, withdraw_fund_request,user_details , approve_request, reject_request,all_users , admin_dashboard , pending_requests
 
 urlpatterns = [
     path('register/',register,name='register'),
@@ -35,6 +35,14 @@ urlpatterns = [
 
     #History Akaza Group
     path("all-transactions/", all_transactions),
+
+
+    #Chat Akaza Group
+    path('create-chat-room/',create_chat_room),
+    path('send-message/',send_message),
+    path('chat-messages/<int:room_id>/',get_chat_messages),
+    path('chat-rooms/',get_chat_rooms),
+    path('chat-room-messages/<int:room_id>/',get_chat_room_messages),
     
 
 

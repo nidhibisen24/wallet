@@ -128,3 +128,40 @@ class QRCode(models.Model):
 
     def __str__(self):
         return "Wallet QR Code"
+    
+
+class ChatRoom(models.Model):
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="chat_rooms"
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def __str__(self):
+
+        return self.user.full_name
+    
+class Message(models.Model):
+
+    room = models.ForeignKey( ChatRoom,on_delete=models.CASCADE,related_name="messages")
+
+    sender = models.ForeignKey(User,on_delete=models.CASCADE)
+
+    message = models.TextField()
+
+    is_read = models.BooleanField(
+        default=False
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def __str__(self):
+
+        return f"{self.sender.full_name}: {self.message}"

@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
 import com.example.wallet.R
 import com.example.wallet.network.RetrofitClient
@@ -21,6 +22,7 @@ class QrManagementActivity : AppCompatActivity() {
     private lateinit var ivQrPreview: ImageView
     private lateinit var btnSelectQr: Button
     private lateinit var btnUploadQr: Button
+    private lateinit var btnBack: CardView
 
     private var imageUri: Uri? = null
 
@@ -49,6 +51,13 @@ class QrManagementActivity : AppCompatActivity() {
 
         btnUploadQr.setOnClickListener {
             uploadQr()
+        }
+        btnBack = findViewById(R.id.btnBack)
+        btnBack.setOnClickListener {
+
+            finish()
+
+
         }
     }
 

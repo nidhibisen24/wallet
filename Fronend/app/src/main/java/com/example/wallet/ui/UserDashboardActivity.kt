@@ -107,6 +107,23 @@ class UserDashboardActivity : AppCompatActivity() {
 
             startActivity(intent)
         }
+        val cardHelpSupport =
+            findViewById<CardView>(R.id.cardHelpSupport)
+
+        cardHelpSupport.setOnClickListener {
+
+            val intent = Intent(
+                this,
+                HelpSupportActivity::class.java
+            )
+
+            intent.putExtra(
+                "USER_ID",
+                userId
+            )
+
+            startActivity(intent)
+        }
         val cardTransactionHistory =
             findViewById<CardView>(R.id.cardTransactionHistory)
 

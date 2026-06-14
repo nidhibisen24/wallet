@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User ,Wallet , FundRequest , QRCode
+from .models import User ,Wallet , FundRequest , QRCode , Message , ChatRoom
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 
@@ -190,3 +190,32 @@ class FundApprovedSerializers(serializers.ModelSerializer):
             'status',
             'created_at'
         ]
+
+
+class MessageSerializer(serializers.ModelSerializer):
+
+    sender_name = serializers.CharField(
+        source='sender.full_name',
+        read_only=True
+    )
+
+    sender_role = serializers.CharField(
+        source='sender.role',
+        read_only=True
+    )
+
+    class Meta:
+
+        model = Message
+
+        fields = '__all__'
+
+class ChatRoomSerializer(
+    serializers.ModelSerializer
+):
+
+    class Meta:
+
+        model = ChatRoom
+
+        fields = "__all__"

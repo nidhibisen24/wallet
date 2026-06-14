@@ -6,6 +6,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.wallet.R
@@ -19,6 +20,7 @@ class AddFundUserActivity : AppCompatActivity() {
     private lateinit var etUtr: EditText
     private lateinit var imgQrCode: ImageView
     private lateinit var btnSubmit: Button
+    private lateinit var btnBack: CardView
 
     private var userId = 0
 
@@ -38,6 +40,13 @@ class AddFundUserActivity : AppCompatActivity() {
 
         btnSubmit.setOnClickListener {
             submitFundRequest()
+        }
+        btnBack = findViewById(R.id.btnBack)
+        btnBack.setOnClickListener {
+
+            finish()
+
+
         }
     }
 

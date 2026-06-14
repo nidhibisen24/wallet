@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://tools.android.com/tools"
+    android:id="@+id/cardTransaction"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="14dp"
@@ -30,7 +31,7 @@
                 android:id="@+id/tvUserName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lucky"
+                android:text="Loading.."
                 android:textColor="#1B5E20"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -69,7 +70,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="2026-06-08"
+                    android:text="Loading"
+                    android:maxLines="2"
+                    android:lines="2"
                     android:textColor="#78909C"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -85,7 +88,7 @@
                 android:id="@+id/tvAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="₹200"
+                android:text="₹Loading"
                 android:textColor="#2E7D32"
                 android:textSize="16sp"
                 android:textStyle="bold" />

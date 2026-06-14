@@ -5,6 +5,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
 import com.example.wallet.R
 import com.example.wallet.data.RegisterRequest
@@ -17,6 +18,7 @@ class AddUserActivity : AppCompatActivity() {
     private lateinit var etMobileNumber: EditText
     private lateinit var etUserPassword: EditText
     private lateinit var btnAddUser: Button
+    private lateinit var btnBack: CardView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +31,13 @@ class AddUserActivity : AppCompatActivity() {
 
         btnAddUser.setOnClickListener {
             addUser()
+        }
+        btnBack = findViewById(R.id.btnBack)
+        btnBack.setOnClickListener {
+
+            finish()
+
+
         }
     }
 

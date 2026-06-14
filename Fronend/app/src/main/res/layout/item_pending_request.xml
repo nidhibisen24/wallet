@@ -42,7 +42,7 @@
                         android:id="@+id/tvUserName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Lucky"
+                        android:text="Loading.."
                         android:textColor="#1B5E20"
                         android:textSize="17sp"
                         android:textStyle="bold" />
@@ -52,7 +52,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:text="7024588866"
+                        android:text="xxxxxxxxxx"
                         android:textColor="#78909C"
                         android:textSize="13sp" />
 
@@ -61,7 +61,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="08 Jun 2026"
+                        android:text="date"
                         android:textColor="#90A4AE"
                         android:textSize="12sp" />
 
@@ -110,7 +110,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="₹500.00"
+                    android:text="₹Loading.."
                     android:textColor="#1B5E20"
                     android:textSize="26sp"
                     android:textStyle="bold" />

@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,7 @@ import kotlinx.coroutines.launch
 class DeleteUserActivity : AppCompatActivity() {
 
     private lateinit var rvUsers: RecyclerView
+    private lateinit var btnBack: CardView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +29,13 @@ class DeleteUserActivity : AppCompatActivity() {
             LinearLayoutManager(this)
 
         loadUsers()
+        btnBack = findViewById(R.id.btnBack)
+        btnBack.setOnClickListener {
+
+            finish()
+
+
+        }
     }
 
     private fun loadUsers() {
