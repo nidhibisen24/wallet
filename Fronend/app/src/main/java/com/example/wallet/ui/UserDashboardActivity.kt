@@ -107,6 +107,23 @@ class UserDashboardActivity : AppCompatActivity() {
 
             startActivity(intent)
         }
+        val cardWithdrawRequest =
+            findViewById<CardView>(R.id.cardWithdrawRequest)
+
+        cardWithdrawRequest.setOnClickListener {
+
+            val intent = Intent(
+                this,
+                WithdrawFundActivity::class.java
+            )
+
+            intent.putExtra(
+                "USER_ID",
+                userId
+            )
+
+            startActivity(intent)
+        }
         val cardHelpSupport =
             findViewById<CardView>(R.id.cardHelpSupport)
 

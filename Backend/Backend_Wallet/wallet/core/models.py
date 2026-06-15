@@ -108,6 +108,9 @@ class FundRequest(models.Model):
 
     status = models.CharField(max_length=20,choices=STATUS_TYPES, default='PENDING')
     utr_number = models.CharField(max_length=100,blank=True,null=True)
+    upi_id = models.CharField(max_length=100,blank=True,null=True)
+
+    qr_code = models.ImageField(upload_to="withdraw_qr/",blank=True,null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
 

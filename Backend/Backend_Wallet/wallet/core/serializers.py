@@ -43,9 +43,18 @@ class FundRequestSerializer(serializers.ModelSerializer):
             'mobile_number',
             'amount',
             'utr_number',
+            'upi_id',
+            'qr_code',
             'request_type',
             'status',
             'created_at'
+        ]
+        read_only_fields = [
+            'request_type',
+            'status',
+            'created_at',
+            'user_name',
+            'mobile_number'
         ]
 
 

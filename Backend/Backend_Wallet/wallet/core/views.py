@@ -114,18 +114,20 @@ def delete_user(request, user_id):
 @api_view(['POST'])
 def add_fund_request(request):
 
-    data = request.data.copy()
-    data['request_type'] = 'ADD'
-
-    serializer = FundRequestSerializer(data=data)
+    serializer = FundRequestSerializer(
+        data=request.data
+    )
 
     if serializer.is_valid():
-        serializer.save()
-        
+
+        serializer.save(
+            request_type='ADD'
+        )
+
         return Response({
             "message": "Add fund request submitted"
         })
-    
+
     print(serializer.errors)
 
     return Response(
@@ -138,23 +140,26 @@ def add_fund_request(request):
 @api_view(['POST'])
 def withdraw_fund_request(request):
 
-    data = request.data.copy()
-    data['request_type'] = 'WITHDRAW'
-
-    serializer = FundRequestSerializer(data=data)
+    serializer = FundRequestSerializer(
+        data=request.data
+    )
 
     if serializer.is_valid():
-        serializer.save()
+
+        serializer.save(
+            request_type='WITHDRAW'
+        )
 
         return Response({
             "message": "Withdraw fund request submitted"
         })
 
+    print(serializer.errors)
+
     return Response(
         serializer.errors,
         status=400
     )
-
 
 #FOr Approve Request
 @api_view(['POST'])

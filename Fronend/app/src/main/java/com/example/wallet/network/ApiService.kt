@@ -3,6 +3,7 @@ package com.example.wallet.network
 
 import com.example.wallet.data.AddFundRequest
 import com.example.wallet.data.AdminDashboardResponse
+import com.example.wallet.data.ApiMessageResponse
 import com.example.wallet.data.ApproveRequest
 import com.example.wallet.data.ApprovedRequest
 import com.example.wallet.data.ChatMessage
@@ -24,6 +25,7 @@ import com.example.wallet.data.User
 import com.example.wallet.data.UserDashboardResponse
 import com.example.wallet.data.UserDetails
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -74,6 +76,16 @@ interface ApiService {
     suspend fun addFundRequest(
         @Body request: AddFundRequest
     ): MessageResponse
+
+
+    @Multipart
+    @POST("withdraw-fund-request/")
+    fun withdrawFundRequest(
+        @Part("user") user: RequestBody,
+        @Part("amount") amount: RequestBody,
+        @Part("upi_id") upiId: RequestBody,
+        @Part qr_code: MultipartBody.Part
+    ): Call<ApiMessageResponse>
 
 
     @GET("my-request/{id}")
