@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://tools.android.com/tools"
@@ -11,8 +11,10 @@
     android:layout_marginEnd="14dp"
     android:layout_marginBottom="5dp"
     app:cardBackgroundColor="#FFFFFF"
-    app:cardCornerRadius="14dp"
-    app:cardElevation="2dp">
+    app:cardCornerRadius="8dp"
+    app:cardElevation="0dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="#E2E8E4">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,6 +23,7 @@
         android:padding="14dp"
         android:gravity="center_vertical">
 
+        <!-- Left Content Section -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -32,9 +35,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Loading.."
-                android:textColor="#1B5E20"
+                android:textColor="#1B3A2B"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -43,12 +48,14 @@
                 android:gravity="center_vertical"
                 android:layout_marginTop="6dp">
 
-                <androidx.cardview.widget.CardView
+                <!-- Request Type Badge (e.g., ADD/REDUCE) -->
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardBackgroundColor="#F1F8E9"
+                    app:cardBackgroundColor="#EEFBEA"
                     app:cardCornerRadius="4dp"
-                    app:cardElevation="0dp">
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
 
                     <TextView
                         android:id="@+id/tvRequestType"
@@ -59,11 +66,12 @@
                         android:paddingEnd="6dp"
                         android:paddingBottom="2dp"
                         android:text="ADD"
-                        android:textColor="#558B2F"
+                        android:textColor="#2E7D32"
                         android:textSize="10sp"
                         android:textStyle="bold"
-                        android:letterSpacing="0.02" />
-                </androidx.cardview.widget.CardView>
+                        android:letterSpacing="0.02"
+                        tools:ignore="HardcodedText" />
+                </com.google.android.material.card.MaterialCardView>
 
                 <TextView
                     android:id="@+id/tvDate"
@@ -73,11 +81,13 @@
                     android:text="Loading"
                     android:maxLines="2"
                     android:lines="2"
-                    android:textColor="#78909C"
-                    android:textSize="12sp" />
+                    android:textColor="#5A6B5E"
+                    android:textSize="12sp"
+                    tools:ignore="HardcodedText" />
             </LinearLayout>
         </LinearLayout>
 
+        <!-- Right Content Section (Amount & Status) -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -91,15 +101,19 @@
                 android:text="₹Loading"
                 android:textColor="#2E7D32"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
 
-            <androidx.cardview.widget.CardView
+            <!-- Status Badge (e.g., APPROVED/PENDING) -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                app:cardBackgroundColor="#EAF2EA"
+                app:cardBackgroundColor="#D8F3D1"
                 app:cardCornerRadius="6dp"
-                app:cardElevation="0dp">
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp">
 
                 <TextView
                     android:id="@+id/tvStatus"
@@ -110,12 +124,13 @@
                     android:paddingEnd="8dp"
                     android:paddingBottom="3dp"
                     android:text="APPROVED"
-                    android:textColor="#2E7D32"
+                    android:textColor="#1B3A2B"
                     android:textSize="10sp"
                     android:textStyle="bold"
-                    android:letterSpacing="0.03" />
-            </androidx.cardview.widget.CardView>
+                    android:letterSpacing="0.03"
+                    tools:ignore="HardcodedText" />
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

@@ -42,14 +42,14 @@
                     app:strokeWidth="0dp"
                     android:stateListAnimator="@animator/button_press_scale">
 
-
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center"
                         android:contentDescription="Go Back"
                         android:src="@drawable/ic_back_arrow"
-                        app:tint="#1B3A2B" />
+                        app:tint="#1B3A2B"
+                        tools:ignore="HardcodedText" />
                 </com.google.android.material.card.MaterialCardView>
 
                 <TextView
@@ -60,7 +60,8 @@
                     android:textSize="26sp"
                     android:textStyle="bold"
                     android:fontFamily="sans-serif-medium"
-                    android:letterSpacing="-0.02" />
+                    android:letterSpacing="-0.02"
+                    tools:ignore="HardcodedText" />
 
             </LinearLayout>
 
@@ -70,26 +71,26 @@
                 android:layout_marginTop="4dp"
                 android:text="Complete passbook and payment ledger log"
                 android:textColor="#5A6B5E"
-                android:textSize="13sp" />
+                android:textSize="13sp"
+                tools:ignore="HardcodedText" />
 
         </LinearLayout>
 
-        <!-- List View Section Container -->
+        <!-- List View Section Container - Padding changed to 0dp for zero gaps -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
-            android:paddingBottom="4dp">
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:paddingBottom="0dp">
 
-            <!-- Fixed Box Layout: Removed elevation highlight and applied a clean, subtle blend -->
+            <!-- Card Background Fix: Removed corner radius and full edge-to-edge width -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
                 app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="6dp"
+                app:cardCornerRadius="0dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="1dp"
                 app:strokeColor="#E2E8E4">
@@ -98,10 +99,9 @@
                     android:id="@+id/rvTransactions"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingStart="8dp"
-                    android:layout_marginTop="4dp"
+                    android:paddingStart="16dp"
                     android:paddingTop="8dp"
-                    android:paddingEnd="8dp"
+                    android:paddingEnd="16dp"
                     android:paddingBottom="8dp"
                     android:clipToPadding="false"
                     android:scrollbars="vertical"
