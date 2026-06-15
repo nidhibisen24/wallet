@@ -1,8 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tvMessage"
-    android:layout_width="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://tools.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
-    android:textSize="16sp"/>
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="4dp"
+    android:orientation="vertical">
+
+    <!-- Modern Minimalist Chat Bubble Panel -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="14dp"
+        app:cardElevation="0dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="#E2E8E4">
+
+        <!-- Exact Layout ID Preserved onto the Main TextView -->
+        <TextView
+            android:id="@+id/tvMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="10dp"
+            android:textColor="#1A1C1E"
+            android:textSize="15sp"
+            android:lineSpacingMultiplier="1.1"
+            android:fontFamily="sans-serif"
+            tools:text="This is a beautifully styled professional chat message response." />
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>
