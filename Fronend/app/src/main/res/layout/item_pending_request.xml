@@ -37,6 +37,8 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
+
+
                     <TextView
                         android:id="@+id/tvUserName"
                         android:layout_width="wrap_content"
@@ -45,6 +47,19 @@
                         android:textColor="#1B5E20"
                         android:textSize="17sp"
                         android:textStyle="bold" />
+<!--                    <ImageView-->
+<!--                        android:id="@+id/ivQrCode"-->
+<!--                        android:layout_width="100dp"-->
+<!--                        android:layout_height="100dp"-->
+<!--                        android:src="@mipmap/ic_launcher"/>-->
+
+                    <Button
+                        android:id="@+id/btnViewQr2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="View QR"
+                        android:visibility="gone"/>
 
                     <TextView
                         android:id="@+id/tvMobile"
@@ -56,6 +71,19 @@
                         android:textSize="13sp" />
 
                     <TextView
+                        android:id="@+id/tvUpiId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="UPI ID"
+                        android:textColor="#000000"
+                        android:textSize="14sp"
+                        android:visibility="gone"/>
+
+
+
+
+                    <TextView
                         android:id="@+id/tvDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -63,6 +91,8 @@
                         android:text="date"
                         android:textColor="#90A4AE"
                         android:textSize="12sp" />
+
+
 
                 </LinearLayout>
 
@@ -122,7 +152,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginBottom="14dp"
-                android:background="#ECEFF1" />
+                android:background="#ECEFF1"
+
+
+                />
 
             <!-- BUTTONS -->
 

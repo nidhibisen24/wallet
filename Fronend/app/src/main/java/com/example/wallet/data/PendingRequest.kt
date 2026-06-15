@@ -8,5 +8,8 @@ data class PendingRequest(
     val amount: String,
     val request_type: String,
     val status: String,
-    val created_at: String
+    val created_at: String,
+
+    val upi_id: String?,
+    val qr_code: String?
 )
