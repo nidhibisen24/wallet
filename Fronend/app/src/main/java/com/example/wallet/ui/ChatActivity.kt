@@ -5,6 +5,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -23,6 +24,8 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var etMessage: EditText
     private lateinit var btnSend: Button
     private lateinit var swipeRefresh: SwipeRefreshLayout
+
+    private lateinit var btnBack: CardView
 
     private var roomId = 0
     private var userId = 0
@@ -56,7 +59,15 @@ class ChatActivity : AppCompatActivity() {
             sendMessage()
         }
 
+
         loadMessages(false)
+        btnBack = findViewById(R.id.btnBack)   // bug
+        btnBack.setOnClickListener {
+
+            finish()
+
+
+        }
     }
 
     private fun loadMessages(showRefresh: Boolean = false) {

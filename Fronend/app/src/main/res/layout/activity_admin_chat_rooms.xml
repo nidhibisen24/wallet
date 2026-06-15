@@ -80,30 +80,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="0dp">
-
-        <!-- Fully Flat Card Base Panel -->
-        <com.google.android.material.card.MaterialCardView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRooms"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="0dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="1dp"
-            app:strokeColor="#E2E8E4">
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <!-- Fully Flat Card Base Panel -->
 
-            <!-- Dynamic Rooms List Feed (Exact ID Kept Safe) -->
-            <ListView
-                android:id="@+id/listRooms"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:divider="#E2E8E4"
-                android:dividerHeight="1dp"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp"
-                android:scrollbars="none" />
-
-        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
 </LinearLayout>

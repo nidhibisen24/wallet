@@ -1,6 +1,8 @@
 package com.example.wallet.ui
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -21,6 +23,7 @@ class UserDetailsActivity : AppCompatActivity() {
     private lateinit var tvBalance: TextView
     private lateinit var tvTotalRequests: TextView
     private lateinit var btnBack: CardView
+    private lateinit var btnLogout: Button
 
     private lateinit var rvTransactions: RecyclerView
 
@@ -53,6 +56,29 @@ class UserDetailsActivity : AppCompatActivity() {
             finish()
 
 
+        }
+        btnLogout = findViewById(R.id.btnLogout)
+
+        btnLogout.setOnClickListener {
+
+            val sharedPref =
+                getSharedPreferences(
+                    "wallet_app",
+                    MODE_PRIVATE
+                )
+
+            sharedPref.edit()
+                .clear()
+                .apply()
+
+            startActivity(
+                Intent(
+                    this,
+                    LoginActivity::class.java
+                )
+            )
+
+            finishAffinity()
         }
     }
 

@@ -515,7 +515,9 @@ def get_chat_messages(request, room_id):
 @api_view(['GET'])
 def get_chat_rooms(request):
 
-    rooms = ChatRoom.objects.all()
+    rooms = ChatRoom.objects.order_by(
+        '-updated_at'
+    )
 
     data = []
 

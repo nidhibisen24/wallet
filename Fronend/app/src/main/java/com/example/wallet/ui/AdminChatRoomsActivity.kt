@@ -2,11 +2,13 @@ package com.example.wallet.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.wallet.R
+import com.example.wallet.adapter.ChatRoomAdapter
 import com.example.wallet.data.ChatRoom
 import com.example.wallet.network.RetrofitClient
 import retrofit2.Call
@@ -15,7 +17,8 @@ import retrofit2.Response
 
 class AdminChatRoomsActivity : AppCompatActivity() {
 
-    private lateinit var listRooms: ListView
+    private lateinit var rvRooms: RecyclerView
+    private lateinit var btnBack: CardView
 
     private var rooms: List<ChatRoom> = listOf()
 
@@ -26,10 +29,20 @@ class AdminChatRoomsActivity : AppCompatActivity() {
             R.layout.activity_admin_chat_rooms
         )
 
-        listRooms =
-            findViewById(R.id.listRooms)
+        rvRooms =
+            findViewById(R.id.rvRooms)
+
+        rvRooms.layoutManager =
+            LinearLayoutManager(this)
 
         loadRooms()
+        btnBack = findViewById(R.id.btnBack)
+        btnBack.setOnClickListener {
+
+            finish()
+
+
+        }
     }
 
     private fun loadRooms() {
@@ -48,44 +61,29 @@ class AdminChatRoomsActivity : AppCompatActivity() {
                         rooms =
                             response.body() ?: listOf()
 
-                        val names =
-                            rooms.map { it.name }
+                        rvRooms.adapter =
+                            ChatRoomAdapter(
+                                rooms
+                            ) { room ->
 
-                        val adapter =
-                            ArrayAdapter(
-                                this@AdminChatRoomsActivity,
-                                android.R.layout.simple_list_item_1,
-                                names
-                            )
+                                val intent =
+                                    Intent(
+                                        this@AdminChatRoomsActivity,
+                                        AdminChatActivity::class.java
+                                    )
 
-                        listRooms.adapter =
-                            adapter
-
-                        listRooms.setOnItemClickListener {
-                                _, _, position, _ ->
-
-                            val room =
-                                rooms[position]
-
-                            val intent =
-                                Intent(
-                                    this@AdminChatRoomsActivity,
-                                    AdminChatActivity::class.java
+                                intent.putExtra(
+                                    "ROOM_ID",
+                                    room.room_id
                                 )
 
-                            intent.putExtra(
-                                "ROOM_ID",
-                                room.room_id
-                            )
+                                intent.putExtra(
+                                    "USER_ID",
+                                    room.user_id
+                                )
 
-                            intent.putExtra(
-                                "USER_ID",
-                                room.user_id
-                            )
-
-                            startActivity(intent)
-                        }
-
+                                startActivity(intent)
+                            }
                     }
                 }
 
