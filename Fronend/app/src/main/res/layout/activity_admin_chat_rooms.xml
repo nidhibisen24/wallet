@@ -1,21 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://tools.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F4F7F5"
     android:orientation="vertical">
 
-    <TextView
+    <!-- 1. Aapka Signature Premium Brand Header -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Chat Rooms"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:padding="16dp"/>
+        android:background="@drawable/bg_rect_header"
+        android:orientation="vertical"
+        android:paddingStart="24dp"
+        android:paddingTop="40dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="24dp">
 
-    <ListView
-        android:id="@+id/listRooms"
+        <!-- Back Navigation Arrow + Title Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btnBack"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="0dp"
+                android:stateListAnimator="@animator/button_press_scale">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="Go Back"
+                    android:src="@drawable/ic_back_arrow"
+                    app:tint="#2E7D32"
+                    tools:ignore="HardcodedText" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chat Rooms"
+                android:textColor="#2E7D32"
+                android:textSize="26sp"
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="bold"
+                android:letterSpacing="-0.02"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+        <!-- Dynamic Subtitle Label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Select an active support room or discussion channel"
+            android:textColor="#5A6B5E"
+            android:textSize="13sp"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+
+    <!-- 2. Content Container: Edge-to-Edge Seamless Flat Design -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="0dp">
+
+        <!-- Fully Flat Card Base Panel -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="0dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#E2E8E4">
+
+            <!-- Dynamic Rooms List Feed (Exact ID Kept Safe) -->
+            <ListView
+                android:id="@+id/listRooms"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:divider="#E2E8E4"
+                android:dividerHeight="1dp"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:scrollbars="none" />
+
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
 
 </LinearLayout>

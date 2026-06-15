@@ -1,45 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://tools.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F4F7F5"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvUserName"
+    <!-- 1. Aapka Signature Brand Header Layout (Added Back) -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="User Chat"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:padding="12dp"/>
+        android:background="@drawable/bg_rect_header"
+        android:orientation="vertical"
+        android:paddingStart="24dp"
+        android:paddingTop="40dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="24dp">
 
+        <!-- Back button + Title in same row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btnBack"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="0dp"
+                android:stateListAnimator="@animator/button_press_scale">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="Go Back"
+                    android:src="@drawable/ic_back_arrow"
+                    app:tint="#2E7D32"
+                    tools:ignore="HardcodedText" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/tvUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User Chat"
+                android:textColor="#2E7D32"
+                android:textSize="26sp"
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="bold"
+                android:letterSpacing="-0.02"
+                tools:ignore="HardcodedText" />
+
+            <!-- Online Dot Badge -->
+            <View
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/bg_online_dot" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 2. Chat Feed with Elegant Horizontal Dividers after every item -->
     <ListView
         android:id="@+id/listMessages"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:divider="#E2E8E4"
+        android:dividerHeight="1dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="14dp"
+        android:scrollbars="none"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll" />
 
-    <LinearLayout
+    <!-- 3. Bottom Pill Input Console Component -->
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp">
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="3dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="#E2E8E4">
 
-        <EditText
-            android:id="@+id/etMessage"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Reply message"/>
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="6dp"
+            android:paddingVertical="5dp">
 
-        <Button
-            android:id="@+id/btnSend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Send"/>
+            <EditText
+                android:id="@+id/etMessage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:hint="Reply message"
+                android:textColor="#1A1C1E"
+                android:textColorHint="#7A8B7F"
+                android:textSize="15sp"
+                android:maxLines="4"
+                android:inputType="textCapSentences|textMultiLine"
+                tools:ignore="Autofill,HardcodedText" />
 
-    </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSend"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="#2E7D32"
+                android:text="Send"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:cornerRadius="19dp"
+                app:elevation="0dp"
+                app:pressedTranslationZ="2dp"
+                app:rippleColor="#40A5D6A7"
+                android:stateListAnimator="@animator/button_press_scale"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>

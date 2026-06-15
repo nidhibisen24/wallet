@@ -2,87 +2,80 @@
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://tools.android.com/tools"
     android:id="@+id/swipeRefresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.UserDashboardActivity">
 
     <ScrollView
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F1F8E9"
-        android:fillViewport="true">
+        android:background="#F4F7F5"
+        android:fillViewport="true"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- Premium Flat Header Container -->
             <RelativeLayout
                 android:id="@+id/layoutDashboardHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#1B5E20"
+                android:background="@drawable/bg_rect_header"
                 android:paddingStart="20dp"
                 android:paddingTop="50dp"
                 android:paddingEnd="20dp"
-                android:paddingBottom="40dp">
+                android:paddingBottom="44dp">
 
+                <!-- Application Title -->
                 <TextView
                     android:id="@+id/tvDashboardTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
                     android:text="Pay Wallet"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#1B3A2B"
                     android:textSize="25sp"
-                    android:textStyle="bold"/>
+                    android:fontFamily="sans-serif-medium"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <!-- Profile Image Widget: Converted to ImageView keeping identical id -->
+                <ImageView
+                    android:id="@+id/tvProfile"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
                     android:layout_alignParentEnd="true"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:layout_alignTop="@id/tvDashboardTitle"
+                    android:background="@drawable/bg_profile_circle"
+                    android:scaleType="centerCrop"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_person"
+                    android:contentDescription="User Profile Image"
+                    app:tint="#1B3A2B" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnLogout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="38dp"
-                        android:layout_marginRight="10dp"
-                        android:backgroundTint="#FFFFFF"
-                        android:paddingHorizontal="20dp"
-                        android:text="Logout"
-                        android:textAllCaps="false"
-                        android:textColor="#1B5E20"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        app:cornerRadius="20dp"
-                        app:elevation="2dp"
-                        app:pressedTranslationZ="4dp"
-                        app:rippleColor="#201B5E20"
-                        android:stateListAnimator="@animator/button_press_scale" />
-
-                    <TextView
-                        android:id="@+id/tvProfile"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:background="@drawable/bg_profile_circle"
-                        android:gravity="center"
-                        android:text="U"
-                        android:textColor="#1B5E20"
-                        android:textSize="18sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
+                <!-- Safe Proxy View for Logout to prevent backend logic crash -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnLogout"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tvWelcomeText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvDashboardTitle"
-                    android:layout_marginTop="18dp"
+                    android:layout_marginTop="20dp"
                     android:text="Welcome Back,"
-                    android:textColor="#A5D6A7"
-                    android:textSize="14sp"/>
+                    android:textColor="#5A6B5E"
+                    android:textSize="14sp"
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:id="@+id/tvUserDisplayName"
@@ -91,10 +84,13 @@
                     android:layout_below="@id/tvWelcomeText"
                     android:layout_marginTop="2dp"
                     android:text="Loading...!"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#2E7D32"
                     android:textSize="28sp"
-                    android:textStyle="bold"/>
+                    android:fontFamily="sans-serif-medium"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
 
+                <!-- Identity Badge Row Section -->
                 <LinearLayout
                     android:id="@+id/layoutBadgeRow"
                     android:layout_width="wrap_content"
@@ -109,40 +105,45 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="ID: #1082"
-                        android:textColor="#81C784"
-                        android:textSize="12sp"/>
+                        android:textColor="#2E7D32"
+                        android:textSize="12sp"
+                        tools:ignore="HardcodedText" />
 
                     <View
                         android:layout_width="1dp"
                         android:layout_height="12dp"
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
-                        android:background="#4CAF50"/>
+                        android:background="#E2E8E4"/>
 
                     <TextView
                         android:id="@+id/tvMembershipBadge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Premium Account Member"
-                        android:textColor="#81C784"
-                        android:textSize="12sp"/>
+                        android:textColor="#2E7D32"
+                        android:textSize="12sp"
+                        tools:ignore="HardcodedText" />
                 </LinearLayout>
             </RelativeLayout>
 
-            <androidx.cardview.widget.CardView
+            <!-- Wallet Balance Display Component -->
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardWalletBalance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="-22dp"
+                android:layout_marginTop="-24dp"
                 android:layout_marginEnd="16dp"
+                app:cardBackgroundColor="#FFFFFF"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="8dp">
+                app:cardElevation="3dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#E2E8E4">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_wallet_gradient"
                     android:orientation="vertical"
                     android:padding="20dp">
 
@@ -151,8 +152,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Total Wallet Balance"
-                        android:textColor="#C8E6C9"
-                        android:textSize="13sp"/>
+                        android:textColor="#5A6B5E"
+                        android:textSize="13sp"
+                        tools:ignore="HardcodedText" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -167,27 +169,30 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="₹Loading..."
-                            android:textColor="#FFFFFF"
+                            android:textColor="#1B3A2B"
                             android:textSize="32sp"
-                            android:textStyle="bold"/>
+                            android:fontFamily="sans-serif-medium"
+                            android:textStyle="bold"
+                            tools:ignore="HardcodedText" />
 
                         <View
                             android:id="@+id/viewOnlineIndicator"
                             android:layout_width="9dp"
                             android:layout_height="9dp"
-                            android:background="@drawable/bg_online_dot"/>
+                            android:background="@drawable/bg_online_dot" />
 
                         <TextView
                             android:id="@+id/tvOnlineStatus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
+                            android:layout_marginStart="6dp"
                             android:text="Online"
-                            android:textColor="#A5D6A7"
-                            android:textSize="11sp"/>
+                            android:textColor="#2E7D32"
+                            android:textSize="11sp"
+                            tools:ignore="HardcodedText" />
                     </LinearLayout>
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:id="@+id/tvSectionActions"
@@ -197,10 +202,13 @@
                 android:layout_marginTop="28dp"
                 android:layout_marginBottom="12dp"
                 android:text="Account Actions &amp; Services"
-                android:textColor="#1B5E20"
+                android:textColor="#1B3A2B"
                 android:textSize="15sp"
-                android:textStyle="bold"/>
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
 
+            <!-- Actions Grid Interface Layout -->
             <GridLayout
                 android:id="@+id/gridAccountActions"
                 android:layout_width="match_parent"
@@ -210,7 +218,8 @@
                 android:columnCount="2"
                 android:rowCount="2">
 
-                <androidx.cardview.widget.CardView
+                <!-- Module 1: Add Fund -->
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardAddFundRequest"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -221,7 +230,9 @@
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardBackgroundColor="#FFFFFF"
                     app:cardCornerRadius="14dp"
-                    app:cardElevation="3dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#E2E8E4"
                     android:stateListAnimator="@animator/button_press_scale">
 
                     <LinearLayout
@@ -235,8 +246,9 @@
                             android:id="@+id/ivIconAddFund"
                             android:layout_width="56dp"
                             android:layout_height="56dp"
-                            android:src="@drawable/ic_add_fund"
-                            android:contentDescription="Add Fund"/>
+                            android:src="@drawable/ic_buy_down_arrow"
+                            android:contentDescription="Add Fund"
+                            tools:ignore="HardcodedText" />
 
                         <TextView
                             android:id="@+id/tvAddFundLabel"
@@ -246,13 +258,15 @@
                             android:gravity="center"
                             android:text="Buy"
                             android:textAlignment="center"
-                            android:textColor="#1B5E20"
+                            android:textColor="#2E7D32"
                             android:textSize="13sp"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold"
+                            tools:ignore="HardcodedText" />
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
-                <androidx.cardview.widget.CardView
+                <!-- Module 2: Withdraw -->
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardWithdrawRequest"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -263,7 +277,9 @@
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardBackgroundColor="#FFFFFF"
                     app:cardCornerRadius="14dp"
-                    app:cardElevation="3dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#E2E8E4"
                     android:stateListAnimator="@animator/button_press_scale">
 
                     <LinearLayout
@@ -278,7 +294,8 @@
                             android:layout_width="56dp"
                             android:layout_height="56dp"
                             android:src="@drawable/ic_withdraw"
-                            android:contentDescription="Withdraw"/>
+                            android:contentDescription="Withdraw"
+                            tools:ignore="HardcodedText" />
 
                         <TextView
                             android:id="@+id/tvWithdrawLabel"
@@ -288,13 +305,15 @@
                             android:gravity="center"
                             android:text="Sell"
                             android:textAlignment="center"
-                            android:textColor="#1B5E20"
+                            android:textColor="#2E7D32"
                             android:textSize="13sp"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold"
+                            tools:ignore="HardcodedText" />
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
-                <androidx.cardview.widget.CardView
+                <!-- Module 3: Transaction History -->
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardTransactionHistory"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -305,7 +324,9 @@
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardBackgroundColor="#FFFFFF"
                     app:cardCornerRadius="14dp"
-                    app:cardElevation="3dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#E2E8E4"
                     android:stateListAnimator="@animator/button_press_scale">
 
                     <LinearLayout
@@ -320,7 +341,8 @@
                             android:layout_width="56dp"
                             android:layout_height="56dp"
                             android:src="@drawable/ic_transaction_history"
-                            android:contentDescription="Transaction History"/>
+                            android:contentDescription="Transaction History"
+                            tools:ignore="HardcodedText" />
 
                         <TextView
                             android:id="@+id/tvTxnHistoryLabel"
@@ -330,13 +352,15 @@
                             android:gravity="center"
                             android:text="Transaction\nHistory"
                             android:textAlignment="center"
-                            android:textColor="#1B5E20"
+                            android:textColor="#2E7D32"
                             android:textSize="13sp"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold"
+                            tools:ignore="HardcodedText" />
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
-                <androidx.cardview.widget.CardView
+                <!-- Module 4: Help & Support -->
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardHelpSupport"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -347,7 +371,9 @@
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardBackgroundColor="#FFFFFF"
                     app:cardCornerRadius="14dp"
-                    app:cardElevation="3dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#E2E8E4"
                     android:stateListAnimator="@animator/button_press_scale">
 
                     <LinearLayout
@@ -361,8 +387,9 @@
                             android:id="@+id/ivIconHelp"
                             android:layout_width="56dp"
                             android:layout_height="56dp"
-                            android:src="@drawable/ic_help_support"
-                            android:contentDescription="Help and Support"/>
+                            android:src="@drawable/ic_chat_support"
+                            android:contentDescription="Help and Support"
+                            tools:ignore="HardcodedText" />
 
                         <TextView
                             android:id="@+id/tvHelpSupportLabel"
@@ -372,11 +399,12 @@
                             android:gravity="center"
                             android:text="Help &amp;\nSupport"
                             android:textAlignment="center"
-                            android:textColor="#1B5E20"
+                            android:textColor="#2E7D32"
                             android:textSize="13sp"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold"
+                            tools:ignore="HardcodedText" />
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
             </GridLayout>
 
