@@ -44,22 +44,23 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnLogout"
                         android:layout_width="wrap_content"
                         android:layout_height="38dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
                         android:backgroundTint="#FFFFFF"
                         android:paddingHorizontal="20dp"
                         android:text="Logout"
-                        android:layout_marginRight="10dp"
                         android:textAllCaps="false"
                         android:textColor="#1B5E20"
                         android:textSize="13sp"
                         android:textStyle="bold"
                         app:cornerRadius="20dp"
-                        app:elevation="2dp" />
+                        app:elevation="2dp"
+                        app:pressedTranslationZ="4dp"
+                        app:rippleColor="#201B5E20"
+                        android:stateListAnimator="@animator/button_press_scale" />
 
                     <TextView
                         android:id="@+id/tvProfile"
@@ -217,9 +218,11 @@
                     android:layout_margin="6dp"
                     android:clickable="true"
                     android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
                     app:cardBackgroundColor="#FFFFFF"
                     app:cardCornerRadius="14dp"
-                    app:cardElevation="3dp">
+                    app:cardElevation="3dp"
+                    android:stateListAnimator="@animator/button_press_scale">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -257,9 +260,11 @@
                     android:layout_margin="6dp"
                     android:clickable="true"
                     android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
                     app:cardBackgroundColor="#FFFFFF"
                     app:cardCornerRadius="14dp"
-                    app:cardElevation="3dp">
+                    app:cardElevation="3dp"
+                    android:stateListAnimator="@animator/button_press_scale">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -297,9 +302,11 @@
                     android:layout_margin="6dp"
                     android:clickable="true"
                     android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
                     app:cardBackgroundColor="#FFFFFF"
                     app:cardCornerRadius="14dp"
-                    app:cardElevation="3dp">
+                    app:cardElevation="3dp"
+                    android:stateListAnimator="@animator/button_press_scale">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -337,9 +344,11 @@
                     android:layout_margin="6dp"
                     android:clickable="true"
                     android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
                     app:cardBackgroundColor="#FFFFFF"
                     app:cardCornerRadius="14dp"
-                    app:cardElevation="3dp">
+                    app:cardElevation="3dp"
+                    android:stateListAnimator="@animator/button_press_scale">
 
                     <LinearLayout
                         android:layout_width="match_parent"

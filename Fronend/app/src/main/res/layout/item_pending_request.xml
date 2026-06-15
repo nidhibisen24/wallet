@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://tools.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -10,6 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="14dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="16dp"
         app:cardElevation="3dp"
@@ -22,8 +25,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="17dp">
-
-            <!-- USER INFO -->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -120,8 +121,6 @@
 
             </LinearLayout>
 
-            <!-- AMOUNT SECTION -->
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -157,14 +156,12 @@
 
                 />
 
-            <!-- BUTTONS -->
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:orientation="horizontal">
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnReject"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -172,11 +169,16 @@
                     android:layout_marginEnd="8dp"
                     android:backgroundTint="#FFEBEE"
                     android:text="Reject"
+                    android:textAllCaps="false"
                     android:textColor="#C62828"
                     android:textStyle="bold"
-                    app:cornerRadius="8dp" />
+                    app:cornerRadius="8dp"
+                    app:elevation="0dp"
+                    app:pressedTranslationZ="2dp"
+                    app:rippleColor="#40FFCDD2"
+                    android:stateListAnimator="@animator/button_press_scale" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnApprove"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -184,9 +186,14 @@
                     android:layout_marginStart="8dp"
                     android:backgroundTint="#2E7D32"
                     android:text="Approve"
+                    android:textAllCaps="false"
                     android:textColor="#FFFFFF"
                     android:textStyle="bold"
-                    app:cornerRadius="8dp" />
+                    app:cornerRadius="8dp"
+                    app:elevation="2dp"
+                    app:pressedTranslationZ="4dp"
+                    app:rippleColor="#40A5D6A7"
+                    android:stateListAnimator="@animator/button_press_scale" />
 
             </LinearLayout>
 

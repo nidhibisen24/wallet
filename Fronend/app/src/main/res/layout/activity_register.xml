@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/main"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
+    xmlns:tools="http://tools.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F4F7F5">
-
 
     <View
         android:id="@+id/headerBackground"
@@ -17,6 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -81,7 +80,11 @@
                         android:layout_height="wrap_content"
                         android:hint="Full Name"
                         app:boxStrokeColor="#2E7D32"
-                        app:hintTextColor="#2E7D32">
+                        app:hintTextColor="#2E7D32"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusBottomEnd="12dp">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etName"
@@ -102,7 +105,11 @@
                         android:layout_marginTop="16dp"
                         android:hint="Mobile Number"
                         app:boxStrokeColor="#2E7D32"
-                        app:hintTextColor="#2E7D32">
+                        app:hintTextColor="#2E7D32"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusBottomEnd="12dp">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etMobile"
@@ -126,7 +133,11 @@
                         app:endIconMode="password_toggle"
                         app:endIconTint="#5A6B5E"
                         app:boxStrokeColor="#2E7D32"
-                        app:hintTextColor="#2E7D32">
+                        app:hintTextColor="#2E7D32"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusBottomEnd="12dp">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPassword"
@@ -149,7 +160,11 @@
                         app:endIconMode="password_toggle"
                         app:endIconTint="#5A6B5E"
                         app:boxStrokeColor="#2E7D32"
-                        app:hintTextColor="#2E7D32">
+                        app:hintTextColor="#2E7D32"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusBottomEnd="12dp">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etConfirmPassword"
@@ -172,9 +187,12 @@
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="#FFFFFF"
-                        android:backgroundTint="#2E7D32"
+                        android:backgroundTint="@color/btn_state_color_selector"
                         app:cornerRadius="12dp"
-                        app:elevation="4dp"/>
+                        app:elevation="4dp"
+                        app:pressedTranslationZ="6dp"
+                        app:rippleColor="#40A5D6A7"
+                        android:stateListAnimator="@animator/button_press_scale"/>
 
                 </LinearLayout>
 
@@ -203,7 +221,10 @@
                     android:textStyle="bold"
                     android:textColor="#2E7D32"
                     android:textSize="15sp"
-                    android:padding="4dp"/>
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"/>
             </LinearLayout>
         </LinearLayout>
 
