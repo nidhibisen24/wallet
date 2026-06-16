@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.wallet.R
 import com.example.wallet.adapter.ChatRoomAdapter
 import com.example.wallet.data.ChatRoom
@@ -20,6 +21,8 @@ class AdminChatRoomsActivity : AppCompatActivity() {
     private lateinit var rvRooms: RecyclerView
     private lateinit var btnBack: CardView
 
+    private lateinit var swipeRefresh: SwipeRefreshLayout
+
     private var rooms: List<ChatRoom> = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,11 +34,15 @@ class AdminChatRoomsActivity : AppCompatActivity() {
 
         rvRooms =
             findViewById(R.id.rvRooms)
-
+        swipeRefresh = findViewById(R.id.swipeRefresh)
         rvRooms.layoutManager =
             LinearLayoutManager(this)
 
         loadRooms()
+
+        swipeRefresh.setOnRefreshListener {
+            loadRooms()
+        }
         btnBack = findViewById(R.id.btnBack)
         btnBack.setOnClickListener {
 
@@ -46,6 +53,7 @@ class AdminChatRoomsActivity : AppCompatActivity() {
     }
 
     private fun loadRooms() {
+        swipeRefresh.isRefreshing = true
 
         RetrofitClient.api.getChatRooms()
             .enqueue(object :
@@ -55,6 +63,7 @@ class AdminChatRoomsActivity : AppCompatActivity() {
                     call: Call<List<ChatRoom>>,
                     response: Response<List<ChatRoom>>
                 ) {
+                    swipeRefresh.isRefreshing = false
 
                     if (response.isSuccessful) {
 
@@ -91,6 +100,7 @@ class AdminChatRoomsActivity : AppCompatActivity() {
                     call: Call<List<ChatRoom>>,
                     t: Throwable
                 ) {
+                    swipeRefresh.isRefreshing = false
 
                     Toast.makeText(
                         this@AdminChatRoomsActivity,
