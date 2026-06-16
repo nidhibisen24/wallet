@@ -45,7 +45,6 @@
                     android:textStyle="bold"
                     tools:ignore="HardcodedText" />
 
-                <!-- Profile Image Widget: Converted to ImageView keeping identical id -->
                 <ImageView
                     android:id="@+id/tvProfile"
                     android:layout_width="42dp"

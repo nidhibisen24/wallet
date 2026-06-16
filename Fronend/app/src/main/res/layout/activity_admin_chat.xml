@@ -7,7 +7,6 @@
     android:background="#F4F7F5"
     android:orientation="vertical">
 
-    <!-- 1. Aapka Signature Brand Header Layout (Added Back) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +17,6 @@
         android:paddingEnd="24dp"
         android:paddingBottom="24dp">
 
-        <!-- Back button + Title in same row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,7 +59,6 @@
                 android:letterSpacing="-0.02"
                 tools:ignore="HardcodedText" />
 
-            <!-- Online Dot Badge -->
             <View
                 android:layout_width="8dp"
                 android:layout_height="8dp"
@@ -72,7 +69,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- 2. Chat Feed with Elegant Horizontal Dividers after every item -->
     <ListView
         android:id="@+id/listMessages"
         android:layout_width="match_parent"
@@ -84,10 +80,8 @@
         android:paddingHorizontal="16dp"
         android:paddingVertical="14dp"
         android:scrollbars="none"
-        android:stackFromBottom="true"
         android:transcriptMode="alwaysScroll" />
 
-    <!-- 3. Bottom Pill Input Console Component -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
