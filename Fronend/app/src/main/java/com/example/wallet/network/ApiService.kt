@@ -1,6 +1,8 @@
 package com.example.wallet.network
 
 
+import com.example.wallet.data.AddBonusRequest
+import com.example.wallet.data.AddBonusResponse
 import com.example.wallet.data.AddFundRequest
 import com.example.wallet.data.AdminDashboardResponse
 import com.example.wallet.data.ApiMessageResponse
@@ -77,6 +79,10 @@ interface ApiService {
         @Body request: AddFundRequest
     ): MessageResponse
 
+    @POST("add-bonus/")
+    suspend fun addBonus(
+        @Body request: AddBonusRequest
+    ): AddBonusResponse
 
     @Multipart
     @POST("withdraw-fund-request/")

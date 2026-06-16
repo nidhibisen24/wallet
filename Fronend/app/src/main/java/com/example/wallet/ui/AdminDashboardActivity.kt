@@ -11,17 +11,19 @@ import kotlinx.coroutines.launch
 import android.content.Intent
 import android.widget.Button
 import androidx.cardview.widget.CardView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 class AdminDashboardActivity : AppCompatActivity() {
 
     private lateinit var tvTotalUsers: TextView
     private lateinit var tvPendingRequests: TextView
     private lateinit var btnLogout: Button
+    private lateinit var swipeRefresh: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_dashboard)
-
+        swipeRefresh = findViewById(R.id.swipeRefresh)
         tvTotalUsers = findViewById(R.id.tvTotalUsers)
         tvPendingRequests = findViewById(R.id.tvPendingRequests)
 
@@ -37,6 +39,9 @@ class AdminDashboardActivity : AppCompatActivity() {
                     AllUsersActivity::class.java
                 )
             )
+        }
+        swipeRefresh.setOnRefreshListener {
+            loadDashboardData()
         }
         btnLogout = findViewById(R.id.btnLogout)
 
@@ -82,6 +87,18 @@ class AdminDashboardActivity : AppCompatActivity() {
                 Intent(
                     this,
                     DeleteUserActivity::class.java
+                )
+            )
+        }
+        val btnAddBonus =
+            findViewById<Button>(R.id.btnAddBonus)
+
+        btnAddBonus.setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    AddBonusUserActivity::class.java
                 )
             )
         }
@@ -160,7 +177,7 @@ class AdminDashboardActivity : AppCompatActivity() {
     }
 
     private fun loadDashboardData() {
-
+        swipeRefresh.isRefreshing = true
         lifecycleScope.launch {
 
             try {
@@ -180,6 +197,10 @@ class AdminDashboardActivity : AppCompatActivity() {
             } catch (e: Exception) {
 
                 e.printStackTrace()
+            }finally {
+
+                swipeRefresh.isRefreshing = false
+
             }
         }
     }
