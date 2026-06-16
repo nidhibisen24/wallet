@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -16,9 +17,9 @@ import kotlinx.coroutines.launch
 class UserDashboardActivity : AppCompatActivity() {
 
     private lateinit var tvUserName: TextView
-    private lateinit var tvProfile: TextView
+    private lateinit var tvProfile: ImageView
     private lateinit var tvWalletBalance: TextView
-    private lateinit var btnLogout: Button
+
     private lateinit var swipeRefresh: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,31 +51,9 @@ class UserDashboardActivity : AppCompatActivity() {
         if (userId != 0) {
             loadDashboard(userId)
         }
-        btnLogout = findViewById(R.id.btnLogout)
 
-        btnLogout.setOnClickListener {
-
-            val sharedPref =
-                getSharedPreferences(
-                    "wallet_app",
-                    MODE_PRIVATE
-                )
-
-            sharedPref.edit()
-                .clear()
-                .apply()
-
-            startActivity(
-                Intent(
-                    this,
-                    LoginActivity::class.java
-                )
-            )
-
-            finishAffinity()
-        }
         val tvProfile =
-            findViewById<TextView>(R.id.tvProfile)
+            findViewById<ImageView>(R.id.tvProfile)
 
         tvProfile.setOnClickListener {
 

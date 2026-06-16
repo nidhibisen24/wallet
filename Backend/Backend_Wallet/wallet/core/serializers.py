@@ -228,3 +228,10 @@ class ChatRoomSerializer(
         model = ChatRoom
 
         fields = "__all__"
+
+
+class AddBonusSerializer(serializers.Serializer):
+    amount = serializers.DecimalField(
+        max_digits=12,
+        decimal_places=2
+    )

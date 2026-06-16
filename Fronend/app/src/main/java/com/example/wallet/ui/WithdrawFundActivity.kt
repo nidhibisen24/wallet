@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import com.example.wallet.R
 import com.example.wallet.data.ApiMessageResponse
 import com.example.wallet.network.RetrofitClient
@@ -31,6 +32,7 @@ class WithdrawFundActivity : AppCompatActivity() {
     private lateinit var btnSelectQr: Button
     private lateinit var btnSubmit: Button
     private lateinit var ivQrPreview: ImageView
+    private lateinit var btnBack: CardView
 
     private var selectedImageUri: Uri? = null
     private var userId = 0
@@ -66,6 +68,12 @@ class WithdrawFundActivity : AppCompatActivity() {
                 intent,
                 PICK_IMAGE_REQUEST
             )
+        }
+
+        btnBack = findViewById(R.id.btnBack)
+        btnBack.setOnClickListener {
+
+            finish()
         }
 
         btnSubmit.setOnClickListener {

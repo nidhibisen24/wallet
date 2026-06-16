@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import com.example.wallet.R
 import com.example.wallet.data.ChatMessage
 import com.example.wallet.data.SendMessageRequest
@@ -20,6 +21,8 @@ class AdminChatActivity : AppCompatActivity() {
     private lateinit var listMessages: ListView
     private lateinit var etMessage: EditText
     private lateinit var btnSend: Button
+
+    private lateinit var btnBack: CardView
 
     private var roomId = 0
     private var userId = 0
@@ -53,6 +56,13 @@ class AdminChatActivity : AppCompatActivity() {
         btnSend.setOnClickListener {
 
             sendMessage()
+        }
+        btnBack = findViewById(R.id.btnBack)
+        btnBack.setOnClickListener {
+
+            finish()
+
+
         }
     }
 

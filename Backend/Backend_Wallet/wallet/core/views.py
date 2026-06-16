@@ -7,7 +7,7 @@ from .serializers import RegisterSerializer ,QRCodeSerializer,FundApprovedSerial
 from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-
+from decimal import Decimal
 
 
 #Register or SignUp
@@ -515,7 +515,9 @@ def get_chat_messages(request, room_id):
 @api_view(['GET'])
 def get_chat_rooms(request):
 
-    rooms = ChatRoom.objects.all()
+    rooms = ChatRoom.objects.order_by(
+        '-updated_at'
+    )
 
     data = []
 
@@ -543,3 +545,50 @@ def get_chat_room_messages(request, room_id):
     )
 
     return Response(serializer.data)
+
+#add Bonus
+@api_view(['POST'])
+def add_bonus(request):
+
+    user_id = request.data.get("user_id")
+    bonus_amount = request.data.get("bonus_amount")
+
+    if not user_id or not bonus_amount:
+        return Response(
+            {
+                "status": False,
+                "message": "user_id and bonus_amount are required"
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    try:
+        user = User.objects.get(id=user_id)
+        wallet = Wallet.objects.get(user=user)
+
+        wallet.balance += Decimal(str(bonus_amount))
+        wallet.save()
+
+        return Response({
+            "status": True,
+            "message": "Bonus added successfully",
+            "balance": str(wallet.balance)
+        })
+
+    except User.DoesNotExist:
+        return Response(
+            {
+                "status": False,
+                "message": "User not found"
+            },
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    except Wallet.DoesNotExist:
+        return Response(
+            {
+                "status": False,
+                "message": "Wallet not found"
+            },
+            status=status.HTTP_404_NOT_FOUND
+        )
