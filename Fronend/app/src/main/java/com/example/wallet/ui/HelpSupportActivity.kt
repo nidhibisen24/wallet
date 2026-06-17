@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import com.example.wallet.R
 import com.example.wallet.data.CreateRoomRequest
 import com.example.wallet.data.CreateRoomResponse
@@ -16,6 +17,7 @@ import retrofit2.Response
 class HelpSupportActivity : AppCompatActivity() {
 
     private lateinit var btnStartChat: Button
+    private lateinit var btnBack: CardView
 
     private var userId = 0
 
@@ -36,6 +38,13 @@ class HelpSupportActivity : AppCompatActivity() {
         btnStartChat.setOnClickListener {
 
             createChatRoom()
+        }
+        btnBack = findViewById(R.id.btnBack)
+        btnBack.setOnClickListener {
+
+            finish()
+
+
         }
     }
 

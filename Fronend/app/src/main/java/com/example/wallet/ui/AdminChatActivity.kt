@@ -1,14 +1,15 @@
 package com.example.wallet.ui
 
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.wallet.R
+import com.example.wallet.adapter.AdminChatAdapter
 import com.example.wallet.data.ChatMessage
 import com.example.wallet.data.SendMessageRequest
 import com.example.wallet.network.RetrofitClient
@@ -18,60 +19,58 @@ import retrofit2.Response
 
 class AdminChatActivity : AppCompatActivity() {
 
-    private lateinit var listMessages: ListView
+    private lateinit var rvMessages: RecyclerView
     private lateinit var etMessage: EditText
     private lateinit var btnSend: Button
-
     private lateinit var btnBack: CardView
 
     private var roomId = 0
     private var userId = 0
 
+    private val messageList = mutableListOf<ChatMessage>()
+
+    private lateinit var adapter: AdminChatAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        window.setSoftInputMode(
+            android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+        )
         setContentView(R.layout.activity_admin_chat)
 
-        roomId = intent.getIntExtra(
-            "ROOM_ID",
-            0
-        )
+        roomId = intent.getIntExtra("ROOM_ID", 0)
 
-        userId = intent.getIntExtra(
-            "USER_ID",
-            0
-        )
+        userId = intent.getIntExtra("USER_ID", 0)
 
-        listMessages =
-            findViewById(R.id.listMessages)
+        rvMessages = findViewById(R.id.rvMessages)
+        etMessage = findViewById(R.id.etMessage)
+        btnSend = findViewById(R.id.btnSend)
+        btnBack = findViewById(R.id.btnBack)
 
-        etMessage =
-            findViewById(R.id.etMessage)
+        adapter = AdminChatAdapter(messageList)
 
-        btnSend =
-            findViewById(R.id.btnSend)
+        rvMessages.layoutManager =
+            LinearLayoutManager(this)
 
-        loadMessages()
+        rvMessages.adapter = adapter
 
         btnSend.setOnClickListener {
-
             sendMessage()
         }
-        btnBack = findViewById(R.id.btnBack)
+
         btnBack.setOnClickListener {
-
             finish()
-
-
         }
+
+        loadMessages()
     }
 
     private fun loadMessages() {
 
         RetrofitClient.api
             .getMessages(roomId)
-            .enqueue(object :
-                Callback<List<ChatMessage>> {
+            .enqueue(object : Callback<List<ChatMessage>> {
 
                 override fun onResponse(
                     call: Call<List<ChatMessage>>,
@@ -80,24 +79,28 @@ class AdminChatActivity : AppCompatActivity() {
 
                     if (response.isSuccessful) {
 
-                        val messages =
-                            response.body() ?: emptyList()
+                        messageList.clear()
 
-                        val displayMessages =
-                            messages.map {
+                        response.body()?.let {
+                            messageList.addAll(it)
+                        }
 
-                                "${it.sender_name}\n${it.message}"
-                            }
+                        adapter.notifyDataSetChanged()
 
-                        val adapter =
-                            ArrayAdapter(
-                                this@AdminChatActivity,
-                                android.R.layout.simple_list_item_1,
-                                displayMessages
+                        if (messageList.isNotEmpty()) {
+
+                            rvMessages.scrollToPosition(
+                                messageList.size - 1
                             )
+                        }
 
-                        listMessages.adapter =
-                            adapter
+                    } else {
+
+                        Toast.makeText(
+                            this@AdminChatActivity,
+                            "Failed to load messages",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
 
@@ -108,7 +111,7 @@ class AdminChatActivity : AppCompatActivity() {
 
                     Toast.makeText(
                         this@AdminChatActivity,
-                        t.message,
+                        t.localizedMessage ?: "Network Error",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -117,8 +120,7 @@ class AdminChatActivity : AppCompatActivity() {
 
     private fun sendMessage() {
 
-        val text =
-            etMessage.text.toString().trim()
+        val text = etMessage.text.toString().trim()
 
         if (text.isEmpty()) {
 
@@ -131,12 +133,13 @@ class AdminChatActivity : AppCompatActivity() {
             return
         }
 
-        val request =
-            SendMessageRequest(
-                room = roomId,
-                sender = 1, // Admin User ID
-                message = text
-            )
+        val request = SendMessageRequest(
+            room = roomId,
+            sender = 1,
+            message = text
+        )
+
+        btnSend.isEnabled = false
 
         RetrofitClient.api
             .sendMessage(request)
@@ -147,11 +150,21 @@ class AdminChatActivity : AppCompatActivity() {
                     response: Response<Void>
                 ) {
 
+                    btnSend.isEnabled = true
+
                     if (response.isSuccessful) {
 
                         etMessage.setText("")
+
                         loadMessages()
 
+                    } else {
+
+                        Toast.makeText(
+                            this@AdminChatActivity,
+                            "Failed to send message",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
 
@@ -160,19 +173,19 @@ class AdminChatActivity : AppCompatActivity() {
                     t: Throwable
                 ) {
 
+                    btnSend.isEnabled = true
+
                     Toast.makeText(
                         this@AdminChatActivity,
-                        t.message,
+                        t.localizedMessage ?: "Network Error",
                         Toast.LENGTH_SHORT
                     ).show()
-
                 }
             })
     }
 
     override fun onResume() {
         super.onResume()
-
         loadMessages()
     }
 }

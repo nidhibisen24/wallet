@@ -25,12 +25,14 @@
             android:exported="false" />
         <activity
             android:name=".ui.AdminChatActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".ui.AdminChatRoomsActivity"
             android:exported="false" />
         <activity
             android:name=".ui.ChatActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".ui.HelpSupportActivity"

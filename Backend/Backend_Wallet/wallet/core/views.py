@@ -161,7 +161,7 @@ def withdraw_fund_request(request):
         status=400
     )
 
-#FOr Approve Request
+# For Approve Request
 @api_view(['POST'])
 def approve_request(request):
 
@@ -189,28 +189,45 @@ def approve_request(request):
 
         wallet.balance += fund_request.amount
 
-        request_type = 'ADD'
-
     else:
 
         wallet.balance -= fund_request.amount
 
-        request_type = 'WITHDRAW'
-
     wallet.save()
-
-    FundRequest.objects.create(
-        user=fund_request.user,
-        amount=fund_request.amount,
-        request_type=request_type,
-        status='APPROVED'
-    )
 
     fund_request.status = 'APPROVED'
     fund_request.save()
 
     return Response({
         "message": "Request approved successfully"
+    })
+
+
+# For Reject Request
+@api_view(['POST'])
+def reject_request(request):
+
+    request_id = request.data.get('request_id')
+
+    try:
+        fund_request = FundRequest.objects.get(
+            id=request_id,
+            status='PENDING'
+        )
+
+    except FundRequest.DoesNotExist:
+        return Response(
+            {
+                "error": "Request not found"
+            },
+            status=404
+        )
+
+    fund_request.status = 'REJECTED'
+    fund_request.save()
+
+    return Response({
+        "message": "Request rejected successfully"
     })
 
 #FOr Reject Request

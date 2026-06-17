@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.wallet.R
 import com.example.wallet.data.ChatMessage
 
-class MessageAdapter(
+class AdminChatAdapter(
     private val messages: List<ChatMessage>
-) : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<AdminChatAdapter.ViewHolder>() {
 
     companion object {
         private const val LEFT_MESSAGE = 0
@@ -29,19 +29,12 @@ class MessageAdapter(
 
     override fun getItemViewType(position: Int): Int {
 
-        val message = messages[position]
-
-        android.util.Log.d(
-            "CHAT_ROLE",
-            "${message.sender_role} : ${message.message}"
-        )
-
         return if (
-            message.sender_role.equals("ADMIN", true)
+            messages[position].sender_role.equals("ADMIN", true)
         ) {
-            LEFT_MESSAGE
-        } else {
             RIGHT_MESSAGE
+        } else {
+            LEFT_MESSAGE
         }
     }
 
@@ -51,10 +44,10 @@ class MessageAdapter(
     ): ViewHolder {
 
         val layoutId =
-            if (viewType == LEFT_MESSAGE)
-                R.layout.item_message_left
-            else
+            if (viewType == RIGHT_MESSAGE)
                 R.layout.item_message_right
+            else
+                R.layout.item_message_left
 
         val view =
             LayoutInflater.from(parent.context)
