@@ -586,6 +586,13 @@ def add_bonus(request):
         wallet.balance += Decimal(str(bonus_amount))
         wallet.save()
 
+        FundRequest.objects.create(
+        user=user,
+        amount=Decimal(str(bonus_amount)),
+        request_type='BONUS',
+        status='APPROVED'
+        )
+
         return Response({
             "status": True,
             "message": "Bonus added successfully",

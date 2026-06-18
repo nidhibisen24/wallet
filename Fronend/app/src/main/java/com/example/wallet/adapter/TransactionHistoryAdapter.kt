@@ -65,58 +65,95 @@ class TransactionHistoryAdapter(
         holder.tvUserName.text =
             transaction.user_name
 
-        if (transaction.request_type.uppercase() == "ADD") {
-
-            holder.tvAmount.text =
-                "+ ₹${transaction.amount}"
-
-            holder.tvAmount.setTextColor(
-                Color.parseColor("#2E7D32")
-            )
-
-        } else {
-
-            holder.tvAmount.text =
-                "- ₹${transaction.amount}"
-
-            holder.tvAmount.setTextColor(
-                Color.parseColor("#C62828")
-            )
-        }
-
-        holder.tvRequestType.text =
-            transaction.request_type
-
-        holder.tvStatus.text =
-            transaction.status
-
-        holder.tvDate.text =
-            formatDate(transaction.created_at)
-
-        // Card Color
+        // Amount Color & Sign
         when (transaction.request_type.uppercase()) {
 
             "ADD" -> {
 
-                holder.cardTransaction.setCardBackgroundColor(
-                    Color.parseColor("#FFFFFF")
+                holder.tvAmount.text =
+                    "+ ₹${transaction.amount}"
+
+                holder.tvAmount.setTextColor(
+                    Color.parseColor("#2E7D32")
                 )
             }
 
-            "WITHDRAW" -> {
+            "BONUS" -> {
 
-                holder.cardTransaction.setCardBackgroundColor(
-                    Color.parseColor("#FFFFFF")
+                holder.tvAmount.text =
+                    "+ ₹${transaction.amount}"
+
+                holder.tvAmount.setTextColor(
+                    Color.parseColor("#D4AF37")
                 )
             }
 
             else -> {
 
-                holder.cardTransaction.setCardBackgroundColor(
-                    Color.WHITE
+                holder.tvAmount.text =
+                    "- ₹${transaction.amount}"
+
+                holder.tvAmount.setTextColor(
+                    Color.parseColor("#C62828")
                 )
             }
         }
+
+        // Request Type Text
+        holder.tvRequestType.text =
+            when (transaction.request_type.uppercase()) {
+
+                "ADD" -> "ADD FUND"
+
+                "WITHDRAW" -> "WITHDRAW"
+
+                "BONUS" -> "BONUS REWARD"
+
+                else -> transaction.request_type
+            }
+
+        // Request Type Color
+        when (transaction.request_type.uppercase()) {
+
+            "BONUS" -> {
+
+                holder.tvRequestType.setTextColor(
+                    Color.parseColor("#D4AF37")
+                )
+
+                holder.tvAmount.text =
+                    "+ ₹${transaction.amount}"
+
+                holder.tvAmount.setTextColor(
+                    Color.parseColor("#D4AF37")
+                )
+            }
+
+            "ADD" -> {
+
+                holder.tvRequestType.setTextColor(
+                    Color.parseColor("#2E7D32")
+                )
+            }
+
+            "WITHDRAW" -> {
+
+                holder.tvRequestType.setTextColor(
+                    Color.parseColor("#C62828")
+                )
+            }
+        }
+
+        holder.tvStatus.text =
+            transaction.status.uppercase()
+
+        holder.tvDate.text =
+            formatDate(transaction.created_at)
+
+        // Card Background
+        holder.cardTransaction.setCardBackgroundColor(
+            Color.parseColor("#FFFFFF")
+        )
 
         // Status Badge
         when (transaction.status.uppercase()) {
@@ -150,7 +187,7 @@ class TransactionHistoryAdapter(
                 )
 
                 holder.tvStatus.setTextColor(
-                    Color.parseColor("Gray")
+                    Color.parseColor("#F59E0B")
                 )
             }
         }

@@ -91,6 +91,7 @@ class FundRequest(models.Model):
     REQUEST_TYPES = (
         ('ADD', 'Add Fund'),
         ('WITHDRAW', 'Withdraw Fund'),
+        ('BONUS', 'Bonus'),
     )
 
     STATUS_TYPES = (

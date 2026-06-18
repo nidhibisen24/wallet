@@ -56,29 +56,67 @@ class TransactionAdapter(
 
         // Transaction Type
         holder.tvType.text =
-            if (transaction.request_type.equals("ADD", true))
-                "ADD FUND"
-            else
-                "WITHDRAW"
+            when (transaction.request_type.uppercase()) {
 
-        // Amount Color & Sign
-        if (transaction.request_type.equals("ADD", true)) {
+                "ADD" -> "ADD FUND"
 
-            holder.tvAmount.text =
-                "+ ₹${transaction.amount}"
+                "WITHDRAW" -> "WITHDRAW"
 
-            holder.tvAmount.setTextColor(
-                Color.parseColor("#16A34A")
-            )
+                "BONUS" -> "BONUS REWARD"
 
-        } else {
+                else -> transaction.request_type
+            }
 
-            holder.tvAmount.text =
-                "- ₹${transaction.amount}"
+        // Transaction Type Color
+        when (transaction.request_type.uppercase()) {
 
-            holder.tvAmount.setTextColor(
-                Color.parseColor("#DC2626")
-            )
+            "BONUS" -> {
+
+                holder.tvType.setTextColor(
+                    Color.parseColor("#D4AF37")
+                )
+            }
+
+            else -> {
+
+                holder.tvType.setTextColor(
+                    Color.parseColor("#1A1C1E")
+                )
+            }
+        }
+
+        // Amount
+        when (transaction.request_type.uppercase()) {
+
+            "ADD" -> {
+
+                holder.tvAmount.text =
+                    "+ ₹${transaction.amount}"
+
+                holder.tvAmount.setTextColor(
+                    Color.parseColor("#16A34A")
+                )
+            }
+
+            "BONUS" -> {
+
+                holder.tvAmount.text =
+                    "+ ₹${transaction.amount}"
+
+                holder.tvAmount.setTextColor(
+                    Color.parseColor("#D4AF37")
+                )
+            }
+
+            else -> {
+
+                holder.tvAmount.text =
+                    "- ₹${transaction.amount}"
+
+                holder.tvAmount.setTextColor(
+                    Color.parseColor("#DC2626")
+                )
+            }
         }
 
         // Status
@@ -134,10 +172,11 @@ class TransactionAdapter(
 
         return try {
 
-            val inputFormat = SimpleDateFormat(
-                "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'",
-                Locale.ENGLISH
-            )
+            val inputFormat =
+                SimpleDateFormat(
+                    "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'",
+                    Locale.ENGLISH
+                )
 
             inputFormat.timeZone =
                 TimeZone.getTimeZone("UTC")
