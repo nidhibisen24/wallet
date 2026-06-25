@@ -15,6 +15,12 @@
         android:theme="@style/Theme.Wallet"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.AddPaymentAccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.SavedPaymentAccountsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.AddBonusUserActivity"
             android:exported="false" />
         <activity
@@ -25,15 +31,15 @@
             android:exported="false" />
         <activity
             android:name=".ui.AdminChatActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.AdminChatRoomsActivity"
             android:exported="false" />
         <activity
             android:name=".ui.ChatActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.HelpSupportActivity"
             android:exported="false" />

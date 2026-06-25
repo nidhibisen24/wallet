@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardAccount"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="18dp"
+    app:cardElevation="2dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="#E6E6E6">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvAccountName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Personal UPI"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="#1A1C1E"/>
+
+            <TextView
+                android:id="@+id/tvDefault"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DEFAULT"
+                android:textStyle="bold"
+                android:textSize="11sp"
+                android:textColor="#2E7D32"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
+                android:background="@drawable/bg_status_approved"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvUpi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="abc@paytm"
+            android:textSize="15sp"
+            android:textColor="#666666"
+            android:layout_marginTop="8dp"/>
+
+        <ImageView
+            android:id="@+id/imgQr"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginTop="12dp"
+            android:scaleType="centerCrop"
+            android:background="#F2F2F2"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="end">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDefault"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Default"
+                android:textAllCaps="false"
+                android:textSize="13sp"
+                android:layout_marginEnd="8dp"
+                app:cornerRadius="20dp"
+                android:backgroundTint="#43A047"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Edit"
+                android:textAllCaps="false"
+                android:textSize="13sp"
+                android:layout_marginEnd="8dp"
+                app:cornerRadius="20dp"
+                android:backgroundTint="#FB8C00"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Delete"
+                android:textAllCaps="false"
+                android:textSize="13sp"
+                app:cornerRadius="20dp"
+                android:backgroundTint="#E53935"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -4,8 +4,10 @@ package com.example.wallet.network
 import com.example.wallet.data.AddBonusRequest
 import com.example.wallet.data.AddBonusResponse
 import com.example.wallet.data.AddFundRequest
+import com.example.wallet.data.AddPaymentAccountRequest
 import com.example.wallet.data.AdminDashboardResponse
 import com.example.wallet.data.ApiMessageResponse
+import com.example.wallet.data.ApiResponse
 import com.example.wallet.data.ApproveRequest
 import com.example.wallet.data.ApprovedRequest
 import com.example.wallet.data.ChatMessage
@@ -20,6 +22,7 @@ import com.example.wallet.data.QrCodeResponse
 import com.example.wallet.data.QrUploadResponse
 import com.example.wallet.data.RegisterRequest
 import com.example.wallet.data.RegisterResponse
+import com.example.wallet.data.SavedPaymentDetails
 import com.example.wallet.data.SendMessageRequest
 import com.example.wallet.data.Transaction
 import com.example.wallet.data.TransactionHistory
@@ -158,6 +161,29 @@ interface ApiService {
 
     @GET("chat-rooms/")
     fun getChatRooms(): Call<List<ChatRoom>>
+
+
+    @Multipart
+    @POST("add-payment-account/")
+    fun addPaymentAccount(
+
+        @Part("user") user: RequestBody,
+
+        @Part("account_name") accountName: RequestBody,
+
+        @Part("upi_id") upiId: RequestBody,
+
+        @Part("is_default") isDefault: RequestBody,
+
+        @Part qr_code: MultipartBody.Part?
+
+    ): Call<ApiResponse>
+
+
+    @GET("payment-accounts/{userId}/")
+    fun getPaymentAccounts(
+        @Path("userId") userId: Int
+    ): Call<List<SavedPaymentDetails>>
 
 }
 

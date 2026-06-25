@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from django.contrib import admin
-from .models import User, Wallet, FundRequest , QRCode , ChatRoom , Message
+from .models import User, Wallet, FundRequest , QRCode , ChatRoom , Message , SavedPaymentDetails
 
 
 @admin.register(User)
@@ -78,3 +78,4 @@ class QRCodeAdmin(admin.ModelAdmin):
 
 admin.site.register(ChatRoom)
 admin.site.register(Message)
+admin.site.register(SavedPaymentDetails)

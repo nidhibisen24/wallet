@@ -2,8 +2,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth.hashers import check_password
 
-from .models import User, Wallet , FundRequest ,QRCode , ChatRoom , Message
-from .serializers import RegisterSerializer ,QRCodeSerializer,FundApprovedSerializers,MessageSerializer ,FundRequestSerializer, TransactionHistorySerializer,UserDashboardSerializer , UserListSerializer , UserRequestHistorySerializer,UserDetailSerializer
+from .models import User, Wallet , FundRequest ,QRCode , ChatRoom , Message , SavedPaymentDetails
+from .serializers import RegisterSerializer ,QRCodeSerializer,FundApprovedSerializers,MessageSerializer, SavedPaymentDetailsSerializer ,FundRequestSerializer, TransactionHistorySerializer,UserDashboardSerializer , UserListSerializer , UserRequestHistorySerializer,UserDetailSerializer
 from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
 from rest_framework import status
@@ -616,3 +616,176 @@ def add_bonus(request):
             },
             status=status.HTTP_404_NOT_FOUND
         )
+    
+
+#Add Payment Details
+@api_view(['POST'])
+def add_payment_account(request):
+
+    serializer = SavedPaymentDetailsSerializer(
+        data=request.data
+    )
+
+    if serializer.is_valid():
+
+        user = serializer.validated_data["user"]
+
+        if serializer.validated_data.get("is_default", False):
+
+            SavedPaymentDetails.objects.filter(
+                user=user
+            ).update(
+                is_default=False
+            )
+
+        serializer.save()
+
+        return Response(
+            {
+                "status": True,
+                "message": "Payment account added successfully."
+            }
+        )
+
+    return Response(
+        serializer.errors,
+        status=status.HTTP_400_BAD_REQUEST
+    )
+
+#Get User Payment Accounts
+@api_view(['GET'])
+def payment_accounts(request, user_id):
+
+    accounts = SavedPaymentDetails.objects.filter(
+        user_id=user_id
+    ).order_by(
+        "-is_default",
+        "-created_at"
+    )
+
+    serializer = SavedPaymentDetailsSerializer(
+        accounts,
+        many=True
+    )
+
+    return Response(serializer.data)
+
+# Update Payment Account
+@api_view(['PUT'])
+def update_payment_account(request):
+
+    account_id = request.data.get("id")
+
+    try:
+
+        account = SavedPaymentDetails.objects.get(
+            id=account_id
+        )
+
+    except SavedPaymentDetails.DoesNotExist:
+
+        return Response(
+            {
+                "message": "Payment account not found."
+            },
+            status=404
+        )
+
+    serializer = SavedPaymentDetailsSerializer(
+        account,
+        data=request.data,
+        partial=True
+    )
+
+    if serializer.is_valid():
+
+        if serializer.validated_data.get("is_default", False):
+
+            SavedPaymentDetails.objects.filter(
+                user=account.user
+            ).update(
+                is_default=False
+            )
+
+        serializer.save()
+
+        return Response(
+            {
+                "status": True,
+                "message": "Payment account updated successfully."
+            }
+        )
+
+    return Response(
+        serializer.errors,
+        status=400
+    )
+
+#Delete Payment Account
+
+@api_view(['DELETE'])
+def delete_payment_account(request):
+
+    account_id = request.data.get("id")
+
+    try:
+
+        account = SavedPaymentDetails.objects.get(
+            id=account_id
+        )
+
+        account.delete()
+
+        return Response(
+            {
+                "status": True,
+                "message": "Payment account deleted successfully."
+            }
+        )
+
+    except SavedPaymentDetails.DoesNotExist:
+
+        return Response(
+            {
+                "message": "Payment account not found."
+            },
+            status=404
+        )
+    
+
+# Set Default Payment Account
+@api_view(['POST'])
+def set_default_payment_account(request):
+
+    account_id = request.data.get("id")
+
+    try:
+
+        account = SavedPaymentDetails.objects.get(
+            id=account_id
+        )
+
+    except SavedPaymentDetails.DoesNotExist:
+
+        return Response(
+            {
+                "message": "Payment account not found."
+            },
+            status=404
+        )
+
+    SavedPaymentDetails.objects.filter(
+        user=account.user
+    ).update(
+        is_default=False
+    )
+
+    account.is_default = True
+    account.save()
+
+    return Response(
+        {
+            "status": True,
+            "message": "Default payment account updated."
+        }
+    )

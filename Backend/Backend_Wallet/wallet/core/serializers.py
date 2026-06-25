@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User ,Wallet , FundRequest , QRCode , Message , ChatRoom
+from .models import User ,Wallet , FundRequest , QRCode , Message , ChatRoom ,SavedPaymentDetails
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 
@@ -21,6 +21,33 @@ class RegisterSerializer(serializers.ModelSerializer):
             'password': {'write_only': True}
         }
 
+class SavedPaymentDetailsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SavedPaymentDetails
+        fields = [
+            "id",
+            "user",
+            "account_name",
+            "upi_id",
+            "qr_code",
+            "is_default",
+            "created_at"
+        ]
+
+        read_only_fields = [
+            "id",
+            "created_at"
+        ]
+
+    def validate(self, attrs):
+
+        if not attrs.get("upi_id") and not attrs.get("qr_code"):
+            raise serializers.ValidationError(
+                "Provide either a UPI ID or a QR Code."
+            )
+
+        return attrs
 
 class FundRequestSerializer(serializers.ModelSerializer):
 

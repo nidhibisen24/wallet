@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F4F7F5"
+    android:fitsSystemWindows="true">
+
+    <!-- Header -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_rect_header"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="40dp"
+        android:paddingBottom="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btnBack"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@android:color/white">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_back_arrow"
+                    app:tint="#2E7D32"/>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:text="Saved Payment Accounts"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="#2E7D32"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Manage your saved UPI IDs  QR codes"
+            android:textColor="#5F6B63"
+            android:textSize="15sp"
+            android:layout_marginTop="6dp"/>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvAccounts"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="14dp"
+        android:clipToPadding="false"
+        tools:listitem="@layout/item_saved_payment"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAddAccount"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_margin="16dp"
+        android:text="+ Add Payment Account"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:backgroundTint="#2E7D32"
+        android:textColor="@android:color/white"
+        app:cornerRadius="26dp"/>
+
+</LinearLayout>

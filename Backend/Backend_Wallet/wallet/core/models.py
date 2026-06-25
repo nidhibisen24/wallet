@@ -112,6 +112,8 @@ class FundRequest(models.Model):
     upi_id = models.CharField(max_length=100,blank=True,null=True)
 
     qr_code = models.ImageField(upload_to="withdraw_qr/",blank=True,null=True)
+    payment_account = models.ForeignKey( "SavedPaymentDetails" ,on_delete=models.SET_NULL,null=True,blank=True,related_name="withdraw_requests")
+
 
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -136,22 +138,13 @@ class QRCode(models.Model):
 
 class ChatRoom(models.Model):
 
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="chat_rooms"
-    )
+    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="chat_rooms")
 
-    created_at = models.DateTimeField(
-        auto_now_add=True
-    )
+    created_at = models.DateTimeField(auto_now_add=True)
 
-    updated_at = models.DateTimeField(
-        auto_now=True
-    )
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-
         return self.user.full_name
     
 class Message(models.Model):
@@ -162,14 +155,25 @@ class Message(models.Model):
 
     message = models.TextField()
 
-    is_read = models.BooleanField(
-        default=False
-    )
+    is_read = models.BooleanField(default=False)
 
-    created_at = models.DateTimeField(
-        auto_now_add=True
-    )
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-
         return f"{self.sender.full_name}: {self.message}"
+    
+class SavedPaymentDetails(models.Model):
+
+    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="payment_accounts")
+
+    account_name = models.CharField(max_length=50)
+
+    upi_id = models.CharField(max_length=100,blank=True,null=True)
+
+    qr_code = models.ImageField(upload_to="saved_payment_qr/",blank=True,null=True)
+
+    is_default = models.BooleanField(default=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return f"{self.user.full_name}: {self.account_name}"

@@ -86,6 +86,19 @@ class UserDashboardActivity : AppCompatActivity() {
 
             startActivity(intent)
         }
+        val cardAllAccount =
+            findViewById<CardView>(R.id.cardAllAccount)
+
+        cardAllAccount.setOnClickListener {
+
+            val intent = Intent(
+                this,
+                SavedPaymentAccountsActivity::class.java
+            )
+
+
+            startActivity(intent)
+        }
         val cardWithdrawRequest =
             findViewById<CardView>(R.id.cardWithdrawRequest)
 
