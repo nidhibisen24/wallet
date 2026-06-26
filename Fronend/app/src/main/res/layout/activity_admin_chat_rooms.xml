@@ -93,16 +93,15 @@
             app:cardElevation="0dp"
             app:strokeWidth="0dp">
 
-            <ListView
-                android:id="@+id/listRooms"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvRooms"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:clipToPadding="false"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="8dp"
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="12dp"
-                android:scrollbars="none" />
+                android:scrollbars="none"/>
 
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
