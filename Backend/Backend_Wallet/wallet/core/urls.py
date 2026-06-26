@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import register , add_payment_account,payment_accounts,update_payment_account,delete_payment_account ,set_default_payment_account ,login ,user_request_history,get_chat_room_messages, add_bonus,upload_qr_code, get_chat_rooms,send_message,get_chat_messages ,create_chat_room,approved_requests,  delete_user,all_transactions, get_qr_code,user_dashboard,search_user,add_fund_request, withdraw_fund_request,user_details , approve_request, reject_request,all_users , admin_dashboard , pending_requests
+from .views import register , add_payment_account,payment_accounts,update_payment_account,delete_payment_account ,my_referral ,set_default_payment_account ,login ,user_request_history,get_chat_room_messages, add_bonus,upload_qr_code, get_chat_rooms,send_message,get_chat_messages ,create_chat_room,approved_requests,  delete_user,all_transactions, get_qr_code,user_dashboard,search_user,add_fund_request, withdraw_fund_request,user_details , approve_request, reject_request,all_users , admin_dashboard , pending_requests
 
 urlpatterns = [
     path('register/',register,name='register'),
@@ -50,14 +50,13 @@ urlpatterns = [
 
     #Add Payment account Group dorara
     path("add-payment-account/",add_payment_account),
-
     path("payment-accounts/<int:user_id>/",payment_accounts),
-
     path("update-payment-account/", update_payment_account),
-
     path("delete-payment-account/",delete_payment_account),
-
     path("set-default-payment-account/",set_default_payment_account),
+
+    #Referral 
+    path("my-referral/<int:user_id>/",my_referral),
 
 
 ] 

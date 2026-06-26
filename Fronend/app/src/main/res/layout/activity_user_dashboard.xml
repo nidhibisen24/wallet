@@ -404,7 +404,7 @@
                             tools:ignore="HardcodedText" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
-                <!-- Module 4: Help & Support -->
+                <!-- Module 5: accOUNT -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardAllAccount"
                     android:layout_width="0dp"
@@ -433,7 +433,7 @@
                             android:layout_width="56dp"
                             android:layout_height="56dp"
                             android:src="@drawable/ic_chat_support"
-                            android:contentDescription="Help and Support"
+                            android:contentDescription="Accounts"
                             tools:ignore="HardcodedText" />
 
                         <TextView
@@ -442,7 +442,53 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:gravity="center"
-                            android:text="Help &amp;\nSupport"
+                            android:text="Accounts"
+                            android:textAlignment="center"
+                            android:textColor="#2E7D32"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            tools:ignore="HardcodedText" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+                <!-- Module 5: accOUNT -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardReferral"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="6dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#E2E8E4"
+                    android:stateListAnimator="@animator/button_press_scale">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="24dp">
+
+                        <ImageView
+                            android:id="@+id/refer"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:src="@drawable/ic_chat_support"
+                            android:contentDescription="refer"
+                            tools:ignore="HardcodedText" />
+
+                        <TextView
+                            android:id="@+id/refers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            android:text="Referral"
                             android:textAlignment="center"
                             android:textColor="#2E7D32"
                             android:textSize="13sp"

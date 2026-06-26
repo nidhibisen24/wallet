@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.wallet.R
 import com.example.wallet.data.RegisterRequest
 import com.example.wallet.network.RetrofitClient
+import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
 
 class RegisterActivity : AppCompatActivity() {
@@ -24,6 +25,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var etConfirmPassword: EditText
     private lateinit var btnRegister: Button
     private lateinit var tvLogin: TextView
+    private lateinit var etReferralCode: TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +48,9 @@ class RegisterActivity : AppCompatActivity() {
         etPassword = findViewById(R.id.etPassword)
         etConfirmPassword = findViewById(R.id.etConfirmPassword)
         btnRegister = findViewById(R.id.btnRegister)
+        etReferralCode = findViewById(R.id.etReferralCode)
+
+
 
         btnRegister.setOnClickListener {
             registerUser()
@@ -72,6 +77,7 @@ class RegisterActivity : AppCompatActivity() {
         val mobile = etMobile.text.toString().trim()
         val password = etPassword.text.toString().trim()
         val confirmPassword = etConfirmPassword.text.toString().trim()
+        val referralCode = etReferralCode.text.toString().trim()
 
         if (name.isEmpty() ||
             mobile.isEmpty() ||
@@ -102,7 +108,8 @@ class RegisterActivity : AppCompatActivity() {
                 val request = RegisterRequest(
                     full_name = name,
                     mobile_number = mobile,
-                    password = password
+                    password = password,
+                    referral_code = referralCode
                 )
 
                 RetrofitClient.api.registerUser(request)

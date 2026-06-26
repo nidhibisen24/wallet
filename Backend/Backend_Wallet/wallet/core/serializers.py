@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User ,Wallet , FundRequest , QRCode , Message , ChatRoom ,SavedPaymentDetails
+from .models import User ,Wallet , FundRequest , QRCode , Message , ChatRoom ,SavedPaymentDetails , Referral
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 
@@ -9,17 +9,37 @@ from .models import User
 
 class RegisterSerializer(serializers.ModelSerializer):
 
+    referral_code = serializers.CharField(
+        required=False,
+        allow_blank=True
+    )
+
     class Meta:
         model = User
         fields = [
             'full_name',
             'mobile_number',
-            'password'
+            'password',
+            'referral_code'
         ]
 
         extra_kwargs = {
             'password': {'write_only': True}
         }
+
+class ReferralHistorySerializer(serializers.ModelSerializer):
+
+    name = serializers.CharField(source="referred_user.full_name")
+    mobile_number = serializers.CharField(source="referred_user.mobile_number")
+
+    class Meta:
+        model = Referral
+        fields = [
+            "name",
+            "mobile_number",
+            "reward",
+            "created_at"
+        ]
 
 class SavedPaymentDetailsSerializer(serializers.ModelSerializer):
 

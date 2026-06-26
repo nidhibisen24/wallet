@@ -68,7 +68,8 @@ class AddUserActivity : AppCompatActivity() {
                 val request = RegisterRequest(
                     full_name = fullName,
                     mobile_number = mobile,
-                    password = password
+                    password = password,
+                    referral_code = "null"
                 )
 
                 RetrofitClient.api.registerUser(request)

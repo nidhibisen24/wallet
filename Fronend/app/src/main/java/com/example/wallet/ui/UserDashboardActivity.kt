@@ -86,6 +86,23 @@ class UserDashboardActivity : AppCompatActivity() {
 
             startActivity(intent)
         }
+        val cardReferral =
+            findViewById<CardView>(R.id.cardReferral)
+
+        cardReferral.setOnClickListener {
+
+            val intent = Intent(
+                this,
+                ReferralActivity::class.java
+            )
+
+            intent.putExtra(
+                "USER_ID",
+                userId
+            )
+
+            startActivity(intent)
+        }
         val cardAllAccount =
             findViewById<CardView>(R.id.cardAllAccount)
 

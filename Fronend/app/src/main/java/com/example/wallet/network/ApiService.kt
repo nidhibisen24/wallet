@@ -17,6 +17,7 @@ import com.example.wallet.data.CreateRoomResponse
 import com.example.wallet.data.LoginRequest
 import com.example.wallet.data.LoginResponse
 import com.example.wallet.data.MessageResponse
+import com.example.wallet.data.MyReferralResponse
 import com.example.wallet.data.PendingRequest
 import com.example.wallet.data.QrCodeResponse
 import com.example.wallet.data.QrUploadResponse
@@ -185,5 +186,11 @@ interface ApiService {
         @Path("userId") userId: Int
     ): Call<List<SavedPaymentDetails>>
 
+
+
+    @GET("my-referral/{userId}/")
+    suspend fun getMyReferral(
+        @Path("userId") userId: Int
+    ): MyReferralResponse
 }
 

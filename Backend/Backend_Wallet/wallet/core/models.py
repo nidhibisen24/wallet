@@ -48,15 +48,16 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     role = models.CharField(max_length=10,choices=ROLE_CHOICES,default='MEMBER')
 
+    referral_code = models.CharField(max_length=8,unique=True,blank=True,null=True)
+
+    referred_by = models.ForeignKey('self',on_delete=models.SET_NULL,null=True,blank=True,related_name='referred_users')
+
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
 
-    fcm_token = models.TextField(
-        null=True,
-        blank=True
-    )
+    fcm_token = models.TextField(null=True,blank=True)
 
     objects = UserManager()
 
@@ -85,6 +86,18 @@ class Wallet(models.Model):
         return f"{self.user.mobile_number} - {self.balance}"
 
 
+class Referral(models.Model):
+
+    referrer = models.ForeignKey(User,on_delete=models.CASCADE,related_name="my_referrals")
+
+    referred_user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="referral")
+
+    reward = models.DecimalField(max_digits=12,decimal_places=2,default=500)
+
+    created_at = models.DateTimeField( auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.referrer.full_name} -> {self.referred_user.full_name}"
 
 class FundRequest(models.Model):
 

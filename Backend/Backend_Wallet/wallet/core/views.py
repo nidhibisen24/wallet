@@ -2,15 +2,16 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth.hashers import check_password
 
-from .models import User, Wallet , FundRequest ,QRCode , ChatRoom , Message , SavedPaymentDetails
-from .serializers import RegisterSerializer ,QRCodeSerializer,FundApprovedSerializers,MessageSerializer, SavedPaymentDetailsSerializer ,FundRequestSerializer, TransactionHistorySerializer,UserDashboardSerializer , UserListSerializer , UserRequestHistorySerializer,UserDetailSerializer
+from .models import User, Wallet , FundRequest ,QRCode , ChatRoom , Message , SavedPaymentDetails , Referral
+from .serializers import RegisterSerializer ,QRCodeSerializer,FundApprovedSerializers,MessageSerializer, ReferralHistorySerializer,SavedPaymentDetailsSerializer ,FundRequestSerializer, TransactionHistorySerializer,UserDashboardSerializer , UserListSerializer , UserRequestHistorySerializer,UserDetailSerializer
 from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from decimal import Decimal
+import random
+import string
 
 
-#Register or SignUp
 @api_view(['POST'])
 def register(request):
 
@@ -19,14 +20,26 @@ def register(request):
     if not serializer.is_valid():
         return Response(
             serializer.errors,
-            status=400)
+            status=400
+        )
 
     full_name = serializer.validated_data['full_name']
     mobile_number = serializer.validated_data['mobile_number']
     password = serializer.validated_data['password']
+    referral_code = serializer.validated_data.get("referral_code", "").strip()
+
+    referrer = None
+
+    if referral_code:
+        try:
+            referrer = User.objects.get(referral_code=referral_code)
+        except User.DoesNotExist:
+            return Response({
+                "error": "Invalid referral code"
+            }, status=400)
+
 
     if User.objects.filter(mobile_number=mobile_number).exists():
-
         return Response({
             "error": "Mobile number already exists"
         }, status=400)
@@ -36,18 +49,36 @@ def register(request):
         password=password
     )
 
+    # CHANGED
     user.full_name = full_name
+    user.referral_code = generate_referral_code()
     user.save()
 
     Wallet.objects.create(
         user=user
     )
+    if referrer:
+
+        user.referred_by = referrer
+        user.save()
+
+        referrer.wallet.balance += 500
+        referrer.wallet.save()
+
+        user.wallet.balance += 500
+        user.wallet.save()
+
+        Referral.objects.create(
+            referrer=referrer,
+            referred_user=user,
+            reward=500
+        )
 
     return Response({
         "message": "User registered successfully",
-        "user_id": user.id
+        "user_id": user.id,
+        "my_referral_code": user.referral_code      # opti for testing
     })
-
 
 #Login
 @api_view(['POST'])
@@ -789,3 +820,50 @@ def set_default_payment_account(request):
             "message": "Default payment account updated."
         }
     )
+
+def generate_referral_code():
+    while True:
+        code = ''.join(
+            random.choices(
+                string.ascii_uppercase + string.digits,
+                k=8
+            )
+        )
+
+        if not User.objects.filter(referral_code=code).exists():
+            return code
+
+
+#Referral 
+@api_view(["GET"])
+def my_referral(request, user_id):
+
+    try:
+        user = User.objects.get(id=user_id)
+
+    except User.DoesNotExist:
+
+        return Response({
+            "error": "User not found"
+        }, status=404)
+
+    referrals = Referral.objects.filter(
+        referrer=user
+    ).order_by("-created_at")
+
+    serializer = ReferralHistorySerializer(
+        referrals,
+        many=True
+    )
+
+    total_bonus = sum(
+        referral.reward for referral in referrals
+    )
+
+    return Response({
+
+        "my_referral_code": user.referral_code,
+        "total_referrals": referrals.count(),
+        "total_bonus": total_bonus,
+        "referrals": serializer.data
+    })
