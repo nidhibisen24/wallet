@@ -1,460 +1,370 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://tools.android.com/tools"
-    android:id="@+id/swipeRefresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F4F7F5"
     tools:context=".ui.UserDashboardActivity">
 
-    <ScrollView
-        android:id="@+id/main"
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F4F7F5"
-        android:fillViewport="true"
-        android:scrollbars="none">
+        android:layout_above="@id/bottomNavigationBarContainer">
 
-        <LinearLayout
+        <ScrollView
+            android:id="@+id/main"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none">
 
-            <!-- Premium Flat Header Container -->
-            <RelativeLayout
-                android:id="@+id/layoutDashboardHeader"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_rect_header"
-                android:paddingStart="20dp"
-                android:paddingTop="50dp"
-                android:paddingEnd="20dp"
-                android:paddingBottom="44dp">
+                android:orientation="vertical">
 
-                <!-- Application Title -->
-                <TextView
-                    android:id="@+id/tvDashboardTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:text="Pay Wallet"
-                    android:textColor="#1B3A2B"
-                    android:textSize="25sp"
-                    android:fontFamily="sans-serif-medium"
-                    android:textStyle="bold"
-                    tools:ignore="HardcodedText" />
-
-                <ImageView
-                    android:id="@+id/tvProfile"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignTop="@id/tvDashboardTitle"
-                    android:background="@drawable/bg_profile_circle"
-                    android:scaleType="centerCrop"
-                    android:padding="4dp"
-                    android:src="@drawable/ic_person"
-                    android:contentDescription="User Profile Image"
-                    app:tint="#1B3A2B" />
-
-                <!-- Safe Proxy View for Logout to prevent backend logic crash -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnLogout"
-                    android:layout_width="1dp"
-                    android:layout_height="1dp"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/tvWelcomeText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tvDashboardTitle"
-                    android:layout_marginTop="20dp"
-                    android:text="Welcome Back,"
-                    android:textColor="#5A6B5E"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText" />
-
-                <TextView
-                    android:id="@+id/tvUserDisplayName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tvWelcomeText"
-                    android:layout_marginTop="2dp"
-                    android:text="Loading...!"
-                    android:textColor="#2E7D32"
-                    android:textSize="28sp"
-                    android:fontFamily="sans-serif-medium"
-                    android:textStyle="bold"
-                    tools:ignore="HardcodedText" />
-
-                <!-- Identity Badge Row Section -->
-                <LinearLayout
-                    android:id="@+id/layoutBadgeRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tvUserDisplayName"
-                    android:layout_marginTop="6dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:id="@+id/tvUserIdBadge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="ID: #1082"
-                        android:textColor="#2E7D32"
-                        android:textSize="12sp"
-                        tools:ignore="HardcodedText" />
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="12dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:background="#E2E8E4"/>
-
-                    <TextView
-                        android:id="@+id/tvMembershipBadge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Premium Account Member"
-                        android:textColor="#2E7D32"
-                        android:textSize="12sp"
-                        tools:ignore="HardcodedText" />
-                </LinearLayout>
-            </RelativeLayout>
-
-            <!-- Wallet Balance Display Component -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardWalletBalance"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="-24dp"
-                android:layout_marginEnd="16dp"
-                app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="3dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="#E2E8E4">
-
-                <LinearLayout
+                <RelativeLayout
+                    android:id="@+id/layoutDashboardHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp">
+                    android:background="@drawable/bg_rect_header"
+                    android:paddingStart="20dp"
+                    android:paddingTop="50dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="44dp">
 
                     <TextView
-                        android:id="@+id/tvWalletLabel"
+                        android:id="@+id/tvDashboardTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Total Wallet Balance"
+                        android:layout_alignParentStart="true"
+                        android:text="Pay Wallet"
+                        android:textColor="#1B3A2B"
+                        android:textSize="25sp"
+                        android:fontFamily="sans-serif-medium"
+                        android:textStyle="bold"
+                        tools:ignore="HardcodedText" />
+
+                    <ImageView
+                        android:id="@+id/tvProfile"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignTop="@id/tvDashboardTitle"
+                        android:background="@drawable/bg_profile_circle"
+                        android:scaleType="centerCrop"
+                        android:padding="4dp"
+                        android:src="@drawable/ic_person"
+                        android:contentDescription="User Profile Image"
+                        app:tint="#1B3A2B" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnLogout"
+                        android:layout_width="1dp"
+                        android:layout_height="1dp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/tvWelcomeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvDashboardTitle"
+                        android:layout_marginTop="20dp"
+                        android:text="Welcome Back,"
                         android:textColor="#5A6B5E"
-                        android:textSize="13sp"
+                        android:textSize="14sp"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/tvUserDisplayName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvWelcomeText"
+                        android:layout_marginTop="2dp"
+                        android:text="Loading...!"
+                        android:textColor="#2E7D32"
+                        android:textSize="28sp"
+                        android:fontFamily="sans-serif-medium"
+                        android:textStyle="bold"
                         tools:ignore="HardcodedText" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:id="@+id/layoutBadgeRow"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_below="@id/tvUserDisplayName"
                         android:layout_marginTop="6dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
 
                         <TextView
-                            android:id="@+id/tvWalletAmount"
-                            android:layout_width="0dp"
+                            android:id="@+id/tvUserIdBadge"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="₹Loading..."
-                            android:textColor="#1B3A2B"
-                            android:textSize="32sp"
-                            android:fontFamily="sans-serif-medium"
-                            android:textStyle="bold"
+                            android:text="ID: #1082"
+                            android:textColor="#2E7D32"
+                            android:textSize="12sp"
                             tools:ignore="HardcodedText" />
 
                         <View
-                            android:id="@+id/viewOnlineIndicator"
-                            android:layout_width="9dp"
-                            android:layout_height="9dp"
-                            android:background="@drawable/bg_online_dot" />
+                            android:layout_width="1dp"
+                            android:layout_height="12dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="#E2E8E4"/>
 
                         <TextView
-                            android:id="@+id/tvOnlineStatus"
+                            android:id="@+id/tvMembershipBadge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:text="Online"
+                            android:text="Premium Account Member"
                             android:textColor="#2E7D32"
-                            android:textSize="11sp"
+                            android:textSize="12sp"
                             tools:ignore="HardcodedText" />
                     </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tvSectionActions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="28dp"
-                android:layout_marginBottom="12dp"
-                android:text="Account Actions &amp; Services"
-                android:textColor="#1B3A2B"
-                android:textSize="15sp"
-                android:fontFamily="sans-serif-medium"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
-
-            <!-- Actions Grid Interface Layout -->
-            <GridLayout
-                android:id="@+id/gridAccountActions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:columnCount="2"
-                android:rowCount="2">
-
-                <!-- Module 1: Add Fund -->
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardAddFundRequest"
-                    android:layout_width="0dp"
+                    android:id="@+id/cardWalletBalance"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="6dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="-24dp"
+                    android:layout_marginEnd="16dp"
                     app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="14dp"
-                    app:cardElevation="0dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="3dp"
                     app:strokeWidth="1dp"
-                    app:strokeColor="#E2E8E4"
-                    android:stateListAnimator="@animator/button_press_scale">
+                    app:strokeColor="#E2E8E4">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="24dp">
-
-                        <ImageView
-                            android:id="@+id/ivIconAddFund"
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:src="@drawable/ic_buy_down_arrow"
-                            android:contentDescription="Add Fund"
-                            tools:ignore="HardcodedText" />
+                        android:padding="20dp">
 
                         <TextView
-                            android:id="@+id/tvAddFundLabel"
+                            android:id="@+id/tvWalletLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:gravity="center"
-                            android:text="Buy"
-                            android:textAlignment="center"
-                            android:textColor="#2E7D32"
+                            android:text="Total Wallet Balance"
+                            android:textColor="#5A6B5E"
                             android:textSize="13sp"
-                            android:textStyle="bold"
                             tools:ignore="HardcodedText" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tvWalletAmount"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="₹Loading..."
+                                android:textColor="#1B3A2B"
+                                android:textSize="32sp"
+                                android:fontFamily="sans-serif-medium"
+                                android:textStyle="bold"
+                                tools:ignore="HardcodedText" />
+
+                            <View
+                                android:id="@+id/viewOnlineIndicator"
+                                android:layout_width="9dp"
+                                android:layout_height="9dp"
+                                android:background="@drawable/bg_online_dot" />
+
+                            <TextView
+                                android:id="@+id/tvOnlineStatus"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:text="Online"
+                                android:textColor="#2E7D32"
+                                android:textSize="11sp"
+                                tools:ignore="HardcodedText" />
+                        </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Module 2: Withdraw -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardWithdrawRequest"
-                    android:layout_width="0dp"
+                <View android:layout_width="match_parent" android:layout_height="28dp"/>
+
+            </LinearLayout>
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/bottomNavigationBarContainer"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_alignParentBottom="true"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardElevation="12dp"
+        app:cardCornerRadius="0dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="#E2E8E4">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:id="@+id/cardAddFundRequest"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/ivIconAddFund"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_buy_down_arrow"
+                    android:contentDescription="Buy" />
+
+                <TextView
+                    android:id="@+id/tvAddFundLabel"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="6dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="14dp"
-                    app:cardElevation="0dp"
-                    app:strokeWidth="1dp"
-                    app:strokeColor="#E2E8E4"
-                    android:stateListAnimator="@animator/button_press_scale">
+                    android:layout_marginTop="4dp"
+                    android:text="Buy"
+                    android:textColor="#2E7D32"
+                    android:textSize="11sp"
+                    android:fontFamily="sans-serif-medium" />
+            </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="24dp">
+            <LinearLayout
+                android:id="@+id/cardWithdrawRequest"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/ivIconWithdraw"
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:src="@drawable/ic_withdraw"
-                            android:contentDescription="Withdraw"
-                            tools:ignore="HardcodedText" />
+                <ImageView
+                    android:id="@+id/ivIconWithdraw"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_withdraw"
+                    android:contentDescription="Sell" />
 
-                        <TextView
-                            android:id="@+id/tvWithdrawLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:gravity="center"
-                            android:text="Sell"
-                            android:textAlignment="center"
-                            android:textColor="#2E7D32"
-                            android:textSize="13sp"
-                            android:textStyle="bold"
-                            tools:ignore="HardcodedText" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Module 3: Transaction History -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardTransactionHistory"
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/tvWithdrawLabel"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="6dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="14dp"
-                    app:cardElevation="0dp"
-                    app:strokeWidth="1dp"
-                    app:strokeColor="#E2E8E4"
-                    android:stateListAnimator="@animator/button_press_scale">
+                    android:layout_marginTop="4dp"
+                    android:text="Sell"
+                    android:textColor="#2E7D32"
+                    android:textSize="11sp"
+                    android:fontFamily="sans-serif-medium" />
+            </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="24dp">
 
-                        <ImageView
-                            android:id="@+id/ivIconTxnHistory"
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:src="@drawable/ic_transaction_history"
-                            android:contentDescription="Transaction History"
-                            tools:ignore="HardcodedText" />
+            <LinearLayout
+                android:id="@+id/cardTransactionHistory"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/tvTxnHistoryLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:gravity="center"
-                            android:text="Transaction\nHistory"
-                            android:textAlignment="center"
-                            android:textColor="#2E7D32"
-                            android:textSize="13sp"
-                            android:textStyle="bold"
-                            tools:ignore="HardcodedText" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
+                <ImageView
+                    android:id="@+id/ivIconTxnHistory"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_transaction_history"
+                    android:contentDescription="History" />
 
-                <!-- Module 4: Help & Support -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardHelpSupport"
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/tvTxnHistoryLabel"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="6dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="14dp"
-                    app:cardElevation="0dp"
-                    app:strokeWidth="1dp"
-                    app:strokeColor="#E2E8E4"
-                    android:stateListAnimator="@animator/button_press_scale">
+                    android:layout_marginTop="4dp"
+                    android:text="History"
+                    android:textColor="#2E7D32"
+                    android:textSize="11sp"
+                    android:fontFamily="sans-serif-medium" />
+            </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="24dp">
+            <!-- Tab 4: Support (cardHelpSupport) -->
+            <LinearLayout
+                android:id="@+id/cardHelpSupport"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/ivIconHelp"
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:src="@drawable/ic_chat_support"
-                            android:contentDescription="Help and Support"
-                            tools:ignore="HardcodedText" />
+                <ImageView
+                    android:id="@+id/ivIconHelp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_chat_support"
+                    android:contentDescription="Support" />
 
-                        <TextView
-                            android:id="@+id/tvHelpSupportLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:gravity="center"
-                            android:text="Help &amp;\nSupport"
-                            android:textAlignment="center"
-                            android:textColor="#2E7D32"
-                            android:textSize="13sp"
-                            android:textStyle="bold"
-                            tools:ignore="HardcodedText" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-                <!-- Module 4: Help & Support -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardAllAccount"
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/tvHelpSupportLabel"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="6dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="14dp"
-                    app:cardElevation="0dp"
-                    app:strokeWidth="1dp"
-                    app:strokeColor="#E2E8E4"
-                    android:stateListAnimator="@animator/button_press_scale">
+                    android:layout_marginTop="4dp"
+                    android:text="Support"
+                    android:textColor="#2E7D32"
+                    android:textSize="11sp"
+                    android:fontFamily="sans-serif-medium" />
+            </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="24dp">
+            <LinearLayout
+                android:id="@+id/cardAllAccount"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/accont"
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:src="@drawable/ic_chat_support"
-                            android:contentDescription="Help and Support"
-                            tools:ignore="HardcodedText" />
+                <ImageView
+                    android:id="@+id/accont"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_chat_support"
+                    android:contentDescription="Account" />
 
-                        <TextView
-                            android:id="@+id/accounts"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:gravity="center"
-                            android:text="Help &amp;\nSupport"
-                            android:textAlignment="center"
-                            android:textColor="#2E7D32"
-                            android:textSize="13sp"
-                            android:textStyle="bold"
-                            tools:ignore="HardcodedText" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-            </GridLayout>
-
-            <View android:layout_width="match_parent" android:layout_height="28dp"/>
+                <TextView
+                    android:id="@+id/accounts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Account"
+                    android:textColor="#2E7D32"
+                    android:textSize="11sp"
+                    android:fontFamily="sans-serif-medium" />
+            </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</RelativeLayout>
