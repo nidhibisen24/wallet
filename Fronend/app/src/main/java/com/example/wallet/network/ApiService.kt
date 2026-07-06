@@ -12,6 +12,8 @@ import com.example.wallet.data.ApproveRequest
 import com.example.wallet.data.ApprovedRequest
 import com.example.wallet.data.ChatMessage
 import com.example.wallet.data.ChatRoom
+import com.example.wallet.data.CreateAdminRequest
+import com.example.wallet.data.CreateAdminResponse
 import com.example.wallet.data.CreateRoomRequest
 import com.example.wallet.data.CreateRoomResponse
 import com.example.wallet.data.LoginRequest
@@ -192,5 +194,13 @@ interface ApiService {
     suspend fun getMyReferral(
         @Path("userId") userId: Int
     ): MyReferralResponse
+
+
+    @POST("create-admin/")
+    fun createAdmin(
+
+        @Body request: CreateAdminRequest
+
+    ): Call<CreateAdminResponse>
 }
 

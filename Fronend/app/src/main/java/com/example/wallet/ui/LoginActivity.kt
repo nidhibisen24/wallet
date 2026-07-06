@@ -44,14 +44,22 @@ class LoginActivity : AppCompatActivity() {
                     ""
                 )
 
-            if (role == "ADMIN") {
+            if (
+                role == "ADMIN" ||
+                role == "SUPER_ADMIN"
+            ) {
 
-                startActivity(
-                    Intent(
-                        this,
-                        AdminDashboardActivity::class.java
-                    )
+                val intent = Intent(
+                    this,
+                    AdminDashboardActivity::class.java
                 )
+
+                intent.putExtra(
+                    "ROLE",
+                    role
+                )
+
+                startActivity(intent)
 
             } else {
 
@@ -163,14 +171,27 @@ class LoginActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             ).show()
 
-                            if (user.role == "ADMIN") {
+                            if (
+                                user.role == "ADMIN" ||
+                                user.role == "SUPER_ADMIN"
+                            ) {
 
-                                startActivity(
-                                    Intent(
-                                        this@LoginActivity,
-                                        AdminDashboardActivity::class.java
-                                    )
+                                val intent = Intent(
+                                    this@LoginActivity,
+                                    AdminDashboardActivity::class.java
                                 )
+
+                                intent.putExtra(
+                                    "ROLE",
+                                    user.role
+                                )
+
+                                intent.putExtra(
+                                    "USER_ID",
+                                    user.user_id
+                                )
+
+                                startActivity(intent)
 
                             } else {
 

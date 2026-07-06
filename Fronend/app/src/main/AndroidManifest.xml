@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Wallet"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.CreateAdminActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.ReferralActivity"
             android:exported="false" />
         <activity

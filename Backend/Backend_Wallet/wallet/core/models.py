@@ -18,13 +18,12 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
 
         return user
-
     def create_superuser(self, mobile_number, password):
 
         user = self.create_user(
             mobile_number=mobile_number,
             password=password,
-            role='ADMIN'
+            role='SUPER_ADMIN'
         )
 
         user.is_staff = True
@@ -38,6 +37,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
 
     ROLE_CHOICES = (
+        ('SUPER_ADMIN', 'Super Admin'),
         ('ADMIN', 'Admin'),
         ('MEMBER', 'Member'),
     )
@@ -46,7 +46,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     full_name = models.CharField(max_length=100)
 
-    role = models.CharField(max_length=10,choices=ROLE_CHOICES,default='MEMBER')
+    role = models.CharField(max_length=20,choices=ROLE_CHOICES,default='MEMBER')
 
     referral_code = models.CharField(max_length=8,unique=True,blank=True,null=True)
 

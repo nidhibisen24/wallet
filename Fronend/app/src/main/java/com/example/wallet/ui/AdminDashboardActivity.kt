@@ -9,6 +9,7 @@ import com.example.wallet.R
 import com.example.wallet.network.RetrofitClient
 import kotlinx.coroutines.launch
 import android.content.Intent
+import android.view.View
 import android.widget.Button
 import androidx.cardview.widget.CardView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -27,6 +28,26 @@ class AdminDashboardActivity : AppCompatActivity() {
         tvTotalUsers = findViewById(R.id.tvTotalUsers)
         tvPendingRequests = findViewById(R.id.tvPendingRequests)
 
+        val role =
+            intent.getStringExtra("ROLE")
+
+
+        val cardCreateAdmin =
+            findViewById<CardView>(
+                R.id.cardCreateAdmin
+            )
+
+
+        if(role == "SUPER_ADMIN"){
+
+            cardCreateAdmin.visibility =
+                View.VISIBLE
+
+        }else{
+
+            cardCreateAdmin.visibility =
+                View.GONE
+        }
         loadDashboardData()
         val cardUserManagement =
             findViewById<CardView>(R.id.cardUserManagement)
@@ -65,6 +86,33 @@ class AdminDashboardActivity : AppCompatActivity() {
             )
 
             finishAffinity()
+        }
+        val btnCreateAdmin =
+            findViewById<Button>(
+                R.id.btnCreateAdmin
+            )
+
+
+        btnCreateAdmin.setOnClickListener {
+
+
+            val intent = Intent(
+                this,
+                CreateAdminActivity::class.java
+            )
+
+
+            intent.putExtra(
+                "USER_ID",
+                intent.getIntExtra(
+                    "USER_ID",
+                    0
+                )
+            )
+
+
+            startActivity(intent)
+
         }
         val cardPendingRequest =
             findViewById<CardView>(R.id.cardPendingRequest)

@@ -867,3 +867,51 @@ def my_referral(request, user_id):
         "total_bonus": total_bonus,
         "referrals": serializer.data
     })
+
+#SUPER ADMIN 
+@api_view(['POST'])
+def create_admin(request):
+
+    super_admin_id = request.data.get("super_admin_id")
+
+    super_admin = User.objects.get(
+        id=super_admin_id
+    )
+
+    if super_admin.role != "SUPER_ADMIN":
+
+        return Response({
+            "error":"Only super admin can create admin"
+        }, status=403)
+
+
+    full_name = request.data.get("full_name")
+    mobile = request.data.get("mobile_number")
+    password = request.data.get("password")
+
+
+    if User.objects.filter(
+        mobile_number=mobile
+    ).exists():
+
+        return Response({
+            "error":"Mobile already exists"
+        }, status=400)
+
+
+    admin = User.objects.create_user(
+        mobile_number=mobile,
+        password=password,
+        role="ADMIN"
+    )
+
+    admin.full_name = full_name
+    admin.save()
+
+
+    return Response({
+
+        "message":"Admin created successfully",
+
+        "admin_id":admin.id
+    })
