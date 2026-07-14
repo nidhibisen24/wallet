@@ -80,28 +80,42 @@ class FundRequestSerializer(serializers.ModelSerializer):
         source='user.mobile_number',
         read_only=True
     )
+    admin_name = serializers.CharField(
+    source='admin.full_name',
+    read_only=True
+    )
+
+    admin_mobile = serializers.CharField(
+    source='admin.mobile_number',
+    read_only=True
+    )
 
     class Meta:
         model = FundRequest
         fields = [
-            'id',
-            'user',
-            'user_name',
-            'mobile_number',
-            'amount',
-            'utr_number',
-            'upi_id',
-            'qr_code',
-            'request_type',
-            'status',
-            'created_at'
+        'id',
+        'user',
+        'admin',
+        'user_name',
+        'mobile_number',
+        'admin_name',
+        'admin_mobile',
+        'amount',
+        'utr_number',
+        'upi_id',
+        'qr_code',
+        'request_type',
+        'status',
+        'created_at'
         ]
         read_only_fields = [
             'request_type',
             'status',
             'created_at',
             'user_name',
-            'mobile_number'
+            'mobile_number',
+            'admin_name',
+            'admin_mobile',
         ]
 
 

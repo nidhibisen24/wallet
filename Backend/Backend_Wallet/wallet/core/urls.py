@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import register , add_payment_account,payment_accounts,update_payment_account, create_admin,delete_payment_account ,my_referral ,set_default_payment_account ,login ,user_request_history,get_chat_room_messages, add_bonus,upload_qr_code, get_chat_rooms,send_message,get_chat_messages ,create_chat_room,approved_requests,  delete_user,all_transactions, get_qr_code,user_dashboard,search_user,add_fund_request, withdraw_fund_request,user_details , approve_request, reject_request,all_users , admin_dashboard , pending_requests
+from .views import register , add_payment_account,payment_accounts,update_payment_account,get_all_admins, create_admin,delete_payment_account ,my_referral ,set_default_payment_account ,login ,user_request_history,get_chat_room_messages, add_bonus,upload_qr_code, get_chat_rooms,send_message,get_chat_messages ,create_chat_room,approved_requests,  delete_user,all_transactions, get_qr_code,user_dashboard,search_user,add_fund_request, withdraw_fund_request,user_details , approve_request, reject_request,all_users , admin_dashboard , pending_requests
 
 urlpatterns = [
     path('register/',register,name='register'),
@@ -16,7 +16,7 @@ urlpatterns = [
 
     #admin anya Group
     path('admin-dashboard/',admin_dashboard),
-    path('pending-request/',pending_requests),
+    path('pending-request/<int:admin_id>/"',pending_requests),
     path('all-users/',all_users),
     path('user-details/<int:id>/', user_details),
     #other useful stuff
@@ -58,6 +58,9 @@ urlpatterns = [
     #Referral 
     path("my-referral/<int:user_id>/",my_referral),
 
-    path( "create-admin/", create_admin)
+    #admin
+    path( "create-admin/", create_admin),
+    path("admins/",get_all_admins,)
+
 ] 
 

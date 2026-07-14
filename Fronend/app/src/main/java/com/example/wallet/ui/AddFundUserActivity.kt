@@ -23,6 +23,7 @@ class AddFundUserActivity : AppCompatActivity() {
     private lateinit var btnBack: CardView
 
     private var userId = 0
+    private var adminId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +31,7 @@ class AddFundUserActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_fund_user)
 
         userId = intent.getIntExtra("USER_ID", 0)
+        adminId = intent.getIntExtra("ADMIN_ID", 0)
 
         etAmount = findViewById(R.id.etAmount)
         etUtr = findViewById(R.id.etUtr)
@@ -115,6 +117,7 @@ class AddFundUserActivity : AppCompatActivity() {
 
                         AddFundRequest(
                             user = userId,
+                            admin = adminId,
                             amount = amount,
                             utr_number = utr
                         )

@@ -330,11 +330,12 @@ def admin_dashboard(request):
 
 #Pending Request 
 @api_view(['GET'])
-def pending_requests(request):
+def pending_requests(request, admin_id):
 
     requests = FundRequest.objects.filter(
-        status='PENDING'
-    ).order_by('-created_at')
+        admin_id=admin_id,
+        status="PENDING"
+    ).order_by("-created_at")
 
     serializer = FundRequestSerializer(
         requests,
@@ -497,13 +498,11 @@ def all_transactions(request):
 @api_view(['POST'])
 def create_chat_room(request):
 
-    user_id = request.data.get('user')
+    user_id = request.data.get("user")
+    admin_id = request.data.get("admin")
 
     try:
-
-        user = User.objects.get(
-            id=user_id
-        )
+        user = User.objects.get(id=user_id)
 
     except User.DoesNotExist:
 
@@ -514,8 +513,24 @@ def create_chat_room(request):
             status=404
         )
 
+    try:
+        admin = User.objects.get(
+            id=admin_id,
+            role__in=["ADMIN", "SUPER_ADMIN"]
+        )
+
+    except User.DoesNotExist:
+
+        return Response(
+            {
+                "error": "Admin not found"
+            },
+            status=404
+        )
+
     room, created = ChatRoom.objects.get_or_create(
-        user=user
+        user=user,
+        admin=admin
     )
 
     return Response(
@@ -563,9 +578,26 @@ def get_chat_messages(request, room_id):
 @api_view(['GET'])
 def get_chat_rooms(request):
 
-    rooms = ChatRoom.objects.order_by(
-        '-updated_at'
-    )
+    admin_id = request.GET.get("admin_id")
+
+    try:
+        admin = User.objects.get(
+            id=admin_id,
+            role__in=["ADMIN", "SUPER_ADMIN"]
+        )
+
+    except User.DoesNotExist:
+
+        return Response(
+            {
+                "error": "Admin not found"
+            },
+            status=404
+        )
+
+    rooms = ChatRoom.objects.filter(
+        admin=admin
+    ).order_by("-updated_at")
 
     data = []
 
@@ -574,8 +606,9 @@ def get_chat_rooms(request):
         data.append({
             "room_id": room.id,
             "user_id": room.user.id,
-            "name": room.user.full_name,
-            "mobile": room.user.mobile_number
+            "full_name": room.user.full_name,
+            "mobile_number": room.user.mobile_number,
+            "updated_at": room.updated_at
         })
 
     return Response(data)
@@ -915,3 +948,25 @@ def create_admin(request):
 
         "admin_id":admin.id
     })
+
+#get all admin 
+@api_view(['GET'])
+def get_all_admins(request):
+
+    admins = User.objects.filter(role="ADMIN")
+
+    data = []
+
+    for admin in admins:
+
+        data.append({
+
+            "id": admin.id,
+
+            "full_name": admin.full_name,
+
+            "mobile_number": admin.mobile_number
+
+        })
+
+    return Response(data)

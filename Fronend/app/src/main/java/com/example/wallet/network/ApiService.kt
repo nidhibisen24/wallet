@@ -5,6 +5,7 @@ import com.example.wallet.data.AddBonusRequest
 import com.example.wallet.data.AddBonusResponse
 import com.example.wallet.data.AddFundRequest
 import com.example.wallet.data.AddPaymentAccountRequest
+import com.example.wallet.data.Admin
 import com.example.wallet.data.AdminDashboardResponse
 import com.example.wallet.data.ApiMessageResponse
 import com.example.wallet.data.ApiResponse
@@ -43,6 +44,7 @@ import retrofit2.http.POST
 import retrofit2.http.DELETE
 import retrofit2.http.Part
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
 
@@ -93,10 +95,17 @@ interface ApiService {
     @Multipart
     @POST("withdraw-fund-request/")
     fun withdrawFundRequest(
+
         @Part("user") user: RequestBody,
+
+        @Part("admin") admin: RequestBody,
+
         @Part("amount") amount: RequestBody,
+
         @Part("upi_id") upiId: RequestBody,
-        @Part qr_code: MultipartBody.Part
+
+        @Part qrCode: MultipartBody.Part
+
     ): Call<ApiMessageResponse>
 
 
@@ -106,8 +115,10 @@ interface ApiService {
     ): List<Transaction>
 
     // request apis
-    @GET("pending-request/")
-    suspend fun getPendingRequests(): List<PendingRequest>
+    @GET("pending-request/{adminId}/")
+    suspend fun getPendingRequests(
+        @Path("adminId") adminId: Int
+    ): List<PendingRequest>
 
     @POST("approve-request/")
     suspend fun approveRequest(
@@ -163,7 +174,9 @@ interface ApiService {
     ): Call<Void>
 
     @GET("chat-rooms/")
-    fun getChatRooms(): Call<List<ChatRoom>>
+    fun getChatRooms(
+        @Query("admin_id") adminId: Int
+    ): Call<List<ChatRoom>>
 
 
     @Multipart
@@ -202,5 +215,8 @@ interface ApiService {
         @Body request: CreateAdminRequest
 
     ): Call<CreateAdminResponse>
+
+    @GET("admins/")
+    fun getAllAdmins(): Call<List<Admin>>
 }
 

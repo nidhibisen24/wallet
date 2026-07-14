@@ -36,6 +36,7 @@ class WithdrawFundActivity : AppCompatActivity() {
 
     private var selectedImageUri: Uri? = null
     private var userId = 0
+    private var adminId = 0
 
     companion object {
         private const val PICK_IMAGE_REQUEST = 100
@@ -48,6 +49,10 @@ class WithdrawFundActivity : AppCompatActivity() {
 
         userId = intent.getIntExtra(
             "USER_ID",
+            0
+        )
+        adminId = intent.getIntExtra(
+            "ADMIN_ID",
             0
         )
 
@@ -152,6 +157,11 @@ class WithdrawFundActivity : AppCompatActivity() {
                 .toRequestBody(
                     "text/plain".toMediaTypeOrNull()
                 )
+        val adminBody =
+            adminId.toString()
+                .toRequestBody(
+                    "text/plain".toMediaTypeOrNull()
+                )
 
         val amountBody =
             amount.toRequestBody(
@@ -168,6 +178,7 @@ class WithdrawFundActivity : AppCompatActivity() {
         RetrofitClient.api
             .withdrawFundRequest(
                 userBody,
+                adminBody,
                 amountBody,
                 upiBody,
                 qrPart

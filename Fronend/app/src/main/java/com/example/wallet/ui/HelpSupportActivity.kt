@@ -20,6 +20,7 @@ class HelpSupportActivity : AppCompatActivity() {
     private lateinit var btnBack: CardView
 
     private var userId = 0
+    private var adminId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +32,10 @@ class HelpSupportActivity : AppCompatActivity() {
                 "USER_ID",
                 0
             )
+        adminId = intent.getIntExtra(
+            "ADMIN_ID",
+            0
+        )
 
         btnStartChat =
             findViewById(R.id.btnStartChat)
@@ -51,7 +56,10 @@ class HelpSupportActivity : AppCompatActivity() {
     private fun createChatRoom() {
 
         RetrofitClient.api.createChatRoom(
-            CreateRoomRequest(userId)
+            CreateRoomRequest(
+                user = userId,
+                admin = adminId
+            )
         ).enqueue(
             object : Callback<CreateRoomResponse> {
 

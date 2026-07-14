@@ -76,12 +76,17 @@ class UserDashboardActivity : AppCompatActivity() {
 
             val intent = Intent(
                 this,
-                AddFundUserActivity::class.java
+                ChooseAdminActivity::class.java
             )
 
             intent.putExtra(
                 "USER_ID",
                 userId
+            )
+
+            intent.putExtra(
+                "TYPE",
+                "BUY"
             )
 
             startActivity(intent)
@@ -123,12 +128,17 @@ class UserDashboardActivity : AppCompatActivity() {
 
             val intent = Intent(
                 this,
-                WithdrawFundActivity::class.java
+                ChooseAdminActivity::class.java
             )
 
             intent.putExtra(
                 "USER_ID",
                 userId
+            )
+
+            intent.putExtra(
+                "TYPE",
+                "SELL"
             )
 
             startActivity(intent)
@@ -140,12 +150,17 @@ class UserDashboardActivity : AppCompatActivity() {
 
             val intent = Intent(
                 this,
-                HelpSupportActivity::class.java
+                ChooseAdminActivity::class.java
             )
 
             intent.putExtra(
                 "USER_ID",
                 userId
+            )
+
+            intent.putExtra(
+                "TYPE",
+                "CHAT"
             )
 
             startActivity(intent)

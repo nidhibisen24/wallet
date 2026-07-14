@@ -55,7 +55,19 @@ class AdminChatRoomsActivity : AppCompatActivity() {
     private fun loadRooms() {
         swipeRefresh.isRefreshing = true
 
-        RetrofitClient.api.getChatRooms()
+        val sharedPref =
+            getSharedPreferences(
+                "wallet_app",
+                MODE_PRIVATE
+            )
+
+        val adminId =
+            sharedPref.getInt(
+                "user_id",
+                0
+            )
+
+        RetrofitClient.api.getChatRooms(adminId)
             .enqueue(object :
                 Callback<List<ChatRoom>> {
 
@@ -63,36 +75,33 @@ class AdminChatRoomsActivity : AppCompatActivity() {
                     call: Call<List<ChatRoom>>,
                     response: Response<List<ChatRoom>>
                 ) {
+
                     swipeRefresh.isRefreshing = false
+
+                    android.util.Log.d("CHAT", "Code = ${response.code()}")
+                    android.util.Log.d("CHAT", "Body = ${response.body()}")
+                    android.util.Log.d("CHAT", "ADMIN ID = $adminId")
 
                     if (response.isSuccessful) {
 
-                        rooms =
-                            response.body() ?: listOf()
+                        rooms = response.body() ?: listOf()
 
-                        rvRooms.adapter =
-                            ChatRoomAdapter(
-                                rooms
-                            ) { room ->
+                        android.util.Log.d("CHAT", "Size = ${rooms.size}")
 
-                                val intent =
-                                    Intent(
-                                        this@AdminChatRoomsActivity,
-                                        AdminChatActivity::class.java
-                                    )
+                        rvRooms.adapter = ChatRoomAdapter(
+                            rooms
+                        ) { room ->
 
-                                intent.putExtra(
-                                    "ROOM_ID",
-                                    room.room_id
-                                )
+                            val intent = Intent(
+                                this@AdminChatRoomsActivity,
+                                AdminChatActivity::class.java
+                            )
 
-                                intent.putExtra(
-                                    "USER_ID",
-                                    room.user_id
-                                )
+                            intent.putExtra("ROOM_ID", room.room_id)
+                            intent.putExtra("USER_ID", room.user_id)
 
-                                startActivity(intent)
-                            }
+                            startActivity(intent)
+                        }
                     }
                 }
 

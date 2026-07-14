@@ -56,10 +56,10 @@ class ChatRoomAdapter(
         val room = rooms[position]
 
         holder.tvUserName.text =
-            room.name
+            room.full_name
 
         holder.tvLastMessage.text =
-            "Tap to open chat"
+            room.mobile_number
 
         holder.itemView.setOnClickListener {
             onClick(room)

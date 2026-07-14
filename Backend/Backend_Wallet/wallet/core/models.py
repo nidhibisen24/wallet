@@ -116,6 +116,8 @@ class FundRequest(models.Model):
 
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='fund_requests')
 
+    admin = models.ForeignKey(User,on_delete=models.CASCADE,related_name="fund_requests_received" ,null=True,blank=True,)
+
     amount = models.DecimalField(max_digits=12,decimal_places=2)
 
     request_type = models.CharField(max_length=20,choices=REQUEST_TYPES)
@@ -137,6 +139,12 @@ class FundRequest(models.Model):
 
 class QRCode(models.Model):
 
+    admin = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name="qr_code" ,null=True,blank=True,
+    )
+
     image = models.ImageField(
         upload_to='qr_codes/'
     )
@@ -152,6 +160,7 @@ class QRCode(models.Model):
 class ChatRoom(models.Model):
 
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="chat_rooms")
+    admin = models.ForeignKey(User,on_delete=models.CASCADE,related_name="chat_rooms_admin" ,null=True,blank=True,)
 
     created_at = models.DateTimeField(auto_now_add=True)
 

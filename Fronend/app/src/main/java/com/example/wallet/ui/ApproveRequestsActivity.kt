@@ -43,8 +43,22 @@ class ApproveRequestsActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
 
+            val sharedPref =
+                getSharedPreferences(
+                    "wallet_app",
+                    MODE_PRIVATE
+                )
+
+            val adminId =
+                sharedPref.getInt(
+                    "user_id",
+                    0
+                )
+
             val requests =
-                RetrofitClient.api.getPendingRequests()
+                RetrofitClient.api.getPendingRequests(
+                    adminId
+                )
 
             rvPendingRequests.adapter =
                 PendingRequestAdapter(
