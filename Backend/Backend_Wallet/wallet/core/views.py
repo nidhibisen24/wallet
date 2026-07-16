@@ -166,19 +166,19 @@ def add_fund_request(request):
         status=400
     )
 
-#Withdraw Fund Request
-
 @api_view(['POST'])
 def withdraw_fund_request(request):
 
-    serializer = FundRequestSerializer(
-        data=request.data
-    )
+    serializer = FundRequestSerializer(data=request.data)
 
     if serializer.is_valid():
 
+        payment = serializer.validated_data.get("payment_account")
+
         serializer.save(
-            request_type='WITHDRAW'
+            request_type="WITHDRAW",
+            upi_id=payment.upi_id if payment else None,
+            qr_code=payment.qr_code if payment else None
         )
 
         return Response({
@@ -187,10 +187,7 @@ def withdraw_fund_request(request):
 
     print(serializer.errors)
 
-    return Response(
-        serializer.errors,
-        status=400
-    )
+    return Response(serializer.errors, status=400)
 
 # For Approve Request
 @api_view(['POST'])
@@ -882,7 +879,36 @@ def generate_referral_code():
 
         if not User.objects.filter(referral_code=code).exists():
             return code
+        
+#get payment accounts
+@api_view(["GET"])
+def get_payment_accounts(request, user_id):
 
+    accounts = SavedPaymentDetails.objects.filter(
+        user_id=user_id
+    ).order_by("-is_default", "-created_at")
+
+    data = []
+
+    for account in accounts:
+
+        data.append({
+
+            "id": account.id,
+
+            "account_name": account.account_name,
+
+            "upi_id": account.upi_id,
+
+            "qr_code": request.build_absolute_uri(
+                account.qr_code.url
+            ) if account.qr_code else None,
+
+            "is_default": account.is_default
+
+        })
+
+    return Response(data)
 
 #Referral 
 @api_view(["GET"])

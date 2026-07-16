@@ -1,46 +1,49 @@
 package com.example.wallet.ui
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import com.bumptech.glide.Glide
 import com.example.wallet.R
 import com.example.wallet.data.ApiMessageResponse
+import com.example.wallet.data.SavedPaymentDetails
 import com.example.wallet.network.RetrofitClient
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
+
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
-import java.io.FileOutputStream
+
 
 class WithdrawFundActivity : AppCompatActivity() {
 
 
     private lateinit var etAmount: EditText
-    private lateinit var etUpiId: EditText
-    private lateinit var btnSelectQr: Button
     private lateinit var btnSubmit: Button
     private lateinit var ivQrPreview: ImageView
     private lateinit var btnBack: CardView
 
-    private var selectedImageUri: Uri? = null
+
     private var userId = 0
     private var adminId = 0
 
-    companion object {
-        private const val PICK_IMAGE_REQUEST = 100
-    }
+    private lateinit var actPaymentAccount: AutoCompleteTextView
+
+    private var paymentAccounts =
+        mutableListOf<SavedPaymentDetails>()
+
+    private var selectedPaymentId = 0
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,43 +54,40 @@ class WithdrawFundActivity : AppCompatActivity() {
             "USER_ID",
             0
         )
+
         adminId = intent.getIntExtra(
             "ADMIN_ID",
             0
         )
 
-        etAmount = findViewById(R.id.etAmount)
-        etUpiId = findViewById(R.id.etUpiId)
-        btnSelectQr = findViewById(R.id.btnSelectQr)
-        btnSubmit = findViewById(R.id.btnSubmit)
-        ivQrPreview = findViewById(R.id.ivQrPreview)
+        etAmount =
+            findViewById(R.id.etAmount)
 
-        btnSelectQr.setOnClickListener {
+        ivQrPreview =
+            findViewById(R.id.ivQrPreview)
 
-            val intent = Intent(
-                Intent.ACTION_PICK,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-            )
+        btnSubmit =
+            findViewById(R.id.btnSubmit)
 
-            startActivityForResult(
-                intent,
-                PICK_IMAGE_REQUEST
-            )
-        }
+        btnBack =
+            findViewById(R.id.btnBack)
 
-        btnBack = findViewById(R.id.btnBack)
+        actPaymentAccount =
+            findViewById(R.id.actPaymentAccount)
+
         btnBack.setOnClickListener {
 
             finish()
         }
 
+        loadPaymentAccounts()
+
         btnSubmit.setOnClickListener {
 
             val amount =
-                etAmount.text.toString().trim()
-
-            val upiId =
-                etUpiId.text.toString().trim()
+                etAmount.text
+                    .toString()
+                    .trim()
 
             if (userId == 0) {
 
@@ -102,23 +102,17 @@ class WithdrawFundActivity : AppCompatActivity() {
 
             if (amount.isEmpty()) {
 
-                etAmount.error = "Enter Amount"
+                etAmount.error =
+                    "Enter Amount"
 
                 return@setOnClickListener
             }
 
-            if (upiId.isEmpty()) {
-
-                etUpiId.error = "Enter UPI ID"
-
-                return@setOnClickListener
-            }
-
-            if (selectedImageUri == null) {
+            if (selectedPaymentId == 0) {
 
                 Toast.makeText(
                     this,
-                    "Select QR Code Image",
+                    "Please select a payment account",
                     Toast.LENGTH_SHORT
                 ).show()
 
@@ -126,37 +120,104 @@ class WithdrawFundActivity : AppCompatActivity() {
             }
 
             uploadWithdrawRequest(
-                amount,
-                upiId
+                amount
             )
         }
     }
 
+    private fun loadPaymentAccounts() {
+
+        RetrofitClient.api
+            .getPaymentAccounts(userId)
+            .enqueue(object :
+                Callback<List<SavedPaymentDetails>> {
+
+                override fun onResponse(
+                    call: Call<List<SavedPaymentDetails>>,
+                    response: Response<List<SavedPaymentDetails>>
+                ) {
+
+                    if (!response.isSuccessful) {
+
+                        Toast.makeText(
+                            this@WithdrawFundActivity,
+                            "Failed to load payment accounts",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        return
+                    }
+
+                    paymentAccounts.clear()
+
+                    paymentAccounts.addAll(
+                        response.body() ?: listOf()
+                    )
+
+                    val names =
+                        paymentAccounts.map {
+                            it.account_name
+                        }
+
+                    val adapter =
+                        ArrayAdapter(
+                            this@WithdrawFundActivity,
+                            android.R.layout.simple_dropdown_item_1line,
+                            names
+                        )
+
+                    actPaymentAccount.setAdapter(adapter)
+
+                    actPaymentAccount.setOnItemClickListener { _, _, position, _ ->
+
+                        val account =
+                            paymentAccounts[position]
+
+                        selectedPaymentId =
+                            account.id
+
+                        if (!account.qr_code.isNullOrEmpty()) {
+
+                            val imageUrl =
+                                "http://10.165.159.70:5000${account.qr_code}"
+
+                            Glide.with(this@WithdrawFundActivity)
+                                .load(imageUrl)
+                                .into(ivQrPreview)
+
+                        } else {
+
+                            ivQrPreview.setImageDrawable(null)
+
+                        }
+                    }
+
+                }
+
+                override fun onFailure(
+                    call: Call<List<SavedPaymentDetails>>,
+                    t: Throwable
+                ) {
+
+                    Toast.makeText(
+                        this@WithdrawFundActivity,
+                        t.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+            })
+    }
     private fun uploadWithdrawRequest(
-        amount: String,
-        upiId: String
+        amount: String
     ) {
-
-        val imageFile =
-            getFileFromUri(selectedImageUri!!)
-
-        val requestFile =
-            imageFile.asRequestBody(
-                "image/*".toMediaTypeOrNull()
-            )
-
-        val qrPart =
-            MultipartBody.Part.createFormData(
-                "qr_code",
-                imageFile.name,
-                requestFile
-            )
 
         val userBody =
             userId.toString()
                 .toRequestBody(
                     "text/plain".toMediaTypeOrNull()
                 )
+
         val adminBody =
             adminId.toString()
                 .toRequestBody(
@@ -168,10 +229,11 @@ class WithdrawFundActivity : AppCompatActivity() {
                 "text/plain".toMediaTypeOrNull()
             )
 
-        val upiBody =
-            upiId.toRequestBody(
-                "text/plain".toMediaTypeOrNull()
-            )
+        val paymentBody =
+            selectedPaymentId.toString()
+                .toRequestBody(
+                    "text/plain".toMediaTypeOrNull()
+                )
 
         btnSubmit.isEnabled = false
 
@@ -180,11 +242,9 @@ class WithdrawFundActivity : AppCompatActivity() {
                 userBody,
                 adminBody,
                 amountBody,
-                upiBody,
-                qrPart
+                paymentBody
             )
-            .enqueue(object :
-                Callback<ApiMessageResponse> {
+            .enqueue(object : Callback<ApiMessageResponse> {
 
                 override fun onResponse(
                     call: Call<ApiMessageResponse>,
@@ -198,7 +258,7 @@ class WithdrawFundActivity : AppCompatActivity() {
                         Toast.makeText(
                             this@WithdrawFundActivity,
                             response.body()?.message
-                                ?: "Withdraw fund request submitted",
+                                ?: "Withdraw request submitted",
                             Toast.LENGTH_LONG
                         ).show()
 
@@ -230,55 +290,9 @@ class WithdrawFundActivity : AppCompatActivity() {
             })
     }
 
-    private fun getFileFromUri(
-        uri: Uri
-    ): File {
 
-        val inputStream =
-            contentResolver.openInputStream(uri)
 
-        val file = File(
-            cacheDir,
-            "withdraw_qr.jpg"
-        )
 
-        val outputStream =
-            FileOutputStream(file)
-
-        inputStream?.copyTo(outputStream)
-
-        inputStream?.close()
-        outputStream.close()
-
-        return file
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?
-    ) {
-        super.onActivityResult(
-            requestCode,
-            resultCode,
-            data
-        )
-
-        if (
-            requestCode == PICK_IMAGE_REQUEST &&
-            resultCode == Activity.RESULT_OK &&
-            data != null &&
-            data.data != null
-        ) {
-
-            selectedImageUri = data.data
-
-            ivQrPreview.setImageURI(
-                selectedImageUri
-            )
-        }
-    }
 
 
 }

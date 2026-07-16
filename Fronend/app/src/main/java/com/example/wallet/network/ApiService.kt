@@ -96,15 +96,17 @@ interface ApiService {
     @POST("withdraw-fund-request/")
     fun withdrawFundRequest(
 
-        @Part("user") user: RequestBody,
+        @Part("user")
+        user: RequestBody,
 
-        @Part("admin") admin: RequestBody,
+        @Part("admin")
+        admin: RequestBody,
 
-        @Part("amount") amount: RequestBody,
+        @Part("amount")
+        amount: RequestBody,
 
-        @Part("upi_id") upiId: RequestBody,
-
-        @Part qrCode: MultipartBody.Part
+        @Part("payment_account")
+        paymentAccount: RequestBody
 
     ): Call<ApiMessageResponse>
 

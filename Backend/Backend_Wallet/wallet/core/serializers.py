@@ -80,34 +80,65 @@ class FundRequestSerializer(serializers.ModelSerializer):
         source='user.mobile_number',
         read_only=True
     )
+
     admin_name = serializers.CharField(
-    source='admin.full_name',
-    read_only=True
+        source='admin.full_name',
+        read_only=True
     )
 
     admin_mobile = serializers.CharField(
-    source='admin.mobile_number',
-    read_only=True
+        source='admin.mobile_number',
+        read_only=True
+    )
+
+    payment_account = serializers.PrimaryKeyRelatedField(
+        queryset=SavedPaymentDetails.objects.all(),
+        required=False,
+        allow_null=True
+    )
+
+    payment_account_name = serializers.CharField(
+        source='payment_account.account_name',
+        read_only=True
+    )
+
+    payment_upi = serializers.CharField(
+        source='payment_account.upi_id',
+        read_only=True
+    )
+
+    payment_qr = serializers.ImageField(
+        source='payment_account.qr_code',
+        read_only=True
     )
 
     class Meta:
         model = FundRequest
         fields = [
-        'id',
-        'user',
-        'admin',
-        'user_name',
-        'mobile_number',
-        'admin_name',
-        'admin_mobile',
-        'amount',
-        'utr_number',
-        'upi_id',
-        'qr_code',
-        'request_type',
-        'status',
-        'created_at'
+            'id',
+            'user',
+            'admin',
+            'payment_account',
+
+            'payment_account_name',
+            'payment_upi',
+            'payment_qr',
+
+            'user_name',
+            'mobile_number',
+            'admin_name',
+            'admin_mobile',
+
+            'amount',
+            'utr_number',
+            'upi_id',
+            'qr_code',
+
+            'request_type',
+            'status',
+            'created_at'
         ]
+
         read_only_fields = [
             'request_type',
             'status',
@@ -116,6 +147,9 @@ class FundRequestSerializer(serializers.ModelSerializer):
             'mobile_number',
             'admin_name',
             'admin_mobile',
+            'payment_account_name',
+            'payment_upi',
+            'payment_qr',
         ]
 
 

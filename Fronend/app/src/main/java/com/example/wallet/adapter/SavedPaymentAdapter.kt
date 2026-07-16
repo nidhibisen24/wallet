@@ -115,7 +115,7 @@ class SavedPaymentAdapter(
                 View.VISIBLE
 
             Glide.with(holder.itemView.context)
-                .load("http://10.239.70.70:5000${account.qr_code}")
+                .load("http://10.165.159.70:5000${account.qr_code}")
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(holder.imgQr)
