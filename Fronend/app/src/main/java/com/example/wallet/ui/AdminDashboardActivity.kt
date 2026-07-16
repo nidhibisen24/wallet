@@ -95,24 +95,29 @@ class AdminDashboardActivity : AppCompatActivity() {
 
         btnCreateAdmin.setOnClickListener {
 
+            val sharedPref =
+                getSharedPreferences(
+                    "wallet_app",
+                    MODE_PRIVATE
+                )
+
+            val userId =
+                sharedPref.getInt(
+                    "user_id",
+                    0
+                )
 
             val intent = Intent(
                 this,
                 CreateAdminActivity::class.java
             )
 
-
             intent.putExtra(
                 "USER_ID",
-                intent.getIntExtra(
-                    "USER_ID",
-                    0
-                )
+                userId
             )
 
-
             startActivity(intent)
-
         }
         val cardPendingRequest =
             findViewById<CardView>(R.id.cardPendingRequest)

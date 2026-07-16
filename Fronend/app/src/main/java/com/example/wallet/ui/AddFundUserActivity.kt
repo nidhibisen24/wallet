@@ -59,10 +59,13 @@ class AddFundUserActivity : AppCompatActivity() {
             try {
 
                 val qr =
-                    RetrofitClient.api.getQrCode()
+                    RetrofitClient.api.getQrCode(adminId)
+
+
+                val imageUrl = "http://10.111.241.70:5000${qr.image}"
 
                 Glide.with(this@AddFundUserActivity)
-                    .load(qr.image)
+                    .load(imageUrl)
                     .into(imgQrCode)
 
             } catch (e: Exception) {

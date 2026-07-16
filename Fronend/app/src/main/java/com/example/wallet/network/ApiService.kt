@@ -138,11 +138,14 @@ interface ApiService {
     @Multipart
     @POST("upload-qr-code/")
     suspend fun uploadQrCode(
+        @Part("admin") admin: RequestBody,
         @Part image: MultipartBody.Part
     ): Response<QrUploadResponse>
 
     @GET("qr-code/")
-    suspend fun getQrCode(): QrCodeResponse
+    suspend fun getQrCode(
+        @Query("admin_id") adminId: Int
+    ): QrCodeResponse
 
 
 

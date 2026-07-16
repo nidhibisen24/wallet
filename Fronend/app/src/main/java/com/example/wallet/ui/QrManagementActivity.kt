@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
 class QrManagementActivity : AppCompatActivity() {
@@ -64,6 +65,17 @@ class QrManagementActivity : AppCompatActivity() {
     private fun uploadQr() {
 
         val uri = imageUri ?: return
+        val sharedPref =
+            getSharedPreferences(
+                "wallet_app",
+                MODE_PRIVATE
+            )
+
+        val adminId =
+            sharedPref.getInt(
+                "user_id",
+                0
+            )
 
         lifecycleScope.launch {
 
@@ -83,6 +95,11 @@ class QrManagementActivity : AppCompatActivity() {
                     file.asRequestBody(
                         "image/*".toMediaTypeOrNull()
                     )
+                val adminBody =
+                    adminId.toString()
+                        .toRequestBody(
+                            "text/plain".toMediaTypeOrNull()
+                        )
 
                 val imagePart =
                     MultipartBody.Part.createFormData(
@@ -93,6 +110,7 @@ class QrManagementActivity : AppCompatActivity() {
 
                 val response =
                     RetrofitClient.api.uploadQrCode(
+                        adminBody,
                         imagePart
                     )
 

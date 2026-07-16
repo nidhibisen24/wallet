@@ -443,41 +443,58 @@ def user_dashboard(request, id):
 @api_view(['POST'])
 def upload_qr_code(request):
 
-    serializer = QRCodeSerializer(
-        data=request.data
-    )
+    admin_id = request.data.get("admin")
 
-    if serializer.is_valid():
+    try:
+        admin = User.objects.get(
+            id=admin_id,
+            role__in=["ADMIN", "SUPER_ADMIN"]
+        )
 
-        QRCode.objects.all().delete()
+    except User.DoesNotExist:
 
-        serializer.save()
+        return Response(
+            {"error": "Admin not found"},
+            status=404
+        )
 
-        return Response({
-            "message": "QR Code uploaded successfully"
-        })
+    qr = QRCode.objects.filter(
+        admin=admin
+    ).first()
 
-    return Response(
-        serializer.errors,
-        status=400
-    )
+    if qr:
+        qr.image = request.FILES["image"]
+        qr.save()
 
-# View QR Code 
-@api_view(['GET'])
-def get_qr_code(request):
-
-    qr = QRCode.objects.last()
-
-    if not qr:
-        return Response({
-            "error": "QR Code not found"
-        })
+    else:
+        QRCode.objects.create(
+            admin=admin,
+            image=request.FILES["image"]
+        )
 
     return Response({
-        "image": request.build_absolute_uri(
-            qr.image.url
-        )
+        "message": "QR Code uploaded successfully"
     })
+
+# View QR Code 
+@api_view(["GET"])
+def get_qr_code(request):
+
+    admin_id = request.GET.get("admin_id")
+
+    qr = QRCode.objects.filter(
+        admin_id=admin_id
+    ).first()
+
+    if not qr:
+        return Response(
+            {"error": "QR not found"},
+            status=404
+        )
+
+    serializer = QRCodeSerializer(qr)
+
+    return Response(serializer.data)
 
 #History 
 @api_view(["GET"])
@@ -940,6 +957,11 @@ def create_admin(request):
 
     admin.full_name = full_name
     admin.save()
+
+    Wallet.objects.create(
+        user=admin,
+        balance=0
+    )
 
 
     return Response({
