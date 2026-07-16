@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -29,6 +30,8 @@ class WithdrawFundActivity : AppCompatActivity() {
 
     private lateinit var etAmount: EditText
     private lateinit var btnSubmit: Button
+
+    private lateinit var tvSelectedUpi: TextView
     private lateinit var ivQrPreview: ImageView
     private lateinit var btnBack: CardView
 
@@ -68,6 +71,8 @@ class WithdrawFundActivity : AppCompatActivity() {
 
         btnSubmit =
             findViewById(R.id.btnSubmit)
+
+        tvSelectedUpi = findViewById(R.id.tvSelectedUpi)
 
         btnBack =
             findViewById(R.id.btnBack)
@@ -175,6 +180,8 @@ class WithdrawFundActivity : AppCompatActivity() {
 
                         selectedPaymentId =
                             account.id
+
+                        tvSelectedUpi.text = account.upi_id ?: "No UPI ID"
 
                         if (!account.qr_code.isNullOrEmpty()) {
 
