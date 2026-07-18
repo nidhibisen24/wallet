@@ -432,7 +432,7 @@
                             android:id="@+id/accont"
                             android:layout_width="56dp"
                             android:layout_height="56dp"
-                            android:src="@drawable/ic_chat_support"
+                            android:src="@drawable/ic_person"
                             android:contentDescription="Accounts"
                             tools:ignore="HardcodedText" />
 
@@ -478,7 +478,7 @@
                             android:id="@+id/refer"
                             android:layout_width="56dp"
                             android:layout_height="56dp"
-                            android:src="@drawable/ic_chat_support"
+                            android:src="@drawable/ic_referral"
                             android:contentDescription="refer"
                             tools:ignore="HardcodedText" />
 

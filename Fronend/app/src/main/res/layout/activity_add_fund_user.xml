@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:letterSpacing="-0.02"
-                android:text="Add Funds To User"
+                android:text="BUY FUND"
                 android:textColor="#1B3A2B"
                 android:textSize="28sp"
                 android:fontFamily="sans-serif-medium"

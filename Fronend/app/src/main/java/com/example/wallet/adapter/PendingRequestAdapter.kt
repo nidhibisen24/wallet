@@ -120,7 +120,7 @@ class PendingRequestAdapter(
 
                     Glide.with(holder.itemView.context)
                         .load(
-                            "http://10.165.159.70:5000${request.qr_code}"
+                            "http://13.233.182.165:8000${request.qr_code}"
                         )
                         .into(imgQr)
 

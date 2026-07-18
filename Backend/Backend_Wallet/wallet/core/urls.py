@@ -20,7 +20,7 @@ urlpatterns = [
     path("all-users/<int:user_id>/", all_users),
     path('user-details/<int:id>/', user_details),
     #other useful stuff
-    path('search-user/', search_user),
+    path("search-user/<int:user_id>/",search_user),
 
 
 

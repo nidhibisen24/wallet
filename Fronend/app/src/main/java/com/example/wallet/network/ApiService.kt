@@ -84,6 +84,12 @@ interface ApiService {
         @Path("id") userId: Int
     ): UserDetails
 
+    @GET("search-user/{userId}/")
+    suspend fun searchUser(
+        @Path("userId") userId: Int,
+        @Query("search") search: String
+    ): List<User>
+
     //fund
 
     @POST("add-fund-request/")

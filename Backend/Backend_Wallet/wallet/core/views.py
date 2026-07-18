@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from decimal import Decimal
 import random
+from django.db.models import Q
 import string
 
 
@@ -419,28 +420,51 @@ def user_details(request, id):
 
     return Response(serializer.data)
 
-#Search User by mobile number
 @api_view(['GET'])
-def search_user(request):
+def search_user(request, user_id):
 
-    mobile = request.GET.get('mobile')
+    search = request.GET.get("search")
 
-    if not mobile:
+    if not search:
         return Response(
-            {
-                "error": "Mobile number required"
-            },
+            {"error": "Search value required"},
             status=400
         )
 
-    users = User.objects.filter(
-        mobile_number__icontains=mobile
-    )
+    try:
+        current_user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return Response(
+            {"error": "User not found"},
+            status=404
+        )
 
-    serializer = UserListSerializer(
-        users,
-        many=True
-    )
+    if current_user.role == "SUPER_ADMIN":
+
+        users = User.objects.filter(
+            role="ADMIN"
+        ).filter(
+            Q(full_name__icontains=search) |
+            Q(mobile_number__icontains=search)
+        )
+
+    elif current_user.role == "ADMIN":
+
+        users = User.objects.filter(
+            role="MEMBER"
+        ).filter(
+            Q(full_name__icontains=search) |
+            Q(mobile_number__icontains=search)
+        )
+
+    else:
+
+        return Response(
+            {"error": "Permission denied"},
+            status=403
+        )
+
+    serializer = UserListSerializer(users, many=True)
 
     return Response(serializer.data)
 
