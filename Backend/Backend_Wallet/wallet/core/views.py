@@ -300,23 +300,54 @@ def approved_requests(request):
 
     return Response(serializer.data)
 
-#Admin DashBoard 
+
+#admin dashboard
 @api_view(['GET'])
-def admin_dashboard(request):
+def admin_dashboard(request, admin_id):
 
-    total_users = User.objects.count()
+    try:
+        admin = User.objects.get(id=admin_id)
+    except User.DoesNotExist:
+        return Response({"error": "User not found"}, status=404)
 
-    pending_requests = FundRequest.objects.filter(
-        status='PENDING'
-    ).count()
+    if admin.role == "SUPER_ADMIN":
 
-    approved_requests = FundRequest.objects.filter(
-        status='APPROVED'
-    ).count()
+        total_users = User.objects.filter(
+            role="ADMIN"
+        ).count()
 
-    rejected_requests = FundRequest.objects.filter(
-        status='REJECTED'
-    ).count()
+        pending_requests = FundRequest.objects.filter(
+            status="PENDING"
+        ).count()
+
+        approved_requests = FundRequest.objects.filter(
+            status="APPROVED"
+        ).count()
+
+        rejected_requests = FundRequest.objects.filter(
+            status="REJECTED"
+        ).count()
+
+    else:
+
+        total_users = User.objects.filter(
+            role="MEMBER"
+        ).count()
+
+        pending_requests = FundRequest.objects.filter(
+            admin=admin,
+            status="PENDING"
+        ).count()
+
+        approved_requests = FundRequest.objects.filter(
+            admin=admin,
+            status="APPROVED"
+        ).count()
+
+        rejected_requests = FundRequest.objects.filter(
+            admin=admin,
+            status="REJECTED"
+        ).count()
 
     return Response({
         "total_users": total_users,
@@ -343,14 +374,35 @@ def pending_requests(request, admin_id):
 
 #All Users list 
 @api_view(['GET'])
-def all_users(request):
+def all_users(request, user_id):
 
-    users = User.objects.all().order_by('-id')
+    try:
+        current_user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return Response(
+            {"error": "User not found"},
+            status=404
+        )
 
-    serializer = UserListSerializer(
-        users,
-        many=True
-    )
+    if current_user.role == "ADMIN":
+
+        users = User.objects.filter(
+            role="MEMBER"
+        ).order_by("-id")
+
+    elif current_user.role == "SUPER_ADMIN":
+
+        users = User.objects.filter(
+            role="ADMIN"
+        ).order_by("-id")
+
+    else:
+        return Response(
+            {"error": "Permission denied"},
+            status=403
+        )
+
+    serializer = UserListSerializer(users, many=True)
 
     return Response(serializer.data)
 

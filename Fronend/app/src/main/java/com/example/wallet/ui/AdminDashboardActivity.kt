@@ -24,6 +24,16 @@ class AdminDashboardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_dashboard)
+
+        val sharedPref = getSharedPreferences(
+            "wallet_app",
+            MODE_PRIVATE
+        )
+
+        val userId = sharedPref.getInt(
+            "user_id",
+            0
+        )
         swipeRefresh = findViewById(R.id.swipeRefresh)
         tvTotalUsers = findViewById(R.id.tvTotalUsers)
         tvPendingRequests = findViewById(R.id.tvPendingRequests)
@@ -54,12 +64,17 @@ class AdminDashboardActivity : AppCompatActivity() {
 
         cardUserManagement.setOnClickListener {
 
-            startActivity(
-                Intent(
-                    this,
-                    AllUsersActivity::class.java
-                )
+            val intent = Intent(
+                this,
+                AllUsersActivity::class.java
             )
+
+            intent.putExtra(
+                "USER_ID",
+                userId
+            )
+
+            startActivity(intent)
         }
         swipeRefresh.setOnRefreshListener {
             loadDashboardData()
@@ -136,24 +151,34 @@ class AdminDashboardActivity : AppCompatActivity() {
 
         btnRemoveUser.setOnClickListener {
 
-            startActivity(
-                Intent(
-                    this,
-                    DeleteUserActivity::class.java
-                )
+            val intent = Intent(
+                this,
+                DeleteUserActivity::class.java
             )
+
+            intent.putExtra(
+                "USER_ID",
+                userId
+            )
+
+            startActivity(intent)
         }
         val btnAddBonus =
             findViewById<Button>(R.id.btnAddBonus)
 
         btnAddBonus.setOnClickListener {
 
-            startActivity(
-                Intent(
-                    this,
-                    AddBonusUserActivity::class.java
-                )
+            val intent = Intent(
+                this,
+                AddBonusUserActivity::class.java
             )
+
+            intent.putExtra(
+                "USER_ID",
+                userId
+            )
+
+            startActivity(intent)
         }
         val btnChat =
             findViewById<Button>(R.id.btnChat)
@@ -235,7 +260,18 @@ class AdminDashboardActivity : AppCompatActivity() {
 
             try {
 
-                val response = RetrofitClient.api.getAdminDashboard()
+                val sharedPref = getSharedPreferences(
+                    "wallet_app",
+                    MODE_PRIVATE
+                )
+
+                val adminId = sharedPref.getInt(
+                    "user_id",
+                    0
+                )
+
+                val response =
+                    RetrofitClient.api.getAdminDashboard(adminId)
 
                 tvTotalUsers.text = response.total_users.toString()
 

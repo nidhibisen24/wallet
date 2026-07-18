@@ -23,12 +23,14 @@ class DeleteUserActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_delete_user)
 
+        val adminId = intent.getIntExtra("USER_ID", 0)
+
         rvUsers = findViewById(R.id.rvUsers)
 
         rvUsers.layoutManager =
             LinearLayoutManager(this)
 
-        loadUsers()
+        loadUsers(adminId)
         btnBack = findViewById(R.id.btnBack)
         btnBack.setOnClickListener {
 
@@ -38,14 +40,13 @@ class DeleteUserActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadUsers() {
+    private fun loadUsers(adminId: Int) {
 
         lifecycleScope.launch {
 
             try {
 
-                val users =
-                    RetrofitClient.api.getAllUsers()
+                val users = RetrofitClient.api.getAllUsers(adminId)
 
                 rvUsers.adapter =
                     DeleteUserAdapter(users) { userId ->
@@ -54,7 +55,7 @@ class DeleteUserActivity : AppCompatActivity() {
                             .setTitle("Delete User")
                             .setMessage("Are you sure?")
                             .setPositiveButton("Delete") { _, _ ->
-                                deleteUser(userId)
+                                deleteUser(userId, adminId)
                             }
                             .setNegativeButton("Cancel", null)
                             .show()
@@ -66,14 +67,13 @@ class DeleteUserActivity : AppCompatActivity() {
         }
     }
 
-    private fun deleteUser(userId: Int) {
+    private fun deleteUser(userId: Int, adminId: Int) {
 
         lifecycleScope.launch {
 
             try {
 
-                val response =
-                    RetrofitClient.api.deleteUser(userId)
+                val response = RetrofitClient.api.deleteUser(userId)
 
                 if (response.isSuccessful) {
 
@@ -83,7 +83,7 @@ class DeleteUserActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
 
-                    loadUsers()
+                    loadUsers(adminId)
                 }
 
             } catch (e: Exception) {

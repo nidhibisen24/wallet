@@ -23,6 +23,7 @@ class AddBonusUserActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_add_bonus_user)
+        val adminId = intent.getIntExtra("USER_ID", 0)
 
         rvUsers = findViewById(R.id.rvUsers)
         swipeRefresh = findViewById(R.id.swipeRefresh)
@@ -31,18 +32,22 @@ class AddBonusUserActivity : AppCompatActivity() {
         rvUsers.layoutManager =
             LinearLayoutManager(this)
 
-        swipeRefresh.setOnRefreshListener {
-            loadUsers()
-        }
+
 
         btnBack.setOnClickListener {
             finish()
         }
 
-        loadUsers()
+        swipeRefresh.setOnRefreshListener {
+            loadUsers(adminId)
+        }
+
+        loadUsers(adminId)
+
+
     }
 
-    private fun loadUsers() {
+    private fun loadUsers(adminId: Int) {
         swipeRefresh.isRefreshing = true
 
 
@@ -51,7 +56,7 @@ class AddBonusUserActivity : AppCompatActivity() {
             try {
 
                 val users =
-                    RetrofitClient.api.getAllUsers()
+                    RetrofitClient.api.getAllUsers(adminId)
 
                 rvUsers.adapter =
                     AddBonusUserAdapter(users) { userId ->

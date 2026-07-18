@@ -22,45 +22,38 @@ class AllUsersActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_all_users)
 
+        val userId = intent.getIntExtra("USER_ID", 0)
+
         rvUsers = findViewById(R.id.rvUsers)
+        rvUsers.layoutManager = LinearLayoutManager(this)
 
-        rvUsers.layoutManager =
-            LinearLayoutManager(this)
+        loadUsers(userId)
 
-        loadUsers()
         btnBack = findViewById(R.id.btnBack)
         btnBack.setOnClickListener {
-
             finish()
-
-
         }
     }
 
-    private fun loadUsers() {
+    private fun loadUsers(userId: Int) {
 
         lifecycleScope.launch {
 
             try {
 
-                val users =
-                    RetrofitClient.api.getAllUsers()
+                val users = RetrofitClient.api.getAllUsers(userId)
 
-                rvUsers.adapter =
-                    UserAdapter(users) { userId ->
+                rvUsers.adapter = UserAdapter(users) { selectedUserId ->
 
-                        val intent = Intent(
-                            this@AllUsersActivity,
-                            UserDetailsActivity::class.java
-                        )
+                    val intent = Intent(
+                        this@AllUsersActivity,
+                        UserDetailsActivity::class.java
+                    )
 
-                        intent.putExtra(
-                            "USER_ID",
-                            userId
-                        )
+                    intent.putExtra("USER_ID", selectedUserId)
 
-                        startActivity(intent)
-                    }
+                    startActivity(intent)
+                }
 
             } catch (e: Exception) {
                 e.printStackTrace()

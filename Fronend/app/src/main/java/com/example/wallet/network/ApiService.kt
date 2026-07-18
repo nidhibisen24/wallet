@@ -58,8 +58,10 @@ interface ApiService {
         @Body request: RegisterRequest
     ): RegisterResponse
 
-    @GET("admin-dashboard/")
-    suspend fun getAdminDashboard(): AdminDashboardResponse
+    @GET("admin-dashboard/{adminId}/")
+    suspend fun getAdminDashboard(
+        @Path("adminId") adminId: Int
+    ): AdminDashboardResponse
 
     @GET("user-dashboard/{userId}")
     suspend fun getUserDashboard(
@@ -67,8 +69,10 @@ interface ApiService {
     ): UserDashboardResponse
 
     // user apis
-    @GET("all-users/")
-    suspend fun getAllUsers(): List<User>
+    @GET("all-users/{userId}/")
+    suspend fun getAllUsers(
+        @Path("userId") userId: Int
+    ): List<User>
 
     @DELETE("delete-user/{id}/")
     suspend fun deleteUser(

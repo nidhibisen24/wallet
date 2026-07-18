@@ -15,9 +15,9 @@ urlpatterns = [
 
 
     #admin anya Group
-    path('admin-dashboard/',admin_dashboard),
+    path("admin-dashboard/<int:admin_id>/", admin_dashboard),
     path('pending-request/<int:admin_id>/',pending_requests),
-    path('all-users/',all_users),
+    path("all-users/<int:user_id>/", all_users),
     path('user-details/<int:id>/', user_details),
     #other useful stuff
     path('search-user/', search_user),
