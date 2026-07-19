@@ -98,7 +98,7 @@
                     android:id="@+id/etAccountName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Personal UPI" />
+                    android:hint="Account Name" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

@@ -186,7 +186,7 @@ class WithdrawFundActivity : AppCompatActivity() {
                         if (!account.qr_code.isNullOrEmpty()) {
 
                             val imageUrl =
-                                "http://10.165.159.70:5000${account.qr_code}"
+                                "http://13.233.182.165${account.qr_code}"
 
                             Glide.with(this@WithdrawFundActivity)
                                 .load(imageUrl)

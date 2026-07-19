@@ -110,6 +110,7 @@ class AdminDashboardActivity : AppCompatActivity() {
 
         btnCreateAdmin.setOnClickListener {
 
+
             val sharedPref =
                 getSharedPreferences(
                     "wallet_app",
@@ -185,12 +186,17 @@ class AdminDashboardActivity : AppCompatActivity() {
 
         btnChat.setOnClickListener {
 
-            startActivity(
-                Intent(
-                    this,
-                    AdminChatRoomsActivity::class.java
-                )
+            val intent = Intent(
+                this,
+                AdminChatRoomsActivity::class.java
             )
+
+            intent.putExtra(
+                "USER_ID",
+                userId
+            )
+
+            startActivity(intent)
         }
         val btnApprove =
             findViewById<Button>(R.id.btnApprove)
@@ -221,12 +227,17 @@ class AdminDashboardActivity : AppCompatActivity() {
 
         btnViewHistory.setOnClickListener {
 
-            startActivity(
-                Intent(
-                    this,
-                    AllTransactionHistoryActivity::class.java
-                )
+            val intent = Intent(
+                this,
+                AllTransactionHistoryActivity::class.java
             )
+
+            intent.putExtra(
+                "USER_ID",
+                userId
+            )
+
+            startActivity(intent)
         }
         val btnUpdateQr =
             findViewById<Button>(R.id.btnUpdateQr)

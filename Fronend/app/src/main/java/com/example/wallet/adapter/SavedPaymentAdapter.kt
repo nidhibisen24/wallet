@@ -47,8 +47,7 @@ class SavedPaymentAdapter(
         val btnDefault: MaterialButton =
             itemView.findViewById(R.id.btnDefault)
 
-        val btnEdit: MaterialButton =
-            itemView.findViewById(R.id.btnEdit)
+
 
         val btnDelete: MaterialButton =
             itemView.findViewById(R.id.btnDelete)
@@ -115,7 +114,7 @@ class SavedPaymentAdapter(
                 View.VISIBLE
 
             Glide.with(holder.itemView.context)
-                .load("http://13.233.182.165:8000${account.qr_code}")
+                .load("http://13.233.182.165${account.qr_code}")
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(holder.imgQr)
@@ -133,10 +132,7 @@ class SavedPaymentAdapter(
         }
 
         // Edit Button
-        holder.btnEdit.setOnClickListener {
 
-            onEditClick(account)
-        }
 
         // Delete Button
         holder.btnDelete.setOnClickListener {

@@ -571,9 +571,29 @@ def get_qr_code(request):
 
 #History 
 @api_view(["GET"])
-def all_transactions(request):
+def all_transactions(request, admin_id):
 
-    transactions = FundRequest.objects.all().order_by("-created_at")
+    try:
+        admin = User.objects.get(id=admin_id)
+    except User.DoesNotExist:
+        return Response(
+            {"error": "User not found"},
+            status=404
+        )
+
+    if admin.role == "SUPER_ADMIN":
+
+        transactions = FundRequest.objects.all().order_by(
+            "-created_at"
+        )
+
+    else:
+
+        transactions = FundRequest.objects.filter(
+            admin=admin
+        ).order_by(
+            "-created_at"
+        )
 
     serializer = TransactionHistorySerializer(
         transactions,
@@ -878,34 +898,26 @@ def update_payment_account(request):
 #Delete Payment Account
 
 @api_view(['DELETE'])
-def delete_payment_account(request):
-
-    account_id = request.data.get("id")
+def delete_payment_account(request, account_id):
 
     try:
-
         account = SavedPaymentDetails.objects.get(
             id=account_id
         )
 
         account.delete()
 
-        return Response(
-            {
-                "status": True,
-                "message": "Payment account deleted successfully."
-            }
-        )
+        return Response({
+            "status": True,
+            "message": "Payment account deleted successfully."
+        })
 
     except SavedPaymentDetails.DoesNotExist:
 
-        return Response(
-            {
-                "message": "Payment account not found."
-            },
-            status=404
-        )
-    
+        return Response({
+            "status": False,
+            "message": "Payment account not found."
+        }, status=404)
 
 # Set Default Payment Account
 @api_view(['POST'])

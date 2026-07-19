@@ -24,30 +24,32 @@ class AllTransactionHistoryActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_all_transaction_history)
 
+        val adminId =
+            intent.getIntExtra("USER_ID", 0)
+
         rvTransactions =
             findViewById(R.id.rvTransactions)
-        swipeRefresh = findViewById(R.id.swipeRefresh)
+
+        swipeRefresh =
+            findViewById(R.id.swipeRefresh)
 
         rvTransactions.layoutManager =
             LinearLayoutManager(this)
 
-        loadTransactions()
+        loadTransactions(adminId)
+
         swipeRefresh.setOnRefreshListener {
-            loadTransactions()
+            loadTransactions(adminId)
         }
 
-
-
         btnBack = findViewById(R.id.btnBack)
+
         btnBack.setOnClickListener {
-
             finish()
-
-
         }
     }
 
-    private fun loadTransactions() {
+    private fun loadTransactions(adminId: Int) {
 
         swipeRefresh.isRefreshing = true
         lifecycleScope.launch {
@@ -55,7 +57,7 @@ class AllTransactionHistoryActivity : AppCompatActivity() {
             try {
 
                 val transactions =
-                    RetrofitClient.api.getAllTransactions()
+                    RetrofitClient.api.getAllTransactions(adminId)
 
                 rvTransactions.adapter =
                     TransactionHistoryAdapter(

@@ -17,6 +17,8 @@ import com.example.wallet.data.CreateAdminRequest
 import com.example.wallet.data.CreateAdminResponse
 import com.example.wallet.data.CreateRoomRequest
 import com.example.wallet.data.CreateRoomResponse
+import com.example.wallet.data.DeletePaymentRequest
+import com.example.wallet.data.DeleteResponse
 import com.example.wallet.data.LoginRequest
 import com.example.wallet.data.LoginResponse
 import com.example.wallet.data.MessageResponse
@@ -165,8 +167,10 @@ interface ApiService {
 
 
     // history
-    @GET("all-transactions/")
-    suspend fun getAllTransactions(): List<TransactionHistory>
+    @GET("all-transactions/{adminId}/")
+    suspend fun getAllTransactions(
+        @Path("adminId") adminId: Int
+    ): List<TransactionHistory>
 
 
 
@@ -209,6 +213,14 @@ interface ApiService {
         @Part qr_code: MultipartBody.Part?
 
     ): Call<ApiResponse>
+
+
+    @DELETE("delete-payment-account/{account_id}/")
+    suspend fun deletePaymentAccount(
+
+        @Path("account_id") accountId: Int
+
+    ): DeleteResponse
 
 
     @GET("payment-accounts/{userId}/")

@@ -15,7 +15,9 @@ import com.example.wallet.network.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
+import android.app.AlertDialog
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 import com.google.android.material.button.MaterialButton
 
@@ -80,6 +82,34 @@ class SavedPaymentAccountsActivity : AppCompatActivity() {
 
         loadAccounts()
     }
+    private fun deletePaymentAccount(accountId: Int) {
+
+        lifecycleScope.launch {
+
+            try {
+
+                val response =
+                    RetrofitClient.api.deletePaymentAccount(accountId)
+
+                Toast.makeText(
+                    this@SavedPaymentAccountsActivity,
+                    response.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                loadAccounts()
+
+            } catch (e: Exception) {
+
+                Toast.makeText(
+                    this@SavedPaymentAccountsActivity,
+                    e.localizedMessage,
+                    Toast.LENGTH_SHORT
+                ).show()
+
+            }
+        }
+    }
 
     private fun loadAccounts() {
 
@@ -125,11 +155,16 @@ class SavedPaymentAccountsActivity : AppCompatActivity() {
 
                                 onDeleteClick = { account ->
 
-                                    Toast.makeText(
-                                        this@SavedPaymentAccountsActivity,
-                                        "Delete API Coming Next",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    AlertDialog.Builder(this@SavedPaymentAccountsActivity)
+                                        .setTitle("Delete Payment Account")
+                                        .setMessage("Are you sure you want to delete this payment account?")
+                                        .setPositiveButton("Delete") { _, _ ->
+
+                                            deletePaymentAccount(account.id)
+
+                                        }
+                                        .setNegativeButton("Cancel", null)
+                                        .show()
 
                                 }
                             )

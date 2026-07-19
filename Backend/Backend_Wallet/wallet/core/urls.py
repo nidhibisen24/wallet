@@ -34,7 +34,7 @@ urlpatterns = [
     path('qr-code/',get_qr_code),
 
     #History Akaza Group
-    path("all-transactions/", all_transactions),
+    path("all-transactions/<int:admin_id>/", all_transactions),
 
 
     #Chat Akaza Group
@@ -52,7 +52,7 @@ urlpatterns = [
     path("add-payment-account/",add_payment_account),
     path("payment-accounts/<int:user_id>/",payment_accounts),
     path("update-payment-account/", update_payment_account),
-    path("delete-payment-account/",delete_payment_account),
+    path("delete-payment-account/<int:account_id>/",delete_payment_account),
     path("set-default-payment-account/",set_default_payment_account),
 
     # path("payment-accounts/<int:user_id>/",get_payment_accounts),

@@ -135,7 +135,7 @@ class AdminChatActivity : AppCompatActivity() {
 
         val request = SendMessageRequest(
             room = roomId,
-            sender = 1,
+            sender = userId,
             message = text
         )
 
@@ -155,16 +155,17 @@ class AdminChatActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
 
                         etMessage.setText("")
-
                         loadMessages()
 
                     } else {
 
                         Toast.makeText(
                             this@AdminChatActivity,
-                            "Failed to send message",
-                            Toast.LENGTH_SHORT
+                            response.code().toString(),
+                            Toast.LENGTH_LONG
                         ).show()
+
+                        println(response.errorBody()?.string())
                     }
                 }
 
