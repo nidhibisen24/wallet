@@ -11,6 +11,8 @@ import com.example.wallet.data.ApiMessageResponse
 import com.example.wallet.data.ApiResponse
 import com.example.wallet.data.ApproveRequest
 import com.example.wallet.data.ApprovedRequest
+import com.example.wallet.data.BlockUserRequest
+import com.example.wallet.data.BlockUserResponse
 import com.example.wallet.data.ChatMessage
 import com.example.wallet.data.ChatRoom
 import com.example.wallet.data.CreateAdminRequest
@@ -245,5 +247,11 @@ interface ApiService {
 
     @GET("admins/")
     fun getAllAdmins(): Call<List<Admin>>
+
+
+    @POST("toggle-user-block/")
+    fun toggleUserBlock(
+        @Body request: BlockUserRequest
+    ): Call<BlockUserResponse>
 }
 

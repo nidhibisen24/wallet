@@ -25,7 +25,7 @@ class AdminChatActivity : AppCompatActivity() {
     private lateinit var btnBack: CardView
 
     private var roomId = 0
-    private var userId = 0
+    private var adminId = 0
 
     private val messageList = mutableListOf<ChatMessage>()
 
@@ -39,9 +39,20 @@ class AdminChatActivity : AppCompatActivity() {
         )
         setContentView(R.layout.activity_admin_chat)
 
+
+
         roomId = intent.getIntExtra("ROOM_ID", 0)
 
-        userId = intent.getIntExtra("USER_ID", 0)
+        val sharedPref =
+            getSharedPreferences(
+                "wallet_app",
+                MODE_PRIVATE
+            )
+
+        adminId = sharedPref.getInt(
+            "user_id",
+            0
+        )
 
         rvMessages = findViewById(R.id.rvMessages)
         etMessage = findViewById(R.id.etMessage)
@@ -135,7 +146,7 @@ class AdminChatActivity : AppCompatActivity() {
 
         val request = SendMessageRequest(
             room = roomId,
-            sender = userId,
+            sender = adminId,
             message = text
         )
 

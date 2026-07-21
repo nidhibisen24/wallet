@@ -110,6 +110,13 @@ class AddFundUserActivity : AppCompatActivity() {
 
             return
         }
+        if (utr.length != 12) {
+
+            etUtr.error =
+                "UPI Transaction ID must be wrong"
+
+            return
+        }
 
         lifecycleScope.launch {
 

@@ -17,6 +17,10 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import java.io.FileOutputStream
+import java.io.InputStream
 
 class QrManagementActivity : AppCompatActivity() {
 
@@ -65,6 +69,7 @@ class QrManagementActivity : AppCompatActivity() {
     private fun uploadQr() {
 
         val uri = imageUri ?: return
+
         val sharedPref =
             getSharedPreferences(
                 "wallet_app",
@@ -81,20 +86,14 @@ class QrManagementActivity : AppCompatActivity() {
 
             try {
 
-                val inputStream =
-                    contentResolver.openInputStream(uri)
-
                 val file =
-                    File(cacheDir, "qr_image.jpg")
-
-                file.outputStream().use {
-                    inputStream?.copyTo(it)
-                }
+                    getCompressedImage(uri)
 
                 val requestFile =
                     file.asRequestBody(
-                        "image/*".toMediaTypeOrNull()
+                        "image/jpeg".toMediaTypeOrNull()
                     )
+
                 val adminBody =
                     adminId.toString()
                         .toRequestBody(
@@ -121,12 +120,82 @@ class QrManagementActivity : AppCompatActivity() {
                         "QR Uploaded Successfully",
                         android.widget.Toast.LENGTH_SHORT
                     ).show()
+
+                } else {
+
+                    android.widget.Toast.makeText(
+                        this@QrManagementActivity,
+                        "Upload Failed",
+                        android.widget.Toast.LENGTH_SHORT
+                    ).show()
                 }
 
             } catch (e: Exception) {
 
                 e.printStackTrace()
+
+                android.widget.Toast.makeText(
+                    this@QrManagementActivity,
+                    e.localizedMessage,
+                    android.widget.Toast.LENGTH_SHORT
+                ).show()
             }
         }
+    }
+    private fun getCompressedImage(
+        uri: Uri
+    ): File {
+
+        val inputStream: InputStream =
+            contentResolver.openInputStream(uri)!!
+
+        val bitmap =
+            BitmapFactory.decodeStream(inputStream)
+
+        inputStream.close()
+
+        val maxSize = 1024
+
+        val ratio =
+            bitmap.width.toFloat() / bitmap.height.toFloat()
+
+        val width: Int
+        val height: Int
+
+        if (ratio > 1) {
+
+            width = maxSize
+            height = (maxSize / ratio).toInt()
+
+        } else {
+
+            height = maxSize
+            width = (maxSize * ratio).toInt()
+        }
+
+        val resizedBitmap =
+            Bitmap.createScaledBitmap(
+                bitmap,
+                width,
+                height,
+                true
+            )
+
+        val file =
+            File(cacheDir, "compressed_qr.jpg")
+
+        FileOutputStream(file).use {
+
+            resizedBitmap.compress(
+                Bitmap.CompressFormat.JPEG,
+                75,
+                it
+            )
+        }
+
+        bitmap.recycle()
+        resizedBitmap.recycle()
+
+        return file
     }
 }

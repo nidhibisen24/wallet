@@ -24,6 +24,9 @@ import com.example.wallet.network.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import java.io.InputStream
 
 class AddPaymentAccountActivity : AppCompatActivity() {
 
@@ -222,24 +225,56 @@ class AddPaymentAccountActivity : AppCompatActivity() {
                 }
             })
     }
-    private fun getFileFromUri(
-        uri: Uri
-    ): File {
+    private fun getFileFromUri(uri: Uri): File {
 
-        val fileName =
-            getFileName(uri)
+        val inputStream: InputStream =
+            contentResolver.openInputStream(uri)!!
+
+        val bitmap =
+            BitmapFactory.decodeStream(inputStream)
+
+        inputStream.close()
+
+        // Resize image
+
+        val maxSize = 1024
+
+        val ratio = bitmap.width.toFloat() / bitmap.height.toFloat()
+
+        val width: Int
+        val height: Int
+
+        if (ratio > 1) {
+            width = maxSize
+            height = (maxSize / ratio).toInt()
+        } else {
+            height = maxSize
+            width = (maxSize * ratio).toInt()
+        }
+
+        val resizedBitmap =
+            Bitmap.createScaledBitmap(
+                bitmap,
+                width,
+                height,
+                true
+            )
 
         val file =
-            File(cacheDir, fileName)
+            File(cacheDir, "compressed.jpg")
 
-        contentResolver.openInputStream(uri)?.use {
+        FileOutputStream(file).use {
 
-            FileOutputStream(file).use { output ->
-
-                it.copyTo(output)
-
-            }
+            // Compress to 75% quality
+            resizedBitmap.compress(
+                Bitmap.CompressFormat.JPEG,
+                75,
+                it
+            )
         }
+
+        bitmap.recycle()
+        resizedBitmap.recycle()
 
         return file
     }

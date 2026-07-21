@@ -183,6 +183,8 @@ class UserDetailSerializer(serializers.ModelSerializer):
 
     total_requests = serializers.SerializerMethodField()
 
+    pending_requests = serializers.SerializerMethodField()
+
     class Meta:
         model = User
         fields = [
@@ -191,11 +193,18 @@ class UserDetailSerializer(serializers.ModelSerializer):
             'mobile_number',
             'role',
             'wallet_balance',
-            'total_requests'
+            'total_requests',
+            'pending_requests',
+            'is_blocked'
         ]
 
     def get_total_requests(self, obj):
         return obj.fund_requests.count()
+
+    def get_pending_requests(self, obj):
+        return obj.fund_requests.filter(
+            status="PENDING"
+        ).count()
     
 
 class UserRequestHistorySerializer(serializers.ModelSerializer):

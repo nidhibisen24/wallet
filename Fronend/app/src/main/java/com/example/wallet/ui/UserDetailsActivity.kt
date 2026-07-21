@@ -4,15 +4,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wallet.R
 import com.example.wallet.adapter.TransactionAdapter
+import com.example.wallet.data.BlockUserRequest
 import com.example.wallet.network.RetrofitClient
 import kotlinx.coroutines.launch
+import retrofit2.Callback
+import retrofit2.Response
+import com.example.wallet.data.BlockUserResponse
+import retrofit2.Call
 
 class UserDetailsActivity : AppCompatActivity() {
 
@@ -22,10 +29,17 @@ class UserDetailsActivity : AppCompatActivity() {
     private lateinit var tvRole: TextView
     private lateinit var tvBalance: TextView
     private lateinit var tvTotalRequests: TextView
+
+    private lateinit var tvPendingRequests: TextView
     private lateinit var btnBack: CardView
     private lateinit var btnLogout: Button
-
     private lateinit var rvTransactions: RecyclerView
+
+    private var viewedUserId = 0
+
+    private var isAdmin = false
+
+    private var isBlocked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +51,8 @@ class UserDetailsActivity : AppCompatActivity() {
         tvRole = findViewById(R.id.tvRole)
         tvBalance = findViewById(R.id.tvBalance)
         tvTotalRequests = findViewById(R.id.tvTotalRequests)
+        tvPendingRequests =
+            findViewById(R.id.tvPendingRequests)
 
         rvTransactions =
             findViewById(R.id.rvTransactions)
@@ -44,11 +60,11 @@ class UserDetailsActivity : AppCompatActivity() {
         rvTransactions.layoutManager =
             LinearLayoutManager(this)
 
-        val userId =
+        viewedUserId =
             intent.getIntExtra("USER_ID", 0)
 
-        if (userId != 0) {
-            loadUserDetails(userId)
+        if (viewedUserId != 0) {
+            loadUserDetails(viewedUserId)
         }
         btnBack = findViewById(R.id.btnBack)
         btnBack.setOnClickListener {
@@ -58,27 +74,60 @@ class UserDetailsActivity : AppCompatActivity() {
 
         }
         btnLogout = findViewById(R.id.btnLogout)
+        val sharedPref =
+            getSharedPreferences(
+                "wallet_app",
+                MODE_PRIVATE
+            )
+
+        val role =
+            sharedPref.getString(
+                "role",
+                ""
+            )
+
+        isAdmin =
+            role == "ADMIN" ||
+                    role == "SUPER_ADMIN"
+
+        if (isAdmin) {
+
+            btnLogout.text = "Loading..."
+
+        } else {
+
+            btnLogout.text = "Logout"
+
+        }
 
         btnLogout.setOnClickListener {
 
-            val sharedPref =
-                getSharedPreferences(
-                    "wallet_app",
-                    MODE_PRIVATE
+            if (isAdmin) {
+
+                toggleUserBlock()
+
+            } else {
+
+                val sharedPref =
+                    getSharedPreferences(
+                        "wallet_app",
+                        MODE_PRIVATE
+                    )
+
+                sharedPref.edit()
+                    .clear()
+                    .apply()
+
+                startActivity(
+                    Intent(
+                        this,
+                        LoginActivity::class.java
+                    )
                 )
 
-            sharedPref.edit()
-                .clear()
-                .apply()
+                finishAffinity()
 
-            startActivity(
-                Intent(
-                    this,
-                    LoginActivity::class.java
-                )
-            )
-
-            finishAffinity()
+            }
         }
     }
 
@@ -99,12 +148,17 @@ class UserDetailsActivity : AppCompatActivity() {
 
                 tvRole.text =
                     user.role
+                isBlocked = user.is_blocked
+
+                updateBlockButton()
 
                 tvBalance.text =
                     "₹${user.wallet_balance}"
 
                 tvTotalRequests.text =
                     user.total_requests.toString()
+                tvPendingRequests.text =
+                    user.pending_requests.toString()
 
                 val transactions =
                     RetrofitClient.api.getUserHistory(userId)
@@ -116,6 +170,93 @@ class UserDetailsActivity : AppCompatActivity() {
 
                 e.printStackTrace()
             }
+        }
+    }
+    private fun toggleUserBlock() {
+
+        val sharedPref =
+            getSharedPreferences(
+                "wallet_app",
+                MODE_PRIVATE
+            )
+
+        val adminId =
+            sharedPref.getInt(
+                "user_id",
+                0
+            )
+
+        val request =
+            BlockUserRequest(
+                admin_id = adminId,
+                user_id = viewedUserId
+            )
+
+        RetrofitClient.api
+            .toggleUserBlock(request)
+            .enqueue(object : Callback<BlockUserResponse> {
+
+                override fun onResponse(
+                    call: Call<BlockUserResponse>,
+                    response: Response<BlockUserResponse>
+                ) {
+
+                    if (response.isSuccessful && response.body() != null) {
+
+                        val result = response.body()!!
+
+                        isBlocked = result.is_blocked
+
+                        updateBlockButton()
+
+                        Toast.makeText(
+                            this@UserDetailsActivity,
+                            result.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                    } else {
+
+                        Toast.makeText(
+                            this@UserDetailsActivity,
+                            "Failed",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<BlockUserResponse>,
+                    t: Throwable
+                ) {
+
+                    Toast.makeText(
+                        this@UserDetailsActivity,
+                        t.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+    }
+    private fun updateBlockButton() {
+
+        if (!isAdmin) return
+
+        if (isBlocked) {
+
+            btnLogout.text = "Unblock"
+
+            btnLogout.setBackgroundColor(
+                ContextCompat.getColor(this, android.R.color.holo_green_dark)
+            )
+
+        } else {
+
+            btnLogout.text = "Block"
+
+            btnLogout.setBackgroundColor(
+                ContextCompat.getColor(this, android.R.color.holo_red_dark)
+            )
         }
     }
 

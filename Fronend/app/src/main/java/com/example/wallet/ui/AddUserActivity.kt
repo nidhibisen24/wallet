@@ -61,6 +61,17 @@ class AddUserActivity : AppCompatActivity() {
             return
         }
 
+// Mobile number validation
+        if (mobile.length != 10 || !mobile.all { it.isDigit() }) {
+
+            etMobileNumber.error =
+                "Enter a valid 10-digit mobile number"
+
+            etMobileNumber.requestFocus()
+
+            return
+        }
+
         lifecycleScope.launch {
 
             try {
@@ -69,7 +80,7 @@ class AddUserActivity : AppCompatActivity() {
                     full_name = fullName,
                     mobile_number = mobile,
                     password = password,
-                    referral_code = "null"
+                    referral_code = ""
                 )
 
                 RetrofitClient.api.registerUser(request)

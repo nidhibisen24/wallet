@@ -81,7 +81,7 @@ def register(request):
         "my_referral_code": user.referral_code      # opti for testing
     })
 
-#Login
+# Login
 @api_view(['POST'])
 def login(request):
 
@@ -104,6 +104,13 @@ def login(request):
         return Response(
             {"error": "Invalid credentials"},
             status=401
+        )
+
+    # NEW
+    if user.is_blocked:
+        return Response(
+            {"error": "Your account has been blocked. Please contact the administrator."},
+            status=403
         )
 
     wallet = Wallet.objects.get(user=user)
@@ -1106,3 +1113,46 @@ def get_all_admins(request):
         })
 
     return Response(data)
+
+#block user 
+@api_view(["POST"])
+def toggle_user_block(request):
+
+    user_id = request.data.get("user_id")
+
+    try:
+        user = User.objects.get(id=user_id)
+
+    except User.DoesNotExist:
+
+        return Response(
+            {
+                "error": "User not found"
+            },
+            status=404
+        )
+
+    # Optional: Don't allow blocking admins
+    if user.role != "MEMBER":
+
+        return Response(
+            {
+                "error": "Only members can be blocked."
+            },
+            status=400
+        )
+
+    user.is_blocked = not user.is_blocked
+    user.save()
+
+    return Response(
+        {
+            "status": True,
+            "is_blocked": user.is_blocked,
+            "message":
+                "User blocked successfully."
+                if user.is_blocked
+                else
+                "User unblocked successfully."
+        }
+    )

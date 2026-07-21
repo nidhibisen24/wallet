@@ -84,11 +84,22 @@ class RegisterActivity : AppCompatActivity() {
             password.isEmpty() ||
             confirmPassword.isEmpty()
         ) {
+
             Toast.makeText(
                 this,
                 "Please fill all fields",
                 Toast.LENGTH_SHORT
             ).show()
+
+            return
+        }
+
+// Mobile number must be exactly 10 digits
+        if (mobile.length != 10 || !mobile.all { it.isDigit() }) {
+
+            etMobile.error = "Enter a valid 10-digit mobile number"
+            etMobile.requestFocus()
+
             return
         }
 

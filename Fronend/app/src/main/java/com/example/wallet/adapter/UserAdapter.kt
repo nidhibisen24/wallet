@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.wallet.R
 import com.example.wallet.data.User
 
+
 class UserAdapter(
     private val users: List<User>,
     private val onUserClick: (Int) -> Unit
@@ -22,6 +23,8 @@ class UserAdapter(
         private val tvMobile: TextView =
             itemView.findViewById(R.id.tvMobile)
 
+
+
         private val tvBalance: TextView =
             itemView.findViewById(R.id.tvBalance)
 
@@ -30,6 +33,7 @@ class UserAdapter(
             tvUserName.text = user.full_name
 
             tvMobile.text = user.mobile_number
+            tvMobile.visibility = View.GONE
 
             tvBalance.text =
                 "₹${user.wallet_balance ?: "0.00"}"

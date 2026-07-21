@@ -157,8 +157,9 @@
                         android:id="@+id/etUtr"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:hint="Enter transaction UTR number"
-                        android:inputType="text"
+                        android:maxLength="12"
+                        android:inputType="number"
+                        android:hint="Enter 12-digit UTR number"
                         android:textColor="#2D3A30"
                         app:hintTextColor="#7A8B7F"
                         app:backgroundTint="#2E7D32"/>

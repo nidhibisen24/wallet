@@ -58,94 +58,90 @@ class CreateAdminActivity : AppCompatActivity() {
 
         btnCreate.setOnClickListener {
 
+            val fullName =
+                etFullName.text.toString().trim()
+
+            val mobile =
+                etMobile.text.toString().trim()
+
+            val password =
+                etPassword.text.toString().trim()
+
+            if (fullName.isEmpty() ||
+                mobile.isEmpty() ||
+                password.isEmpty()
+            ) {
+
+                Toast.makeText(
+                    this,
+                    "Please fill all fields",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                return@setOnClickListener
+            }
+
+            // Mobile number must be exactly 10 digits
+            if (mobile.length != 10 || !mobile.all { it.isDigit() }) {
+
+                etMobile.error =
+                    "Enter a valid 10-digit mobile number"
+
+                etMobile.requestFocus()
+
+                return@setOnClickListener
+            }
 
             val request =
                 CreateAdminRequest(
 
                     super_admin_id = superAdminId,
 
-                    full_name =
-                        etFullName.text.toString(),
+                    full_name = fullName,
 
-                    mobile_number =
-                        etMobile.text.toString(),
+                    mobile_number = mobile,
 
-                    password =
-                        etPassword.text.toString()
-
+                    password = password
                 )
 
-
-
             RetrofitClient.api.createAdmin(request)
-
-                .enqueue(object :
-
-                    Callback<CreateAdminResponse>{
-
+                .enqueue(object : Callback<CreateAdminResponse> {
 
                     override fun onResponse(
-
                         call: Call<CreateAdminResponse>,
-
                         response: Response<CreateAdminResponse>
-
                     ) {
 
-
-                        if(response.isSuccessful){
-
+                        if (response.isSuccessful) {
 
                             Toast.makeText(
-
                                 this@CreateAdminActivity,
-
                                 "Admin Created",
-
                                 Toast.LENGTH_SHORT
-
                             ).show()
-
 
                             finish()
 
-
-                        }else{
-
+                        } else {
 
                             Toast.makeText(
-
                                 this@CreateAdminActivity,
-
                                 "Failed",
-
                                 Toast.LENGTH_SHORT
-
                             ).show()
-
                         }
-
                     }
 
                     override fun onFailure(
-
                         call: Call<CreateAdminResponse>,
-
                         t: Throwable
-
                     ) {
 
-
                         Toast.makeText(
-
                             this@CreateAdminActivity,
-
                             t.message,
-
                             Toast.LENGTH_SHORT
-
                         ).show()
-
                     }
                 })
         }
