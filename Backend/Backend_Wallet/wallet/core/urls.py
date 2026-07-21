@@ -65,5 +65,8 @@ urlpatterns = [
     path("admins/",get_all_admins,),
     path("toggle-user-block/",toggle_user_block),
 
+
+    #new
+
 ] 
 
