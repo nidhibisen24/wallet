@@ -24,6 +24,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var etPassword: EditText
     private lateinit var etConfirmPassword: EditText
     private lateinit var btnRegister: Button
+    private lateinit var etEmail: EditText
     private lateinit var tvLogin: TextView
     private lateinit var etReferralCode: TextInputEditText
 
@@ -45,7 +46,9 @@ class RegisterActivity : AppCompatActivity() {
 
         etName = findViewById(R.id.etName)
         etMobile = findViewById(R.id.etMobile)
+        etEmail = findViewById(R.id.etEmail)
         etPassword = findViewById(R.id.etPassword)
+
         etConfirmPassword = findViewById(R.id.etConfirmPassword)
         btnRegister = findViewById(R.id.btnRegister)
         etReferralCode = findViewById(R.id.etReferralCode)
@@ -75,12 +78,15 @@ class RegisterActivity : AppCompatActivity() {
 
         val name = etName.text.toString().trim()
         val mobile = etMobile.text.toString().trim()
+        val email = etEmail.text.toString().trim()
         val password = etPassword.text.toString().trim()
         val confirmPassword = etConfirmPassword.text.toString().trim()
         val referralCode = etReferralCode.text.toString().trim()
 
-        if (name.isEmpty() ||
+        if (
+            name.isEmpty() ||
             mobile.isEmpty() ||
+            email.isEmpty() ||
             password.isEmpty() ||
             confirmPassword.isEmpty()
         ) {
@@ -102,6 +108,14 @@ class RegisterActivity : AppCompatActivity() {
 
             return
         }
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+
+            etEmail.error = "Enter a valid email"
+
+            etEmail.requestFocus()
+
+            return
+        }
 
         if (password != confirmPassword) {
             Toast.makeText(
@@ -119,6 +133,7 @@ class RegisterActivity : AppCompatActivity() {
                 val request = RegisterRequest(
                     full_name = name,
                     mobile_number = mobile,
+                    email = email,
                     password = password,
                     referral_code = referralCode
                 )

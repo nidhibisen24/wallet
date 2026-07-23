@@ -7,12 +7,15 @@ import com.example.wallet.data.AddFundRequest
 import com.example.wallet.data.AddPaymentAccountRequest
 import com.example.wallet.data.Admin
 import com.example.wallet.data.AdminDashboardResponse
+import com.example.wallet.data.AdminDetailsResponse
 import com.example.wallet.data.ApiMessageResponse
 import com.example.wallet.data.ApiResponse
 import com.example.wallet.data.ApproveRequest
 import com.example.wallet.data.ApprovedRequest
 import com.example.wallet.data.BlockUserRequest
 import com.example.wallet.data.BlockUserResponse
+import com.example.wallet.data.ChangePasswordRequest
+import com.example.wallet.data.ChangePasswordResponse
 import com.example.wallet.data.ChatMessage
 import com.example.wallet.data.ChatRoom
 import com.example.wallet.data.CreateAdminRequest
@@ -21,6 +24,8 @@ import com.example.wallet.data.CreateRoomRequest
 import com.example.wallet.data.CreateRoomResponse
 import com.example.wallet.data.DeletePaymentRequest
 import com.example.wallet.data.DeleteResponse
+import com.example.wallet.data.ForgotPasswordRequest
+import com.example.wallet.data.ForgotPasswordResponse
 import com.example.wallet.data.LoginRequest
 import com.example.wallet.data.LoginResponse
 import com.example.wallet.data.MessageResponse
@@ -34,6 +39,8 @@ import com.example.wallet.data.SavedPaymentDetails
 import com.example.wallet.data.SendMessageRequest
 import com.example.wallet.data.Transaction
 import com.example.wallet.data.TransactionHistory
+import com.example.wallet.data.UpdateProfileRequest
+import com.example.wallet.data.UpdateProfileResponse
 import com.example.wallet.data.User
 import com.example.wallet.data.UserDashboardResponse
 import com.example.wallet.data.UserDetails
@@ -253,5 +260,27 @@ interface ApiService {
     fun toggleUserBlock(
         @Body request: BlockUserRequest
     ): Call<BlockUserResponse>
+
+    @GET("admin-details/{id}")
+    suspend fun getAdminDetails(
+
+        @Path("id") adminId: Int
+
+    ): AdminDetailsResponse
+
+    @POST("forgot-password/")
+    suspend fun forgotPassword(
+        @Body request: ForgotPasswordRequest
+    ): Response<ForgotPasswordResponse>
+
+    @POST("change-password/")
+    suspend fun changePassword(
+        @Body request: ChangePasswordRequest
+    ): Response<ChangePasswordResponse>
+
+    @POST("update-profile/")
+    suspend fun updateProfile(
+        @Body request: UpdateProfileRequest
+    ): Response<UpdateProfileResponse>
 }
 

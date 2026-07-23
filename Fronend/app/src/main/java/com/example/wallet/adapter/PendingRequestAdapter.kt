@@ -33,6 +33,10 @@ class PendingRequestAdapter(
         val tvAmount: TextView =
             view.findViewById(R.id.tvAmount)
 
+        val tvUTR: TextView =
+            view.findViewById(R.id.tvUTR)
+
+
         val tvType: TextView =
             view.findViewById(R.id.tvType)
 
@@ -93,11 +97,10 @@ class PendingRequestAdapter(
 
         if (request.request_type == "WITHDRAW") {
 
-            holder.tvUpiId.visibility =
-                View.VISIBLE
-
-            holder.btnViewQr.visibility =
-                View.VISIBLE
+            // Show UPI + QR
+            holder.tvUpiId.visibility = View.VISIBLE
+            holder.btnViewQr.visibility = View.VISIBLE
+            holder.tvUTR.visibility = View.GONE
 
             holder.tvUpiId.text =
                 "UPI ID: ${request.upi_id}"
@@ -106,22 +109,15 @@ class PendingRequestAdapter(
 
                 if (!request.qr_code.isNullOrEmpty()) {
 
-                    val dialog =
-                        Dialog(holder.itemView.context)
+                    val dialog = Dialog(holder.itemView.context)
 
-                    dialog.setContentView(
-                        R.layout.dialog_qr
-                    )
+                    dialog.setContentView(R.layout.dialog_qr)
 
                     val imgQr =
-                        dialog.findViewById<ImageView>(
-                            R.id.imgQr
-                        )
+                        dialog.findViewById<ImageView>(R.id.imgQr)
 
                     Glide.with(holder.itemView.context)
-                        .load(
-                            "http://13.233.182.165${request.qr_code}"
-                        )
+                        .load("http://13.233.182.165${request.qr_code}")
                         .into(imgQr)
 
                     dialog.show()
@@ -130,11 +126,21 @@ class PendingRequestAdapter(
 
         } else {
 
-            holder.tvUpiId.visibility =
-                View.GONE
+            // ADD FUND
+            holder.tvUpiId.visibility = View.GONE
+            holder.btnViewQr.visibility = View.GONE
 
-            holder.btnViewQr.visibility =
-                View.GONE
+            holder.tvUTR.visibility = View.VISIBLE
+
+            if (!request.utr_number.isNullOrEmpty()) {
+
+                holder.tvUTR.visibility = View.VISIBLE
+                holder.tvUTR.text = "UTR : ${request.utr_number}"
+
+            } else {
+
+                holder.tvUTR.visibility = View.GONE
+            }
         }
 
         holder.btnApprove.setOnClickListener {

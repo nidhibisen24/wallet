@@ -24,6 +24,7 @@ class AdminAdapter(
 
         val tvMobile: TextView =
             view.findViewById(R.id.tvAdminMobile)
+
     }
 
     override fun onCreateViewHolder(
@@ -58,6 +59,9 @@ class AdminAdapter(
 
         holder.tvMobile.text =
             admin.mobile_number
+        holder.tvMobile.visibility = View.GONE
+
+
 
         holder.itemView.setOnClickListener {
 

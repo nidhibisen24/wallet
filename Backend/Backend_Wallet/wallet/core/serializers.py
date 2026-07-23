@@ -19,6 +19,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = [
             'full_name',
             'mobile_number',
+            'email',
             'password',
             'referral_code'
         ]
@@ -192,6 +193,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
             'full_name',
             'mobile_number',
             'role',
+            "email", 
             'wallet_balance',
             'total_requests',
             'pending_requests',
@@ -339,3 +341,44 @@ class AddBonusSerializer(serializers.Serializer):
         max_digits=12,
         decimal_places=2
     )
+
+class AdminRequestHistorySerializer(serializers.ModelSerializer):
+
+    user_name = serializers.CharField(
+        source="user.full_name",
+        read_only=True
+    )
+    wallet_balance = serializers.DecimalField(
+    source="user.wallet.balance",
+    max_digits=12,
+    decimal_places=2,
+    read_only=True
+)
+
+    class Meta:
+        model = FundRequest
+        fields = [
+            "id",
+            "user_name",
+            "request_type",
+            "amount",
+            
+            "status",
+            "wallet_balance",
+            "created_at"
+        ]
+
+class ForgotPasswordSerializer(serializers.Serializer):
+    mobile_number = serializers.CharField(max_length=15)
+    email = serializers.EmailField()
+
+class ChangePasswordSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField()
+    current_password = serializers.CharField()
+    new_password = serializers.CharField()
+    confirm_password = serializers.CharField()
+
+class UpdateProfileSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField()
+    full_name = serializers.CharField(max_length=100)
+    email = serializers.EmailField()

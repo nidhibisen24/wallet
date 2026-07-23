@@ -23,6 +23,7 @@ class CreateAdminActivity : AppCompatActivity() {
     private lateinit var etMobile: TextInputEditText
     private lateinit var etPassword: TextInputEditText
     private lateinit var btnCreate: MaterialButton
+    private lateinit var etEmail: TextInputEditText
 
 
 
@@ -51,6 +52,7 @@ class CreateAdminActivity : AppCompatActivity() {
 
         etPassword =
             findViewById(R.id.etPassword)
+        etEmail = findViewById(R.id.etEmail)
         btnCreate =
             findViewById(R.id.btnCreate)
 
@@ -64,13 +66,16 @@ class CreateAdminActivity : AppCompatActivity() {
             val mobile =
                 etMobile.text.toString().trim()
 
+            val email =
+                etEmail.text.toString().trim()
+
             val password =
                 etPassword.text.toString().trim()
 
             if (fullName.isEmpty() ||
                 mobile.isEmpty() ||
-                password.isEmpty()
-            ) {
+                email.isEmpty() ||
+                password.isEmpty()) {
 
                 Toast.makeText(
                     this,
@@ -91,6 +96,14 @@ class CreateAdminActivity : AppCompatActivity() {
 
                 return@setOnClickListener
             }
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+
+                etEmail.error = "Enter a valid email"
+
+                etEmail.requestFocus()
+
+                return@setOnClickListener
+            }
 
             val request =
                 CreateAdminRequest(
@@ -100,6 +113,8 @@ class CreateAdminActivity : AppCompatActivity() {
                     full_name = fullName,
 
                     mobile_number = mobile,
+
+                    email = email,
 
                     password = password
                 )

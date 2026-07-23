@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wallet.R
+import com.example.wallet.adapter.AdminRequestAdapter
 import com.example.wallet.adapter.TransactionAdapter
 import com.example.wallet.data.BlockUserRequest
 import com.example.wallet.network.RetrofitClient
@@ -34,6 +35,10 @@ class UserDetailsActivity : AppCompatActivity() {
     private lateinit var btnBack: CardView
     private lateinit var btnLogout: Button
     private lateinit var rvTransactions: RecyclerView
+    private lateinit var cardChangePassword: CardView
+    private lateinit var cardEditProfile: CardView
+    private lateinit var tvEmail: TextView
+    private var currentEmail = ""
 
     private var viewedUserId = 0
 
@@ -53,6 +58,7 @@ class UserDetailsActivity : AppCompatActivity() {
         tvTotalRequests = findViewById(R.id.tvTotalRequests)
         tvPendingRequests =
             findViewById(R.id.tvPendingRequests)
+        tvEmail = findViewById(R.id.tvEmail)
 
         rvTransactions =
             findViewById(R.id.rvTransactions)
@@ -63,9 +69,8 @@ class UserDetailsActivity : AppCompatActivity() {
         viewedUserId =
             intent.getIntExtra("USER_ID", 0)
 
-        if (viewedUserId != 0) {
-            loadUserDetails(viewedUserId)
-        }
+
+
         btnBack = findViewById(R.id.btnBack)
         btnBack.setOnClickListener {
 
@@ -85,6 +90,23 @@ class UserDetailsActivity : AppCompatActivity() {
                 "role",
                 ""
             )
+        val loggedInRole =
+            sharedPref.getString(
+                "role",
+                ""
+            )
+        if (viewedUserId != 0) {
+
+            if (loggedInRole == "SUPER_ADMIN") {
+
+                loadProfile(viewedUserId)
+
+            } else {
+
+                loadUserDetails(viewedUserId)
+
+            }
+        }
 
         isAdmin =
             role == "ADMIN" ||
@@ -129,6 +151,33 @@ class UserDetailsActivity : AppCompatActivity() {
 
             }
         }
+        cardChangePassword = findViewById(R.id.cardChangePassword)
+        cardEditProfile = findViewById(R.id.cardEditProfile)
+
+        cardChangePassword.setOnClickListener {
+
+            val intent = Intent(
+                this,
+                ChangePasswordActivity::class.java
+            )
+
+            intent.putExtra("USER_ID", viewedUserId)
+
+            startActivity(intent)
+        }
+        cardEditProfile.setOnClickListener {
+
+            val intent = Intent(
+                this,
+                EditProfileActivity::class.java
+            )
+
+            intent.putExtra("USER_ID", viewedUserId)
+            intent.putExtra("FULL_NAME", tvName.text.toString())
+            intent.putExtra("EMAIL", currentEmail)
+
+            startActivity(intent)
+        }
     }
 
     private fun loadUserDetails(userId: Int) {
@@ -148,6 +197,9 @@ class UserDetailsActivity : AppCompatActivity() {
 
                 tvRole.text =
                     user.role
+                currentEmail = user.email
+                tvEmail.text = user.email
+
                 isBlocked = user.is_blocked
 
                 updateBlockButton()
@@ -257,6 +309,79 @@ class UserDetailsActivity : AppCompatActivity() {
             btnLogout.setBackgroundColor(
                 ContextCompat.getColor(this, android.R.color.holo_red_dark)
             )
+        }
+    }
+
+    private fun loadProfile(userId: Int) {
+
+        lifecycleScope.launch {
+
+            try {
+
+                val user =
+                    RetrofitClient.api.getUserDetails(userId)
+
+                if (user.role == "ADMIN") {
+
+                    loadAdminDetails(userId)
+
+                } else {
+
+                    loadUserDetails(userId)
+
+                }
+
+            } catch (e: Exception) {
+
+                e.printStackTrace()
+
+            }
+
+        }
+
+    }
+    private fun loadAdminDetails(adminId: Int) {
+
+        lifecycleScope.launch {
+
+            try {
+
+                val admin =
+                    RetrofitClient.api.getAdminDetails(adminId)
+
+                tvName.text = admin.full_name
+                tvMobile.text = admin.mobile_number
+
+                tvTotalRequests.text =
+                    admin.total_requests.toString()
+
+                tvPendingRequests.text =
+                    admin.pending_requests.toString()
+
+                rvTransactions.adapter =
+                    AdminRequestAdapter(admin.history)
+
+                tvEmail.text = admin.email
+                tvRole.text = admin.role
+
+
+
+                tvBalance.text = "₹${admin.wallet_balance}"
+
+                isBlocked = admin.is_blocked
+
+                updateBlockButton()
+
+            } catch (e: Exception) {
+
+                e.printStackTrace()
+
+                Toast.makeText(
+                    this@UserDetailsActivity,
+                    e.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 

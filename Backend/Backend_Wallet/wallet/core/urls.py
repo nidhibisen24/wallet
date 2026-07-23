@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import register , add_payment_account,payment_accounts, toggle_user_block, get_payment_accounts,update_payment_account,get_all_admins, create_admin,delete_payment_account ,my_referral ,set_default_payment_account ,login ,user_request_history,get_chat_room_messages, add_bonus,upload_qr_code, get_chat_rooms,send_message,get_chat_messages ,create_chat_room,approved_requests,  delete_user,all_transactions, get_qr_code,user_dashboard,search_user,add_fund_request, withdraw_fund_request,user_details , approve_request, reject_request,all_users , admin_dashboard , pending_requests
+from .views import register , add_payment_account,payment_accounts, update_profile,change_password,forgot_password,test_email,admin_details,toggle_user_block, get_payment_accounts,update_payment_account,get_all_admins, create_admin,delete_payment_account ,my_referral ,set_default_payment_account ,login ,user_request_history,get_chat_room_messages, add_bonus,upload_qr_code, get_chat_rooms,send_message,get_chat_messages ,create_chat_room,approved_requests,  delete_user,all_transactions, get_qr_code,user_dashboard,search_user,add_fund_request, withdraw_fund_request,user_details , approve_request, reject_request,all_users , admin_dashboard , pending_requests
 
 urlpatterns = [
     path('register/',register,name='register'),
@@ -21,6 +21,7 @@ urlpatterns = [
     path('user-details/<int:id>/', user_details),
     #other useful stuff
     path("search-user/<int:user_id>/",search_user),
+
 
 
 
@@ -65,8 +66,14 @@ urlpatterns = [
     path("admins/",get_all_admins,),
     path("toggle-user-block/",toggle_user_block),
 
+    path("admin-details/<int:admin_id>/",admin_details),
+    path("test-email/", test_email),
+    path("forgot-password/",forgot_password),
+    path("change-password/",change_password),
+    path("update-profile/",update_profile),
 
-    #new
+
+    #new all done 
 
 ] 
 

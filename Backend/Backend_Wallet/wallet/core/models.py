@@ -47,6 +47,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     full_name = models.CharField(max_length=100)
 
     role = models.CharField(max_length=20,choices=ROLE_CHOICES,default='MEMBER')
+    # NEW
+    email = models.EmailField(unique=True,null=True,blank=True)
 
     referral_code = models.CharField(max_length=8,unique=True,blank=True,null=True)
 
@@ -57,6 +59,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_blocked = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
+    force_password_change = models.BooleanField(default=False)
 
     fcm_token = models.TextField(null=True,blank=True)
 
@@ -93,7 +96,9 @@ class Referral(models.Model):
 
     referred_user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="referral")
 
-    reward = models.DecimalField(max_digits=12,decimal_places=2,default=500)
+    reward = models.DecimalField(max_digits=12,decimal_places=2,default=0)
+
+    reward_given = models.BooleanField(default=False)
 
     created_at = models.DateTimeField( auto_now_add=True)
 

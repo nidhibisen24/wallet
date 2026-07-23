@@ -33,7 +33,7 @@ class UserAdapter(
             tvUserName.text = user.full_name
 
             tvMobile.text = user.mobile_number
-            tvMobile.visibility = View.GONE
+
 
             tvBalance.text =
                 "₹${user.wallet_balance ?: "0.00"}"

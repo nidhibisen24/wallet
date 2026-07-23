@@ -118,25 +118,37 @@
                         android:layout_marginTop="16dp"
                         android:orientation="horizontal">
 
-                        <Button
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnCopy"
                             android:layout_width="0dp"
-                            android:layout_height="48dp"
+                            android:layout_height="50dp"
                             android:layout_weight="1"
                             android:text="Copy"
-                            android:textAllCaps="false"/>
+                            android:textAllCaps="false"
+                            android:textColor="#FFFFFF"
+                            android:textStyle="bold"
+                            app:backgroundTint="#2E7D32"
+                            app:cornerRadius="14dp"
+                            app:icon="@drawable/ic_copy"
+                            app:iconPadding="8dp"/>
 
                         <Space
                             android:layout_width="12dp"
                             android:layout_height="wrap_content"/>
 
-                        <Button
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnShare"
                             android:layout_width="0dp"
-                            android:layout_height="48dp"
+                            android:layout_height="50dp"
                             android:layout_weight="1"
                             android:text="Share"
-                            android:textAllCaps="false"/>
+                            android:textAllCaps="false"
+                            android:textColor="#FFFFFF"
+                            android:textStyle="bold"
+                            app:backgroundTint="#43A047"
+                            app:cornerRadius="14dp"
+                            app:icon="@drawable/ic_share"
+                            app:iconPadding="8dp"/>
 
                     </LinearLayout>
 
@@ -204,7 +216,57 @@
                         </LinearLayout>
 
                     </LinearLayout>
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        app:cardCornerRadius="14dp"
+                        app:cardElevation="0dp"
+                        app:strokeColor="#D6E9D9"
+                        app:strokeWidth="1dp"
+                        app:cardBackgroundColor="#F3FFF5">
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="22dp"
+                                    android:layout_height="22dp"
+                                    android:src="@android:drawable/ic_dialog_info"
+                                    app:tint="#2E7D32"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:text="How Referral Rewards Work"
+                                    android:textStyle="bold"
+                                    android:textSize="16sp"
+                                    android:textColor="#1B3A2B"/>
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:text="• Share your referral code with your friends.\n\n• Your friend must register using your referral code.\n\n• Once your friend completes ₹10,000 in successful transactions, you will receive a ₹300 referral bonus.\n\n• The reward is credited only once for each referred friend."
+                                android:textColor="#4A4A4A"
+                                android:textSize="14sp"
+                                android:lineSpacingExtra="3dp"/>
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
                     <!-- History -->
 
                     <TextView

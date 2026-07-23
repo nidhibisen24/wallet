@@ -11,6 +11,7 @@ import com.example.wallet.R
 import com.example.wallet.data.LoginRequest
 import com.example.wallet.data.LoginResponse
 import com.example.wallet.network.RetrofitClient
+import com.example.wallet.ui.ForgotPasswordActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -96,6 +97,20 @@ class LoginActivity : AppCompatActivity() {
                 Intent(
                     this,
                     RegisterActivity::class.java
+                )
+            )
+        }
+        val tvForgotPassword =
+            findViewById<TextView>(
+                R.id.tvForgotPassword
+            )
+
+        tvForgotPassword.setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    ForgotPasswordActivity::class.java
                 )
             )
         }

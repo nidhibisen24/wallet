@@ -9,6 +9,7 @@ data class CreateAdminRequest(
     val full_name: String,
 
     val mobile_number: String,
+    val email: String,
 
     val password: String
 )

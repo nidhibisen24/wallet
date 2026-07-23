@@ -17,6 +17,7 @@ class AddUserActivity : AppCompatActivity() {
     private lateinit var etFullName: EditText
     private lateinit var etMobileNumber: EditText
     private lateinit var etUserPassword: EditText
+    private lateinit var etEmail: EditText
     private lateinit var btnAddUser: Button
     private lateinit var btnBack: CardView
 
@@ -28,6 +29,7 @@ class AddUserActivity : AppCompatActivity() {
         etMobileNumber = findViewById(R.id.etMobileNumber)
         etUserPassword = findViewById(R.id.etUserPassword)
         btnAddUser = findViewById(R.id.btnAddUser)
+        etEmail = findViewById(R.id.etEmail)
 
         btnAddUser.setOnClickListener {
             addUser()
@@ -45,10 +47,13 @@ class AddUserActivity : AppCompatActivity() {
 
         val fullName = etFullName.text.toString().trim()
         val mobile = etMobileNumber.text.toString().trim()
+        val email = etEmail.text.toString().trim()
         val password = etUserPassword.text.toString().trim()
 
-        if (fullName.isEmpty() ||
+        if (
+            fullName.isEmpty() ||
             mobile.isEmpty() ||
+            email.isEmpty() ||
             password.isEmpty()
         ) {
 
@@ -60,7 +65,6 @@ class AddUserActivity : AppCompatActivity() {
 
             return
         }
-
 // Mobile number validation
         if (mobile.length != 10 || !mobile.all { it.isDigit() }) {
 
@@ -68,6 +72,13 @@ class AddUserActivity : AppCompatActivity() {
                 "Enter a valid 10-digit mobile number"
 
             etMobileNumber.requestFocus()
+
+            return
+        }
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+
+            etEmail.error = "Enter a valid email address"
+            etEmail.requestFocus()
 
             return
         }
@@ -79,6 +90,7 @@ class AddUserActivity : AppCompatActivity() {
                 val request = RegisterRequest(
                     full_name = fullName,
                     mobile_number = mobile,
+                    email = email,
                     password = password,
                     referral_code = ""
                 )

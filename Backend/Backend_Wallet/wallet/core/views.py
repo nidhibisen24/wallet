@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from django.contrib.auth.hashers import check_password
 
 from .models import User, Wallet , FundRequest ,QRCode , ChatRoom , Message , SavedPaymentDetails , Referral
-from .serializers import RegisterSerializer ,QRCodeSerializer,FundApprovedSerializers,MessageSerializer, ReferralHistorySerializer,SavedPaymentDetailsSerializer ,FundRequestSerializer, TransactionHistorySerializer,UserDashboardSerializer , UserListSerializer , UserRequestHistorySerializer,UserDetailSerializer
+from .serializers import RegisterSerializer ,QRCodeSerializer, ChangePasswordSerializer,UpdateProfileSerializer, FundApprovedSerializers,ForgotPasswordSerializer,MessageSerializer, AdminRequestHistorySerializer,ReferralHistorySerializer,SavedPaymentDetailsSerializer ,FundRequestSerializer, TransactionHistorySerializer,UserDashboardSerializer , UserListSerializer , UserRequestHistorySerializer,UserDetailSerializer
 from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
 from rest_framework import status
@@ -11,6 +11,22 @@ from decimal import Decimal
 import random
 from django.db.models import Q
 import string
+from django.db.models import Sum
+from django.core.mail import send_mail
+from django.conf import settings
+import secrets
+
+
+def generate_temp_password(length=10):
+    alphabet = string.ascii_letters + string.digits
+
+    return "".join(
+        secrets.choice(alphabet)
+        for _ in range(length)
+    )
+
+
+
 
 
 @api_view(['POST'])
@@ -26,6 +42,7 @@ def register(request):
 
     full_name = serializer.validated_data['full_name']
     mobile_number = serializer.validated_data['mobile_number']
+    email = serializer.validated_data['email']
     password = serializer.validated_data['password']
     referral_code = serializer.validated_data.get("referral_code", "").strip()
 
@@ -45,6 +62,11 @@ def register(request):
             "error": "Mobile number already exists"
         }, status=400)
 
+    if User.objects.filter(email=email).exists():
+        return Response({
+            "error": "Email already exists"
+        }, status=400)
+
     user = User.objects.create_user(
         mobile_number=mobile_number,
         password=password
@@ -52,6 +74,7 @@ def register(request):
 
     # CHANGED
     user.full_name = full_name
+    user.email = email
     user.referral_code = generate_referral_code()
     user.save()
 
@@ -63,16 +86,9 @@ def register(request):
         user.referred_by = referrer
         user.save()
 
-        referrer.wallet.balance += 500
-        referrer.wallet.save()
-
-        user.wallet.balance += 500
-        user.wallet.save()
-
         Referral.objects.create(
-            referrer=referrer,
-            referred_user=user,
-            reward=500
+        referrer=referrer,
+        referred_user=user
         )
 
     return Response({
@@ -234,10 +250,45 @@ def approve_request(request):
     fund_request.status = 'APPROVED'
     fund_request.save()
 
+    # ==========================
+    # Referral Reward Logic
+    # ==========================
+
+    try:
+
+        referral = Referral.objects.get(
+            referred_user=fund_request.user
+        )
+
+        if not referral.reward_given:
+
+            total_amount = FundRequest.objects.filter(
+                user=fund_request.user,
+                request_type='ADD',
+                status='APPROVED'
+            ).aggregate(
+                total=Sum("amount")
+            )["total"] or 0
+
+            if total_amount >= 10000:
+
+                referrer_wallet = Wallet.objects.get(
+                    user=referral.referrer
+                )
+
+                referrer_wallet.balance += 300
+                referrer_wallet.save()
+
+                referral.reward = 300
+                referral.reward_given = True
+                referral.save()
+
+    except Referral.DoesNotExist:
+        pass
+
     return Response({
         "message": "Request approved successfully"
     })
-
 
 # For Reject Request
 @api_view(['POST'])
@@ -1039,7 +1090,6 @@ def my_referral(request, user_id):
         "referrals": serializer.data
     })
 
-#SUPER ADMIN 
 @api_view(['POST'])
 def create_admin(request):
 
@@ -1052,23 +1102,29 @@ def create_admin(request):
     if super_admin.role != "SUPER_ADMIN":
 
         return Response({
-            "error":"Only super admin can create admin"
+            "error": "Only super admin can create admin"
         }, status=403)
-
 
     full_name = request.data.get("full_name")
     mobile = request.data.get("mobile_number")
+    email = request.data.get("email")
     password = request.data.get("password")
-
 
     if User.objects.filter(
         mobile_number=mobile
     ).exists():
 
         return Response({
-            "error":"Mobile already exists"
+            "error": "Mobile already exists"
         }, status=400)
 
+    if User.objects.filter(
+        email=email
+    ).exists():
+
+        return Response({
+            "error": "Email already exists"
+        }, status=400)
 
     admin = User.objects.create_user(
         mobile_number=mobile,
@@ -1077,6 +1133,7 @@ def create_admin(request):
     )
 
     admin.full_name = full_name
+    admin.email = email
     admin.save()
 
     Wallet.objects.create(
@@ -1084,14 +1141,12 @@ def create_admin(request):
         balance=0
     )
 
-
     return Response({
 
-        "message":"Admin created successfully",
+        "message": "Admin created successfully",
+        "admin_id": admin.id
 
-        "admin_id":admin.id
     })
-
 #get all admin 
 @api_view(['GET'])
 def get_all_admins(request):
@@ -1114,12 +1169,28 @@ def get_all_admins(request):
 
     return Response(data)
 
-#block user 
+# Block / Unblock User or Admin
+
 @api_view(["POST"])
 def toggle_user_block(request):
 
+    admin_id = request.data.get("admin_id")
     user_id = request.data.get("user_id")
 
+    # Check requester
+    try:
+        admin = User.objects.get(id=admin_id)
+
+    except User.DoesNotExist:
+
+        return Response(
+            {
+                "error": "Admin not found"
+            },
+            status=404
+        )
+
+    # Check target user
     try:
         user = User.objects.get(id=user_id)
 
@@ -1132,16 +1203,47 @@ def toggle_user_block(request):
             status=404
         )
 
-    # Optional: Don't allow blocking admins
-    if user.role != "MEMBER":
+    # Only Admin or Super Admin can block
+    if admin.role not in ["ADMIN", "SUPER_ADMIN"]:
 
         return Response(
             {
-                "error": "Only members can be blocked."
+                "error": "Permission denied."
+            },
+            status=403
+        )
+
+    # Admin can block only Members
+    if admin.role == "ADMIN" and user.role != "MEMBER":
+
+        return Response(
+            {
+                "error": "Admins can only block members."
             },
             status=400
         )
 
+    # Super Admin cannot block another Super Admin
+    if admin.role == "SUPER_ADMIN" and user.role == "SUPER_ADMIN":
+
+        return Response(
+            {
+                "error": "Cannot block another Super Admin."
+            },
+            status=400
+        )
+
+    # Prevent blocking yourself
+    if admin.id == user.id:
+
+        return Response(
+            {
+                "error": "You cannot block yourself."
+            },
+            status=400
+        )
+
+    # Toggle block
     user.is_blocked = not user.is_blocked
     user.save()
 
@@ -1150,9 +1252,242 @@ def toggle_user_block(request):
             "status": True,
             "is_blocked": user.is_blocked,
             "message":
-                "User blocked successfully."
+                f"{user.role.title()} blocked successfully."
                 if user.is_blocked
                 else
-                "User unblocked successfully."
+                f"{user.role.title()} unblocked successfully."
+        }
+    )
+# admin History
+
+@api_view(["GET"])
+def admin_details(request, admin_id):
+
+    try:
+        admin = User.objects.get(
+            id=admin_id,
+            role="ADMIN"
+        )
+
+    except User.DoesNotExist:
+
+        return Response(
+            {
+                "error": "Admin not found"
+            },
+            status=404
+        )
+
+    requests = FundRequest.objects.filter(
+        admin=admin
+    ).order_by("-created_at")
+
+    serializer = AdminRequestHistorySerializer(
+        requests,
+        many=True
+    )
+
+    return Response({
+
+        "id": admin.id,
+
+        "full_name": admin.full_name,
+
+        "mobile_number": admin.mobile_number,
+        "email": admin.email,
+        "role": admin.role,
+        
+
+        "wallet_balance": admin.wallet.balance,
+
+        "is_blocked": admin.is_active == False,
+
+        "total_requests": requests.count(),
+
+        "pending_requests": requests.filter(
+            status="PENDING"
+        ).count(),
+
+        "history": serializer.data
+
+    })
+
+@api_view(["GET"])
+def test_email(request):
+
+    send_mail(
+        subject="Pay Wallet Test",
+        message="Congratulations! Django email is working successfully.",
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[settings.EMAIL_HOST_USER],
+        fail_silently=False,
+    )
+
+    return Response({
+        "message": "Email sent successfully."
+    })
+
+@api_view(["POST"])
+def forgot_password(request):
+
+    serializer = ForgotPasswordSerializer(data=request.data)
+
+    if not serializer.is_valid():
+        return Response(
+            serializer.errors,
+            status=400
+        )
+
+    mobile_number = serializer.validated_data["mobile_number"]
+    email = serializer.validated_data["email"]
+
+    try:
+        user = User.objects.get(
+            mobile_number=mobile_number
+        )
+    except User.DoesNotExist:
+        return Response(
+            {
+                "error": "Mobile number not found."
+            },
+            status=404
+        )
+
+    if user.email != email:
+        return Response(
+            {
+                "error": "Email does not match our records."
+            },
+            status=400
+        )
+
+    temp_password = generate_temp_password()
+
+    user.set_password(temp_password)
+    user.force_password_change = True
+    user.save()
+
+    send_mail(
+        subject="Pay Wallet Password Reset",
+        message=f"""
+Hello {user.full_name},
+
+A password reset was requested for your account.
+
+Your temporary password is:
+
+{temp_password}
+
+Please log in using this password and change it immediately.
+
+Thank you,
+Pay Wallet Team
+""",
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user.email],
+        fail_silently=False,
+    )
+
+    return Response({
+        "message": "Temporary password has been sent to your email."
+    })
+
+@api_view(["POST"])
+def change_password(request):
+
+    serializer = ChangePasswordSerializer(data=request.data)
+
+    if not serializer.is_valid():
+        return Response(
+            serializer.errors,
+            status=400
+        )
+
+    user_id = serializer.validated_data["user_id"]
+    current_password = serializer.validated_data["current_password"]
+    new_password = serializer.validated_data["new_password"]
+    confirm_password = serializer.validated_data["confirm_password"]
+
+    try:
+        user = User.objects.get(id=user_id)
+
+    except User.DoesNotExist:
+        return Response(
+            {
+                "error": "User not found."
+            },
+            status=404
+        )
+
+    if not user.check_password(current_password):
+        return Response(
+            {
+                "error": "Current password is incorrect."
+            },
+            status=400
+        )
+
+    if new_password != confirm_password:
+        return Response(
+            {
+                "error": "Passwords do not match."
+            },
+            status=400
+        )
+
+    user.set_password(new_password)
+    user.force_password_change = False
+    user.save()
+
+    return Response(
+        {
+            "message": "Password changed successfully."
+        }
+    )
+
+@api_view(["POST"])
+def update_profile(request):
+
+    serializer = UpdateProfileSerializer(data=request.data)
+
+    if not serializer.is_valid():
+        return Response(
+            serializer.errors,
+            status=400
+        )
+
+    user_id = serializer.validated_data["user_id"]
+    full_name = serializer.validated_data["full_name"].strip()
+    email = serializer.validated_data["email"].strip()
+
+    try:
+        user = User.objects.get(id=user_id)
+
+    except User.DoesNotExist:
+
+        return Response(
+            {
+                "error": "User not found."
+            },
+            status=404
+        )
+
+    # Check if email already belongs to another user
+    if User.objects.filter(email=email).exclude(id=user.id).exists():
+
+        return Response(
+            {
+                "error": "Email already exists."
+            },
+            status=400
+        )
+
+    user.full_name = full_name
+    user.email = email
+    user.save()
+
+    return Response(
+        {
+            "message": "Profile updated successfully."
         }
     )
