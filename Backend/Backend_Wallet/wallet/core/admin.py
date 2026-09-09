@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from django.contrib import admin
-from .models import User, Wallet, FundRequest , QRCode , ChatRoom , Message , SavedPaymentDetails
+from .models import User, Wallet, FundRequest , QRCode , ChatRoom , Message , SavedPaymentDetails ,AppVersion
 
 
 @admin.register(User)
@@ -79,3 +79,14 @@ class QRCodeAdmin(admin.ModelAdmin):
 admin.site.register(ChatRoom)
 admin.site.register(Message)
 admin.site.register(SavedPaymentDetails)
+@admin.register(AppVersion)
+class AppVersionAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "version_name",
+        "version_code",
+        "force_update",
+        "created_at",
+    )
+
+    ordering = ("-version_code",)

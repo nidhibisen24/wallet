@@ -3,8 +3,10 @@ package com.example.wallet.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.wallet.R
 import com.example.wallet.data.ChatMessage
 
@@ -25,6 +27,9 @@ class AdminChatAdapter(
 
         val tvMessage: TextView =
             view.findViewById(R.id.tvMessage)
+
+        val ivMessageImage: ImageView =
+            view.findViewById(R.id.ivMessageImage)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -73,8 +78,28 @@ class AdminChatAdapter(
             else
                 msg.sender_name
 
-        holder.tvMessage.text =
-            msg.message
+        // IMAGE MESSAGE
+        if (
+            msg.message_type.equals("image", true) &&
+            !msg.image.isNullOrEmpty()
+        ) {
+
+            holder.tvMessage.visibility = View.GONE
+            holder.ivMessageImage.visibility = View.VISIBLE
+
+            Glide.with(holder.itemView.context)
+                .load(msg.image)
+                .into(holder.ivMessageImage)
+
+        } else {
+
+            // TEXT MESSAGE
+            holder.ivMessageImage.visibility = View.GONE
+            holder.tvMessage.visibility = View.VISIBLE
+
+            holder.tvMessage.text =
+                msg.message ?: ""
+        }
     }
 
     override fun getItemCount(): Int {

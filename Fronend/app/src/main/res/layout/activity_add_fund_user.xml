@@ -143,7 +143,18 @@
                         android:layout_marginTop="10dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_launcher_background"/>
-
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnDownloadQr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="12dp"
+                        android:backgroundTint="#2E7D32"
+                        android:text="Download QR Code"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="12dp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

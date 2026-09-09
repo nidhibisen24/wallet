@@ -142,17 +142,22 @@ class FundRequest(models.Model):
         return f"{self.user.mobile_number} - {self.request_type} - {self.amount}"
     
 
-
 class QRCode(models.Model):
 
-    admin = models.OneToOneField(
+    admin = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="qr_code" ,null=True,blank=True,
+        related_name="qr_codes",
+        null=True,
+        blank=True,
     )
 
     image = models.ImageField(
         upload_to='qr_codes/'
+    )
+
+    is_active = models.BooleanField(
+        default=False
     )
 
     uploaded_at = models.DateTimeField(
@@ -177,18 +182,24 @@ class ChatRoom(models.Model):
     
 class Message(models.Model):
 
-    room = models.ForeignKey( ChatRoom,on_delete=models.CASCADE,related_name="messages")
+    MESSAGE_TYPES = (("text", "Text"),("image", "Image"),)
+
+    room = models.ForeignKey(ChatRoom,on_delete=models.CASCADE,related_name="messages")
 
     sender = models.ForeignKey(User,on_delete=models.CASCADE)
 
-    message = models.TextField()
+    message_type = models.CharField(max_length=20,choices=MESSAGE_TYPES,default="text")
+
+    message = models.TextField(blank=True,null=True)
+
+    image = models.ImageField(upload_to="chat_images/",blank=True,null=True)
 
     is_read = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.sender.full_name}: {self.message}"
+        return f"{self.sender.full_name}: {self.message_type}"
     
 class SavedPaymentDetails(models.Model):
 
@@ -205,3 +216,28 @@ class SavedPaymentDetails(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f"{self.user.full_name}: {self.account_name}"
+
+    
+
+class AppVersion(models.Model):
+
+    version_code = models.IntegerField(unique=True)
+
+    version_name = models.CharField(
+        max_length=20
+    )
+
+    apk = models.FileField(
+        upload_to="apk/"
+    )
+
+    force_update = models.BooleanField(
+        default=False
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def __str__(self):
+        return f"{self.version_name} ({self.version_code})"

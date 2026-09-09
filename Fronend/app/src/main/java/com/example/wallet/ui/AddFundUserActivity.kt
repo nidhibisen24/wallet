@@ -13,6 +13,10 @@ import com.example.wallet.R
 import com.example.wallet.data.AddFundRequest
 import com.example.wallet.network.RetrofitClient
 import kotlinx.coroutines.launch
+import android.app.DownloadManager
+import android.content.Context
+import android.net.Uri
+import android.os.Environment
 
 class AddFundUserActivity : AppCompatActivity() {
 
@@ -21,9 +25,11 @@ class AddFundUserActivity : AppCompatActivity() {
     private lateinit var imgQrCode: ImageView
     private lateinit var btnSubmit: Button
     private lateinit var btnBack: CardView
+    private lateinit var btnDownloadQr: Button
 
     private var userId = 0
     private var adminId = 0
+    private var qrImageUrl = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +43,11 @@ class AddFundUserActivity : AppCompatActivity() {
         etUtr = findViewById(R.id.etUtr)
         imgQrCode = findViewById(R.id.imgQrCode)
         btnSubmit = findViewById(R.id.btnSubmitRequest)
+        btnDownloadQr = findViewById(R.id.btnDownloadQr)
+        btnDownloadQr.setOnClickListener {
+
+            downloadQrCode()
+        }
 
         loadQrCode()
 
@@ -58,26 +69,98 @@ class AddFundUserActivity : AppCompatActivity() {
 
             try {
 
-                val qr =
-                    RetrofitClient.api.getQrCode(adminId)
+                val qr = RetrofitClient.api.getQrCode(adminId)
 
+                android.util.Log.d(
+                    "QR_DEBUG",
+                    "qr.image = ${qr.image}"
+                )
 
-                val imageUrl = "http://13.233.182.165${qr.image}"
+                val qrImageUrl = qr.image
+
+                android.util.Log.d(
+                    "QR_DEBUG",
+                    "final URL = $qrImageUrl"
+                )
 
                 Glide.with(this@AddFundUserActivity)
-                    .load(imageUrl)
+                    .load(qrImageUrl)
                     .into(imgQrCode)
 
             } catch (e: Exception) {
+
+                android.util.Log.e(
+                    "QR_DEBUG",
+                    "Failed to load QR",
+                    e
+                )
 
                 Toast.makeText(
                     this@AddFundUserActivity,
                     "Failed to load QR Code",
                     Toast.LENGTH_SHORT
                 ).show()
-
-                e.printStackTrace()
             }
+        }
+    }
+    private fun downloadQrCode() {
+
+        if (qrImageUrl.isEmpty()) {
+
+            Toast.makeText(
+                this,
+                "QR Code is still loading",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            return
+        }
+
+        try {
+
+            val request =
+                DownloadManager.Request(
+                    Uri.parse(qrImageUrl)
+                )
+
+            request.setTitle("Payment QR Code")
+
+            request.setDescription(
+                "Downloading QR Code..."
+            )
+
+            request.setNotificationVisibility(
+                DownloadManager.Request
+                    .VISIBILITY_VISIBLE_NOTIFY_COMPLETED
+            )
+
+            request.setDestinationInExternalPublicDir(
+                Environment.DIRECTORY_DOWNLOADS,
+                "Payment_QR_Code.jpg"
+            )
+
+            val downloadManager =
+                getSystemService(
+                    Context.DOWNLOAD_SERVICE
+                ) as DownloadManager
+
+            downloadManager.enqueue(request)
+
+            Toast.makeText(
+                this,
+                "QR Code download started",
+                Toast.LENGTH_SHORT
+            ).show()
+
+        } catch (e: Exception) {
+
+            Toast.makeText(
+                this,
+                "Failed to download QR Code",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            e.printStackTrace()
         }
     }
 

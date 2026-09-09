@@ -951,8 +951,8 @@
                                 app:cardBackgroundColor="#EEFBEA"
                                 app:cardCornerRadius="16dp"
                                 app:cardElevation="0dp"
-                                app:strokeWidth="1dp"
-                                app:strokeColor="#E2E8E4">
+                                app:strokeColor="#E2E8E4"
+                                app:strokeWidth="1dp">
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -961,13 +961,12 @@
                                     android:orientation="vertical">
 
                                     <ImageView
-                                        android:id="@+id/ivQrCode"
-                                        android:layout_width="56dp"
-                                        android:layout_height="56dp"
+                                        android:id="@+id/imgQrCode"
+                                        android:layout_width="70dp"
+                                        android:layout_height="70dp"
                                         android:contentDescription="Current Payment QR Code"
-                                        android:scaleType="centerInside"
-                                        android:src="@android:drawable/ic_menu_gallery"
-                                        app:tint="#2E7D32" />
+                                        android:scaleType="fitCenter"
+                                        android:src="@android:drawable/ic_menu_gallery" />
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -976,7 +975,9 @@
                                         android:text="QR Code"
                                         android:textColor="#2E7D32"
                                         android:textSize="10sp" />
+
                                 </LinearLayout>
+
                             </com.google.android.material.card.MaterialCardView>
 
                             <LinearLayout
@@ -1005,15 +1006,27 @@
 
                                 <com.google.android.material.button.MaterialButton
                                     android:id="@+id/btnUpdateQr"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="130dp"
                                     android:layout_height="44dp"
                                     android:backgroundTint="#2E7D32"
-                                    android:text="Upload QR Code"
+                                    android:text="Upload QR"
                                     android:textColor="#FFFFFF"
                                     android:textSize="12sp"
                                     android:textStyle="bold"
                                     app:cornerRadius="10dp" />
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btnsaveqr"
+                                    android:layout_width="130dp"
+                                    android:layout_height="44dp"
+                                    android:backgroundTint="#2E7D32"
+                                    android:text="Select qr"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold"
+                                    app:cornerRadius="10dp" />
+
                             </LinearLayout>
+
                         </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>

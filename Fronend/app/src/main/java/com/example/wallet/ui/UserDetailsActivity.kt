@@ -20,6 +20,9 @@ import kotlinx.coroutines.launch
 import retrofit2.Callback
 import retrofit2.Response
 import com.example.wallet.data.BlockUserResponse
+import com.example.wallet.data.CreateRoomRequest
+import com.example.wallet.data.CreateRoomResponse
+import com.google.android.material.card.MaterialCardView
 import retrofit2.Call
 
 class UserDetailsActivity : AppCompatActivity() {
@@ -78,7 +81,17 @@ class UserDetailsActivity : AppCompatActivity() {
 
 
         }
+
         btnLogout = findViewById(R.id.btnLogout)
+        btnLogout = findViewById(R.id.btnLogout)
+
+        val cardSendMessage = findViewById<MaterialCardView>(
+            R.id.cardMessagetouser
+        )
+
+        cardSendMessage.setOnClickListener {
+            createChatRoom()
+        }
         val sharedPref =
             getSharedPreferences(
                 "wallet_app",
@@ -339,6 +352,81 @@ class UserDetailsActivity : AppCompatActivity() {
 
         }
 
+    }
+    private fun createChatRoom() {
+
+        val sharedPref =
+            getSharedPreferences(
+                "wallet_app",
+                MODE_PRIVATE
+            )
+
+        val adminId = sharedPref.getInt(
+            "user_id",
+            0
+        )
+
+        RetrofitClient.api.createChatRoom(
+            CreateRoomRequest(
+                user = viewedUserId,
+                admin = adminId
+            )
+        ).enqueue(
+            object : Callback<CreateRoomResponse> {
+
+                override fun onResponse(
+                    call: Call<CreateRoomResponse>,
+                    response: Response<CreateRoomResponse>
+                ) {
+
+                    if (response.isSuccessful &&
+                        response.body() != null
+                    ) {
+
+                        val roomId =
+                            response.body()!!.room_id
+
+                        val intent =
+                            Intent(
+                                this@UserDetailsActivity,
+                                AdminChatActivity::class.java
+                            )
+
+                        intent.putExtra(
+                            "ROOM_ID",
+                            roomId
+                        )
+
+                        intent.putExtra(
+                            "USER_ID",
+                            viewedUserId
+                        )
+
+                        startActivity(intent)
+
+                    } else {
+
+                        Toast.makeText(
+                            this@UserDetailsActivity,
+                            "Failed to create room",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<CreateRoomResponse>,
+                    t: Throwable
+                ) {
+
+                    Toast.makeText(
+                        this@UserDetailsActivity,
+                        t.localizedMessage ?: "Network Error",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        )
     }
     private fun loadAdminDetails(adminId: Int) {
 

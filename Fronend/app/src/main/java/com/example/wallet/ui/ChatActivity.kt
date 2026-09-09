@@ -1,9 +1,12 @@
 package com.example.wallet.ui
 
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,15 +17,20 @@ import com.example.wallet.adapter.MessageAdapter
 import com.example.wallet.data.ChatMessage
 import com.example.wallet.data.SendMessageRequest
 import com.example.wallet.network.RetrofitClient
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 class ChatActivity : AppCompatActivity() {
 
     private lateinit var rvMessages: RecyclerView
     private lateinit var etMessage: EditText
     private lateinit var btnSend: Button
+    private lateinit var btnImage: ImageButton
     private lateinit var swipeRefresh: SwipeRefreshLayout
 
     private lateinit var btnBack: CardView
@@ -34,6 +42,17 @@ class ChatActivity : AppCompatActivity() {
 
     private lateinit var adapter: MessageAdapter
 
+    // Gallery picker
+    private val imagePicker =
+        registerForActivityResult(
+            ActivityResultContracts.GetContent()
+        ) { uri ->
+
+            if (uri != null) {
+                uploadImage(uri)
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
@@ -42,6 +61,8 @@ class ChatActivity : AppCompatActivity() {
         rvMessages = findViewById(R.id.rvMessages)
         etMessage = findViewById(R.id.etMessage)
         btnSend = findViewById(R.id.btnSend)
+        btnImage = findViewById(R.id.btnImage)
+        btnBack = findViewById(R.id.btnBack)
 
         roomId = intent.getIntExtra("ROOM_ID", 0)
         userId = intent.getIntExtra("USER_ID", 0)
@@ -55,19 +76,22 @@ class ChatActivity : AppCompatActivity() {
             loadMessages(true)
         }
 
+        // Send text message
         btnSend.setOnClickListener {
             sendMessage()
         }
 
+        // Open gallery
+        btnImage.setOnClickListener {
+            imagePicker.launch("image/*")
+        }
+
+        // Back button
+        btnBack.setOnClickListener {
+            finish()
+        }
 
         loadMessages(false)
-        btnBack = findViewById(R.id.btnBack)   // bug
-        btnBack.setOnClickListener {
-
-            finish()
-
-
-        }
     }
 
     private fun loadMessages(showRefresh: Boolean = false) {
@@ -98,6 +122,7 @@ class ChatActivity : AppCompatActivity() {
                         adapter.notifyDataSetChanged()
 
                         if (messageList.isNotEmpty()) {
+
                             rvMessages.scrollToPosition(
                                 messageList.size - 1
                             )
@@ -128,6 +153,10 @@ class ChatActivity : AppCompatActivity() {
                 }
             })
     }
+
+    // ---------------------------------------------------------
+    // SEND TEXT MESSAGE
+    // ---------------------------------------------------------
 
     private fun sendMessage() {
 
@@ -186,5 +215,155 @@ class ChatActivity : AppCompatActivity() {
                     ).show()
                 }
             })
+    }
+
+    // ---------------------------------------------------------
+    // UPLOAD IMAGE
+    // ---------------------------------------------------------
+
+    private fun uploadImage(uri: Uri) {
+
+        btnImage.isEnabled = false
+
+        try {
+
+            val inputStream = contentResolver.openInputStream(uri)
+
+            if (inputStream == null) {
+
+                btnImage.isEnabled = true
+
+                Toast.makeText(
+                    this,
+                    "Unable to open image",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                return
+            }
+
+            // Copy selected image into cache
+            val file = File(
+                cacheDir,
+                "chat_image_${System.currentTimeMillis()}.jpg"
+            )
+
+            inputStream.use { input ->
+
+                file.outputStream().use { output ->
+
+                    input.copyTo(output)
+                }
+            }
+
+            // Create multipart file
+            val requestFile = file
+                .readBytes()
+                .toRequestBody(
+                    "image/*".toMediaTypeOrNull()
+                )
+
+            val imagePart =
+                MultipartBody.Part.createFormData(
+                    "image",
+                    file.name,
+                    requestFile
+                )
+
+            // room
+            val roomBody = roomId
+                .toString()
+                .toRequestBody(
+                    "text/plain".toMediaTypeOrNull()
+                )
+
+            // sender
+            val senderBody = userId
+                .toString()
+                .toRequestBody(
+                    "text/plain".toMediaTypeOrNull()
+                )
+
+            // message_type
+            val messageTypeBody = "image"
+                .toRequestBody(
+                    "text/plain".toMediaTypeOrNull()
+                )
+
+            // Optional text with image
+            val messageBody = etMessage
+                .text
+                .toString()
+                .trim()
+                .toRequestBody(
+                    "text/plain".toMediaTypeOrNull()
+                )
+
+            RetrofitClient.api
+                .sendImageMessage(
+                    room = roomBody,
+                    sender = senderBody,
+                    messageType = messageTypeBody,
+                    message = messageBody,
+                    image = imagePart
+                )
+                .enqueue(object : Callback<ChatMessage> {
+
+                    override fun onResponse(
+                        call: Call<ChatMessage>,
+                        response: Response<ChatMessage>
+                    ) {
+
+                        btnImage.isEnabled = true
+
+                        if (response.isSuccessful) {
+
+                            // Clear text if user typed a caption
+                            etMessage.setText("")
+
+                            // Reload chat
+                            loadMessages(false)
+
+                        } else {
+
+                            Toast.makeText(
+                                this@ChatActivity,
+                                "Failed to send image",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        file.delete()
+                    }
+
+                    override fun onFailure(
+                        call: Call<ChatMessage>,
+                        t: Throwable
+                    ) {
+
+                        btnImage.isEnabled = true
+
+                        Toast.makeText(
+                            this@ChatActivity,
+                            t.localizedMessage
+                                ?: "Image upload failed",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        file.delete()
+                    }
+                })
+
+        } catch (e: Exception) {
+
+            btnImage.isEnabled = true
+
+            Toast.makeText(
+                this,
+                e.localizedMessage
+                    ?: "Unable to upload image",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 }

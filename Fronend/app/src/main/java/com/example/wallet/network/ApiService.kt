@@ -1,6 +1,7 @@
 package com.example.wallet.network
 
 
+import com.example.wallet.data.ActivateQrRequest
 import com.example.wallet.data.AddBonusRequest
 import com.example.wallet.data.AddBonusResponse
 import com.example.wallet.data.AddFundRequest
@@ -8,8 +9,10 @@ import com.example.wallet.data.AddPaymentAccountRequest
 import com.example.wallet.data.Admin
 import com.example.wallet.data.AdminDashboardResponse
 import com.example.wallet.data.AdminDetailsResponse
+import com.example.wallet.data.AdminQRCode
 import com.example.wallet.data.ApiMessageResponse
 import com.example.wallet.data.ApiResponse
+import com.example.wallet.data.AppUpdateResponse
 import com.example.wallet.data.ApproveRequest
 import com.example.wallet.data.ApprovedRequest
 import com.example.wallet.data.BlockUserRequest
@@ -46,6 +49,7 @@ import com.example.wallet.data.UserDashboardResponse
 import com.example.wallet.data.UserDetails
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -170,6 +174,17 @@ interface ApiService {
         @Query("admin_id") adminId: Int
     ): QrCodeResponse
 
+    @GET("admin-qr-codes/")
+    fun getAdminQrCodes(
+        @Query("admin_id") adminId: Int
+    ): Call<List<AdminQRCode>>
+
+    @POST("admin-qr-codes/{qr_id}/activate/")
+    fun activateQrCode(
+        @Path("qr_id") qrId: Int,
+        @Body request: ActivateQrRequest
+    ): Call<Void>
+
 
 
 
@@ -200,6 +215,17 @@ interface ApiService {
     fun sendMessage(
         @Body request: SendMessageRequest
     ): Call<Void>
+
+
+    @Multipart
+    @POST("send-message/")
+    fun sendImageMessage(
+        @Part("room") room: RequestBody,
+        @Part("sender") sender: RequestBody,
+        @Part("message_type") messageType: RequestBody,
+        @Part("message") message: RequestBody,
+        @Part image: MultipartBody.Part
+    ): Call<ChatMessage>
 
     @GET("chat-rooms/")
     fun getChatRooms(
@@ -282,5 +308,13 @@ interface ApiService {
     suspend fun updateProfile(
         @Body request: UpdateProfileRequest
     ): Response<UpdateProfileResponse>
+
+
+    //app update thing
+    @GET("check-app-update/")
+    suspend fun checkAppUpdate(): AppUpdateResponse
+
+    @GET("download-latest-apk/")
+    suspend fun downloadLatestApk(): ResponseBody
 }
 

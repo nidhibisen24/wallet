@@ -13,17 +13,23 @@ import android.view.View
 import android.widget.Button
 import androidx.cardview.widget.CardView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import android.widget.ImageView
+import android.widget.Toast
+import com.bumptech.glide.Glide
 
 class AdminDashboardActivity : AppCompatActivity() {
 
     private lateinit var tvTotalUsers: TextView
     private lateinit var tvPendingRequests: TextView
+    private lateinit var imgQrCode: ImageView
     private lateinit var btnLogout: Button
     private lateinit var swipeRefresh: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_dashboard)
+
+        imgQrCode = findViewById(R.id.imgQrCode)
 
         val sharedPref = getSharedPreferences(
             "wallet_app",
@@ -34,6 +40,7 @@ class AdminDashboardActivity : AppCompatActivity() {
             "user_id",
             0
         )
+        loadQrCode()
         swipeRefresh = findViewById(R.id.swipeRefresh)
         tvTotalUsers = findViewById(R.id.tvTotalUsers)
         tvPendingRequests = findViewById(R.id.tvPendingRequests)
@@ -78,6 +85,7 @@ class AdminDashboardActivity : AppCompatActivity() {
         }
         swipeRefresh.setOnRefreshListener {
             loadDashboardData()
+            loadQrCode()
         }
         btnLogout = findViewById(R.id.btnLogout)
 
@@ -251,6 +259,18 @@ class AdminDashboardActivity : AppCompatActivity() {
                 )
             )
         }
+        val btnsaveqr =
+            findViewById<Button>(R.id.btnsaveqr)
+
+        btnsaveqr.setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    AdminQRCodeActivity::class.java
+                )
+            )
+        }
         val btnRegisterUser =
             findViewById<Button>(R.id.btnRegisterUser)
 
@@ -264,7 +284,72 @@ class AdminDashboardActivity : AppCompatActivity() {
             )
         }
     }
+    private fun loadQrCode() {
 
+        lifecycleScope.launch {
+
+            try {
+
+                val sharedPref = getSharedPreferences(
+                    "wallet_app",
+                    MODE_PRIVATE
+                )
+
+                val adminId = sharedPref.getInt(
+                    "user_id",
+                    0
+                )
+
+                // Get the CURRENT active QR from backend
+                val qr = RetrofitClient.api.getQrCode(adminId)
+
+                if (qr.is_active) {
+
+                    val imageUrl = qr.image
+
+                    android.util.Log.d(
+                        "QR_DEBUG",
+                        "Active QR Image URL: $imageUrl"
+                    )
+
+                    imgQrCode.visibility = android.view.View.VISIBLE
+
+                    Glide.with(this@AdminDashboardActivity)
+                        .load(imageUrl)
+                        .skipMemoryCache(true)
+                        .diskCacheStrategy(
+                            com.bumptech.glide.load.engine.DiskCacheStrategy.NONE
+                        )
+                        .into(imgQrCode)
+
+                } else {
+
+                    imgQrCode.visibility = android.view.View.GONE
+
+                    android.util.Log.d(
+                        "QR_DEBUG",
+                        "No active QR"
+                    )
+                }
+
+            } catch (e: Exception) {
+
+                android.util.Log.e(
+                    "QR_DEBUG",
+                    "QR loading error",
+                    e
+                )
+
+                imgQrCode.visibility = android.view.View.GONE
+
+                Toast.makeText(
+                    this@AdminDashboardActivity,
+                    "Failed to load QR Code",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
     private fun loadDashboardData() {
         swipeRefresh.isRefreshing = true
         lifecycleScope.launch {
@@ -303,5 +388,10 @@ class AdminDashboardActivity : AppCompatActivity() {
 
             }
         }
+    }
+    override fun onResume() {
+        super.onResume()
+
+        loadQrCode()
     }
 }

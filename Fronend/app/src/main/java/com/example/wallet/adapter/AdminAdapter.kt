@@ -12,6 +12,8 @@ class AdminAdapter(
 
     private val admins: List<Admin>,
 
+    private val displayNames: MutableList<String>,
+
     private val onClick: (Admin) -> Unit
 
 ) : RecyclerView.Adapter<AdminAdapter.ViewHolder>() {
@@ -33,7 +35,6 @@ class AdminAdapter(
     ): ViewHolder {
 
         val view = LayoutInflater.from(parent.context)
-
             .inflate(
                 R.layout.item_admin,
                 parent,
@@ -51,22 +52,29 @@ class AdminAdapter(
         position: Int
     ) {
 
-        val admin =
-            admins[position]
+        val admin = admins[position]
 
+        // Show random/display name only
         holder.tvName.text =
-            admin.full_name
+            displayNames[position]
 
-        holder.tvMobile.text =
-            admin.mobile_number
-        holder.tvMobile.visibility = View.GONE
-
-
+        // Hide mobile number
+        holder.tvMobile.visibility =
+            View.GONE
 
         holder.itemView.setOnClickListener {
 
+            // Real admin object is still used
             onClick(admin)
-
         }
+    }
+
+    fun updateNames(newNames: List<String>) {
+
+        displayNames.clear()
+
+        displayNames.addAll(newNames)
+
+        notifyDataSetChanged()
     }
 }

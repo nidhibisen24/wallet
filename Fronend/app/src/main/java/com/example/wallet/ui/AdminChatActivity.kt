@@ -1,9 +1,12 @@
 package com.example.wallet.ui
 
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,15 +16,20 @@ import com.example.wallet.adapter.AdminChatAdapter
 import com.example.wallet.data.ChatMessage
 import com.example.wallet.data.SendMessageRequest
 import com.example.wallet.network.RetrofitClient
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 class AdminChatActivity : AppCompatActivity() {
 
     private lateinit var rvMessages: RecyclerView
     private lateinit var etMessage: EditText
     private lateinit var btnSend: Button
+    private lateinit var btnImage: ImageButton
     private lateinit var btnBack: CardView
 
     private var roomId = 0
@@ -31,15 +39,32 @@ class AdminChatActivity : AppCompatActivity() {
 
     private lateinit var adapter: AdminChatAdapter
 
+    // ---------------------------------------------------------
+    // IMAGE PICKER
+    // ---------------------------------------------------------
+
+    private val imagePicker =
+        registerForActivityResult(
+            ActivityResultContracts.GetContent()
+        ) { uri ->
+
+            if (uri != null) {
+                uploadImage(uri)
+            }
+        }
+
+    // ---------------------------------------------------------
+    // ON CREATE
+    // ---------------------------------------------------------
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         window.setSoftInputMode(
             android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
         )
+
         setContentView(R.layout.activity_admin_chat)
-
-
 
         roomId = intent.getIntExtra("ROOM_ID", 0)
 
@@ -57,6 +82,7 @@ class AdminChatActivity : AppCompatActivity() {
         rvMessages = findViewById(R.id.rvMessages)
         etMessage = findViewById(R.id.etMessage)
         btnSend = findViewById(R.id.btnSend)
+        btnImage = findViewById(R.id.btnImage)
         btnBack = findViewById(R.id.btnBack)
 
         adapter = AdminChatAdapter(messageList)
@@ -66,9 +92,25 @@ class AdminChatActivity : AppCompatActivity() {
 
         rvMessages.adapter = adapter
 
+        // ---------------------------------------------------------
+        // SEND TEXT
+        // ---------------------------------------------------------
+
         btnSend.setOnClickListener {
             sendMessage()
         }
+
+        // ---------------------------------------------------------
+        // OPEN GALLERY
+        // ---------------------------------------------------------
+
+        btnImage.setOnClickListener {
+            imagePicker.launch("image/*")
+        }
+
+        // ---------------------------------------------------------
+        // BACK
+        // ---------------------------------------------------------
 
         btnBack.setOnClickListener {
             finish()
@@ -76,6 +118,10 @@ class AdminChatActivity : AppCompatActivity() {
 
         loadMessages()
     }
+
+    // ---------------------------------------------------------
+    // LOAD MESSAGES
+    // ---------------------------------------------------------
 
     private fun loadMessages() {
 
@@ -129,6 +175,10 @@ class AdminChatActivity : AppCompatActivity() {
             })
     }
 
+    // ---------------------------------------------------------
+    // SEND TEXT MESSAGE
+    // ---------------------------------------------------------
+
     private fun sendMessage() {
 
         val text = etMessage.text.toString().trim()
@@ -166,6 +216,7 @@ class AdminChatActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
 
                         etMessage.setText("")
+
                         loadMessages()
 
                     } else {
@@ -176,7 +227,9 @@ class AdminChatActivity : AppCompatActivity() {
                             Toast.LENGTH_LONG
                         ).show()
 
-                        println(response.errorBody()?.string())
+                        println(
+                            response.errorBody()?.string()
+                        )
                     }
                 }
 
@@ -195,6 +248,182 @@ class AdminChatActivity : AppCompatActivity() {
                 }
             })
     }
+
+    // ---------------------------------------------------------
+    // UPLOAD IMAGE MESSAGE
+    // ---------------------------------------------------------
+
+    private fun uploadImage(uri: Uri) {
+
+        btnImage.isEnabled = false
+
+        try {
+
+            val inputStream =
+                contentResolver.openInputStream(uri)
+
+            if (inputStream == null) {
+
+                btnImage.isEnabled = true
+
+                Toast.makeText(
+                    this,
+                    "Unable to open image",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                return
+            }
+
+            // Copy selected image to cache
+            val file = File(
+                cacheDir,
+                "chat_image_${System.currentTimeMillis()}.jpg"
+            )
+
+            inputStream.use { input ->
+
+                file.outputStream().use { output ->
+
+                    input.copyTo(output)
+                }
+            }
+
+            // -----------------------------------------------------
+            // IMAGE REQUEST BODY
+            // -----------------------------------------------------
+
+            val requestFile =
+                file.readBytes().toRequestBody(
+                    "image/*".toMediaTypeOrNull()
+                )
+
+            // -----------------------------------------------------
+            // MULTIPART IMAGE
+            // -----------------------------------------------------
+
+            val imagePart =
+                MultipartBody.Part.createFormData(
+                    "image",
+                    file.name,
+                    requestFile
+                )
+
+            // -----------------------------------------------------
+            // ROOM
+            // -----------------------------------------------------
+
+            val roomBody =
+                roomId.toString().toRequestBody(
+                    "text/plain".toMediaTypeOrNull()
+                )
+
+            // -----------------------------------------------------
+            // SENDER
+            // -----------------------------------------------------
+
+            val senderBody =
+                adminId.toString().toRequestBody(
+                    "text/plain".toMediaTypeOrNull()
+                )
+
+            // -----------------------------------------------------
+            // MESSAGE TYPE
+            // -----------------------------------------------------
+
+            val messageTypeBody =
+                "image".toRequestBody(
+                    "text/plain".toMediaTypeOrNull()
+                )
+
+            // -----------------------------------------------------
+            // OPTIONAL CAPTION
+            // -----------------------------------------------------
+
+            val messageBody =
+                etMessage.text.toString()
+                    .trim()
+                    .toRequestBody(
+                        "text/plain".toMediaTypeOrNull()
+                    )
+
+            // -----------------------------------------------------
+            // SEND TO DJANGO
+            // -----------------------------------------------------
+
+            RetrofitClient.api
+                .sendImageMessage(
+                    room = roomBody,
+                    sender = senderBody,
+                    messageType = messageTypeBody,
+                    message = messageBody,
+                    image = imagePart
+                )
+                .enqueue(object : Callback<ChatMessage> {
+
+                    override fun onResponse(
+                        call: Call<ChatMessage>,
+                        response: Response<ChatMessage>
+                    ) {
+
+                        btnImage.isEnabled = true
+
+                        if (response.isSuccessful) {
+
+                            etMessage.setText("")
+
+                            loadMessages()
+
+                        } else {
+
+                            Toast.makeText(
+                                this@AdminChatActivity,
+                                "Failed to send image: ${response.code()}",
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            println(
+                                response.errorBody()?.string()
+                            )
+                        }
+
+                        file.delete()
+                    }
+
+                    override fun onFailure(
+                        call: Call<ChatMessage>,
+                        t: Throwable
+                    ) {
+
+                        btnImage.isEnabled = true
+
+                        Toast.makeText(
+                            this@AdminChatActivity,
+                            t.localizedMessage
+                                ?: "Image upload failed",
+                            Toast.LENGTH_LONG
+                        ).show()
+
+                        file.delete()
+                    }
+                })
+
+        } catch (e: Exception) {
+
+            btnImage.isEnabled = true
+
+            Toast.makeText(
+                this,
+                e.localizedMessage
+                    ?: "Unable to upload image",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+
+    // ---------------------------------------------------------
+    // RESUME
+    // ---------------------------------------------------------
 
     override fun onResume() {
         super.onResume()

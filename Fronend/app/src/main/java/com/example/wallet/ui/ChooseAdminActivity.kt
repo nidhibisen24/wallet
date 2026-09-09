@@ -2,6 +2,8 @@ package com.example.wallet.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,22 +19,98 @@ class ChooseAdminActivity : AppCompatActivity() {
 
     private lateinit var rvAdmins: RecyclerView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    private lateinit var adminAdapter: AdminAdapter
 
-        super.onCreate(savedInstanceState)
+    private val handler = Handler(Looper.getMainLooper())
+
+
+    // Names that will only be displayed on screen
+    private val randomNames = listOf(
+
+        "Rahul Sharma",
+        "Amit Kumar",
+        "Rohan Singh",
+        "Arjun Patel",
+        "Karan Verma",
+        "Vijay Kumar",
+        "Ravi Sharma",
+        "Ajay Singh",
+        "Mohit Kumar",
+        "Priya Sharma",
+        "Ankit Verma",
+        "Rohit Singh",
+        "Deepak Kumar",
+        "Manish Patel",
+        "Akash Sharma",
+        "Sumit Kumar",
+        "Raj Verma",
+        "Suresh Kumar",
+        "Nikhil Sharma",
+        "Vikas Singh"
+
+    )
+
+
+    // This runs every 20 seconds
+    private val changeNamesRunnable = object : Runnable {
+
+        override fun run() {
+
+            // Create a random display name
+            // for every admin card
+            val newNames = List(
+                adminAdapter.itemCount
+            ) {
+
+                randomNames.random()
+
+            }
+
+            // Update only displayed names
+            adminAdapter.updateNames(
+                newNames
+            )
+
+
+            // Run again after 20 seconds
+            handler.postDelayed(
+                this,
+                20000
+            )
+        }
+    }
+
+
+    override fun onCreate(
+        savedInstanceState: Bundle?
+    ) {
+
+        super.onCreate(
+            savedInstanceState
+        )
 
         setContentView(
             R.layout.activity_choose_admin
         )
 
+
         rvAdmins =
-            findViewById(R.id.rvAdmins)
+            findViewById(
+                R.id.rvAdmins
+            )
+
 
         rvAdmins.layoutManager =
-            LinearLayoutManager(this)
+            LinearLayoutManager(
+                this
+            )
+
 
         val type =
-            intent.getStringExtra("TYPE")
+            intent.getStringExtra(
+                "TYPE"
+            )
+
 
         val userId =
             intent.getIntExtra(
@@ -40,84 +118,213 @@ class ChooseAdminActivity : AppCompatActivity() {
                 0
             )
 
-        RetrofitClient.api.getAllAdmins()
 
-            .enqueue(object :
-                Callback<List<Admin>> {
+        // Get real admins from API
+        RetrofitClient.api
+            .getAllAdmins()
 
-                override fun onResponse(
-                    call: Call<List<Admin>>,
-                    response: Response<List<Admin>>
-                ) {
+            .enqueue(
+                object : Callback<List<Admin>> {
 
-                    if(response.isSuccessful){
 
-                        val admins =
-                            response.body() ?: listOf()
+                    override fun onResponse(
 
-                        rvAdmins.adapter =
-                            AdminAdapter(admins){ admin ->
+                        call: Call<List<Admin>>,
 
-                                when(type){
+                        response: Response<List<Admin>>
 
-                                    "BUY"->{
+                    ) {
 
-                                        val intent =
-                                            Intent(
-                                                this@ChooseAdminActivity,
-                                                AddFundUserActivity::class.java
+
+                        if (
+                            response.isSuccessful
+                        ) {
+
+
+                            val admins =
+                                response.body()
+                                    ?: emptyList()
+
+
+                            // Create initial random names
+                            val firstNames =
+                                List(
+                                    admins.size
+                                ) {
+
+                                    randomNames.random()
+
+                                }
+
+
+                            // Create adapter
+                            adminAdapter =
+                                AdminAdapter(
+
+                                    admins,
+
+                                    firstNames.toMutableList()
+
+                                ) { admin ->
+
+
+                                    when (
+                                        type
+                                    ) {
+
+
+                                        "BUY" -> {
+
+
+                                            val intent =
+                                                Intent(
+
+                                                    this@ChooseAdminActivity,
+
+                                                    AddFundUserActivity::class.java
+
+                                                )
+
+
+                                            intent.putExtra(
+                                                "USER_ID",
+                                                userId
                                             )
 
-                                        intent.putExtra("USER_ID",userId)
-                                        intent.putExtra("ADMIN_ID",admin.id)
 
-                                        startActivity(intent)
-                                    }
-
-                                    "SELL"->{
-
-                                        val intent =
-                                            Intent(
-                                                this@ChooseAdminActivity,
-                                                WithdrawFundActivity::class.java
+                                            // REAL ADMIN ID
+                                            intent.putExtra(
+                                                "ADMIN_ID",
+                                                admin.id
                                             )
 
-                                        intent.putExtra("USER_ID",userId)
-                                        intent.putExtra("ADMIN_ID",admin.id)
 
-                                        startActivity(intent)
-                                    }
-
-                                    "CHAT"->{
-
-                                        val intent =
-                                            Intent(
-                                                this@ChooseAdminActivity,
-                                                HelpSupportActivity::class.java
+                                            startActivity(
+                                                intent
                                             )
 
-                                        intent.putExtra("USER_ID",userId)
-                                        intent.putExtra("ADMIN_ID",admin.id)
+                                        }
 
-                                        startActivity(intent)
+
+                                        "SELL" -> {
+
+
+                                            val intent =
+                                                Intent(
+
+                                                    this@ChooseAdminActivity,
+
+                                                    WithdrawFundActivity::class.java
+
+                                                )
+
+
+                                            intent.putExtra(
+                                                "USER_ID",
+                                                userId
+                                            )
+
+
+                                            // REAL ADMIN ID
+                                            intent.putExtra(
+                                                "ADMIN_ID",
+                                                admin.id
+                                            )
+
+
+                                            startActivity(
+                                                intent
+                                            )
+
+                                        }
+
+
+                                        "CHAT" -> {
+
+
+                                            val intent =
+                                                Intent(
+
+                                                    this@ChooseAdminActivity,
+
+                                                    HelpSupportActivity::class.java
+
+                                                )
+
+
+                                            intent.putExtra(
+                                                "USER_ID",
+                                                userId
+                                            )
+
+
+                                            // REAL ADMIN ID
+                                            intent.putExtra(
+                                                "ADMIN_ID",
+                                                admin.id
+                                            )
+
+
+                                            startActivity(
+                                                intent
+                                            )
+
+                                        }
+
                                     }
 
                                 }
 
-                            }
+
+                            // Set adapter
+                            rvAdmins.adapter =
+                                adminAdapter
+
+
+                            // Start changing names
+                            // after 20 seconds
+                            handler.postDelayed(
+
+                                changeNamesRunnable,
+
+                                20000
+
+                            )
+
+                        }
+
+                    }
+
+
+                    override fun onFailure(
+
+                        call: Call<List<Admin>>,
+
+                        t: Throwable
+
+                    ) {
+
+                        // API failed
 
                     }
 
                 }
 
-                override fun onFailure(
-                    call: Call<List<Admin>>,
-                    t: Throwable
-                ) {
+            )
 
-                }
+    }
 
-            })
+
+    override fun onDestroy() {
+
+        super.onDestroy()
+
+
+        // Stop changing names when
+        // Activity is destroyed
+        handler.removeCallbacks(
+            changeNamesRunnable
+        )
 
     }
 

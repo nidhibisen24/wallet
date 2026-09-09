@@ -256,12 +256,34 @@ class UserDashboardSerializer(serializers.ModelSerializer):
 
 class QRCodeSerializer(serializers.ModelSerializer):
 
+    image_url = serializers.SerializerMethodField()
+
     class Meta:
         model = QRCode
+
         fields = [
-            'id',
-            'image'
+            "id",
+            "admin",
+            "image",
+            "image_url",
+            "is_active",
+            "uploaded_at",
         ]
+
+    def get_image_url(self, obj):
+
+        if obj.image:
+
+            request = self.context.get("request")
+
+            if request:
+                return request.build_absolute_uri(
+                    obj.image.url
+                )
+
+            return obj.image.url
+
+        return None
 
 class TransactionHistorySerializer(serializers.ModelSerializer):
     user_name = serializers.CharField(
@@ -319,11 +341,36 @@ class MessageSerializer(serializers.ModelSerializer):
         read_only=True
     )
 
+    image = serializers.ImageField(
+        required=False,
+        allow_null=True
+    )
+
+    image_url = serializers.SerializerMethodField()
+
     class Meta:
-
         model = Message
-
         fields = '__all__'
+        read_only_fields = [
+            'id',
+            'created_at',
+            'is_read',
+        ]
+
+    def get_image_url(self, obj):
+
+        if obj.image:
+
+            request = self.context.get('request')
+
+            if request:
+                return request.build_absolute_uri(
+                    obj.image.url
+                )
+
+            return obj.image.url
+
+        return None
 
 class ChatRoomSerializer(
     serializers.ModelSerializer

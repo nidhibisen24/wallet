@@ -1,8 +1,9 @@
+from django.http import FileResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth.hashers import check_password
 
-from .models import User, Wallet , FundRequest ,QRCode , ChatRoom , Message , SavedPaymentDetails , Referral
+from .models import AppVersion, User, Wallet , FundRequest ,QRCode , ChatRoom , Message , SavedPaymentDetails , Referral
 from .serializers import RegisterSerializer ,QRCodeSerializer, ChangePasswordSerializer,UpdateProfileSerializer, FundApprovedSerializers,ForgotPasswordSerializer,MessageSerializer, AdminRequestHistorySerializer,ReferralHistorySerializer,SavedPaymentDetailsSerializer ,FundRequestSerializer, TransactionHistorySerializer,UserDashboardSerializer , UserListSerializer , UserRequestHistorySerializer,UserDetailSerializer
 from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
@@ -571,10 +572,24 @@ def user_dashboard(request, id):
 #Most important thing QRCODE 
 
 #Upload QR CODE
+# Upload QR CODE
 @api_view(['POST'])
 def upload_qr_code(request):
 
     admin_id = request.data.get("admin")
+    image = request.FILES.get("image")
+
+    if not admin_id:
+        return Response(
+            {"error": "Admin is required"},
+            status=400
+        )
+
+    if not image:
+        return Response(
+            {"error": "Image is required"},
+            status=400
+        )
 
     try:
         admin = User.objects.get(
@@ -589,44 +604,100 @@ def upload_qr_code(request):
             status=404
         )
 
-    qr = QRCode.objects.filter(
-        admin=admin
-    ).first()
-
-    if qr:
-        qr.image = request.FILES["image"]
-        qr.save()
-
-    else:
-        QRCode.objects.create(
-            admin=admin,
-            image=request.FILES["image"]
-        )
+    qr = QRCode.objects.create(
+        admin=admin,
+        image=image,
+        is_active=False
+    )
 
     return Response({
-        "message": "QR Code uploaded successfully"
-    })
+        "message": "QR Code uploaded successfully",
+        "qr_id": qr.id
+    }, status=201)
 
 # View QR Code 
+# View ACTIVE QR Code
 @api_view(["GET"])
 def get_qr_code(request):
 
     admin_id = request.GET.get("admin_id")
 
     qr = QRCode.objects.filter(
-        admin_id=admin_id
+        admin_id=admin_id,
+        is_active=True
     ).first()
 
     if not qr:
         return Response(
-            {"error": "QR not found"},
+            {"error": "Active QR not found"},
             status=404
         )
 
-    serializer = QRCodeSerializer(qr)
+    serializer = QRCodeSerializer(
+        qr,
+        context={"request": request}
+    )
 
     return Response(serializer.data)
 
+# View all QR Codes for admin
+@api_view(["GET"])
+def get_admin_qr_codes(request):
+
+    admin_id = request.GET.get("admin_id")
+
+    if not admin_id:
+        return Response(
+            {"error": "admin_id is required"},
+            status=400
+        )
+
+    qr_codes = QRCode.objects.filter(
+        admin_id=admin_id
+    ).order_by("-uploaded_at")
+
+    serializer = QRCodeSerializer(
+        qr_codes,
+        many=True,
+        context={"request": request}
+    )
+
+    return Response(serializer.data)
+
+# Activate QR Code
+@api_view(["POST"])
+def activate_qr_code(request, qr_id):
+
+    admin_id = request.data.get("admin_id")
+
+    try:
+        qr = QRCode.objects.get(
+            id=qr_id,
+            admin_id=admin_id
+        )
+
+    except QRCode.DoesNotExist:
+
+        return Response(
+            {"error": "QR Code not found"},
+            status=404
+        )
+
+    # Make every QR of this admin inactive
+    QRCode.objects.filter(
+        admin_id=admin_id
+    ).update(
+        is_active=False
+    )
+
+    # Activate selected QR
+    qr.is_active = True
+    qr.save()
+
+    return Response({
+        "message": "QR Code activated successfully",
+        "qr_id": qr.id
+    })
 #History 
 @api_view(["GET"])
 def all_transactions(request, admin_id):
@@ -712,16 +783,20 @@ def create_chat_room(request):
 def send_message(request):
 
     serializer = MessageSerializer(
-        data=request.data
+        data=request.data,
+        context={"request": request}
     )
 
     if serializer.is_valid():
 
-        serializer.save()
+        serializer.save(
+            image=request.FILES.get("image")
+        )
 
-        return Response({
-            "message": "Message sent"
-        })
+        return Response(
+            serializer.data,
+            status=201
+        )
 
     return Response(
         serializer.errors,
@@ -737,7 +812,8 @@ def get_chat_messages(request, room_id):
 
     serializer = MessageSerializer(
         messages,
-        many=True
+        many=True,
+        context={"request": request}
     )
 
     return Response(serializer.data)
@@ -790,7 +866,8 @@ def get_chat_room_messages(request, room_id):
 
     serializer = MessageSerializer(
         messages,
-        many=True
+        many=True,
+        context={"request": request}
     )
 
     return Response(serializer.data)
@@ -1147,11 +1224,13 @@ def create_admin(request):
         "admin_id": admin.id
 
     })
-#get all admin 
+# get all admin
 @api_view(['GET'])
 def get_all_admins(request):
 
-    admins = User.objects.filter(role="ADMIN")
+    admins = User.objects.filter(
+        role="ADMIN"
+    ).order_by("?")
 
     data = []
 
@@ -1491,3 +1570,52 @@ def update_profile(request):
             "message": "Profile updated successfully."
         }
     )
+
+
+#APP UPDATE APIS 
+
+@api_view(["GET"])
+def check_app_update(request):
+
+    latest_version = AppVersion.objects.order_by(
+        "-version_code"
+    ).first()
+
+    if not latest_version:
+        return Response({
+            "update_available": False
+        })
+
+    return Response({
+        "update_available": True,
+        "version_code": latest_version.version_code,
+        "version_name": latest_version.version_name,
+        "force_update": latest_version.force_update,
+        "apk_url": request.build_absolute_uri(
+            latest_version.apk.url
+        )
+    })
+
+@api_view(["GET"])
+def download_latest_apk(request):
+
+    latest_version = AppVersion.objects.order_by(
+        "-version_code"
+    ).first()
+
+    if not latest_version or not latest_version.apk:
+        return Response(
+            {"error": "APK not found"},
+            status=404
+        )
+
+    response = FileResponse(
+        latest_version.apk.open("rb"),
+        content_type="application/vnd.android.package-archive"
+    )
+
+    response["Content-Disposition"] = (
+        f'attachment; filename="app-{latest_version.version_name}.apk"'
+    )
+
+    return response
