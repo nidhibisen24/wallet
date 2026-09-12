@@ -56,7 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:text="Fund Adjustment"
+                    android:text="Deposit Funds"
                     android:textColor="#1B3A2B"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -79,7 +79,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Deposit money directly into a user's wallet balance"
+                android:text="Add money directly to the user's wallet balance"
                 android:textColor="#5A6B5E"
                 android:textSize="13sp" />
         </LinearLayout>
@@ -111,7 +111,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Amount (₹)"
+                        android:text="Enter Amount (₹)"
                         android:textColor="#2E7D32"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium"/>
@@ -120,7 +120,7 @@
                         android:id="@+id/etAmount"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:hint="100 - 300 - 500"
+                        android:hint="Enter amount (e.g. ₹300)"
                         android:inputType="number"
                         android:textColor="#2D3A30"
                         app:hintTextColor="#7A8B7F"
@@ -130,7 +130,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="Scan &amp; Pay"
+                        android:text="Scan to Pay"
                         android:textColor="#2E7D32"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium"/>
@@ -191,7 +191,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:backgroundTint="@color/btn_state_color_selector"
-                android:text="Confirm &amp; Deposit Fund"
+                android:text="Confirm &amp;  Buy Funds"
                 android:textColor="#FFFFFF"
                 android:textSize="15sp"
                 android:textStyle="bold"

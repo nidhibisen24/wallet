@@ -19,7 +19,10 @@ class AdminQRCodeAdapter(
 ) : RecyclerView.Adapter<AdminQRCodeAdapter.ViewHolder>() {
 
     interface OnQrActionListener {
+
         fun onActivate(qr: AdminQRCode)
+
+        fun onDelete(qr: AdminQRCode)
     }
 
     class ViewHolder(view: View) :
@@ -36,6 +39,9 @@ class AdminQRCodeAdapter(
 
         val btnActivate: Button =
             view.findViewById(R.id.btnActivate)
+
+        val btnDelete: Button =
+            view.findViewById(R.id.btnDelete)
     }
 
     override fun onCreateViewHolder(
@@ -67,10 +73,16 @@ class AdminQRCodeAdapter(
         holder.tvQrName.text =
             "QR Code #${qr.id}"
 
+        // Delete button works for every QR
+        holder.btnDelete.setOnClickListener {
+
+            listener.onDelete(qr)
+        }
+
         if (qr.is_active) {
 
-            // Active QR
             holder.tvStatus.text = "ACTIVE"
+
             holder.tvStatus.setTextColor(
                 Color.parseColor("#247B2D")
             )
@@ -86,13 +98,13 @@ class AdminQRCodeAdapter(
                 Color.parseColor("#247B2D")
             )
 
-            // Disable button for active QR
+            // Active QR cannot be activated again
             holder.btnActivate.setOnClickListener(null)
 
         } else {
 
-            // Inactive QR
             holder.tvStatus.text = "INACTIVE"
+
             holder.tvStatus.setTextColor(
                 Color.parseColor("#247B2D")
             )
@@ -110,7 +122,6 @@ class AdminQRCodeAdapter(
 
             holder.btnActivate.setOnClickListener {
 
-                // Tell Activity to activate this QR
                 listener.onActivate(qr)
             }
         }

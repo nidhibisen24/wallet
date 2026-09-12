@@ -8,7 +8,7 @@ object RetrofitClient {
 //    private const val BASE_URL = "https://8924-152-59-31-44.ngrok-free.app/api/"
 //    private const val BASE_URL = "http://13.233.182.165/api/"
 
-    private const val BASE_URL = "http://10.251.50.70:5000/api/"
+    private const val BASE_URL = "http://10.207.110.70:5000/api/"
 
     val api: ApiService by lazy {
         Retrofit.Builder()

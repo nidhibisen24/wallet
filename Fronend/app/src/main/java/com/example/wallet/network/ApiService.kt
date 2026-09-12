@@ -26,6 +26,7 @@ import com.example.wallet.data.CreateAdminResponse
 import com.example.wallet.data.CreateRoomRequest
 import com.example.wallet.data.CreateRoomResponse
 import com.example.wallet.data.DeletePaymentRequest
+import com.example.wallet.data.DeleteQrRequest
 import com.example.wallet.data.DeleteResponse
 import com.example.wallet.data.ForgotPasswordRequest
 import com.example.wallet.data.ForgotPasswordResponse
@@ -45,6 +46,7 @@ import com.example.wallet.data.TransactionHistory
 import com.example.wallet.data.UpdateProfileRequest
 import com.example.wallet.data.UpdateProfileResponse
 import com.example.wallet.data.User
+import com.example.wallet.data.UserChatRoom
 import com.example.wallet.data.UserDashboardResponse
 import com.example.wallet.data.UserDetails
 import okhttp3.MultipartBody
@@ -185,6 +187,11 @@ interface ApiService {
         @Body request: ActivateQrRequest
     ): Call<Void>
 
+    @DELETE("admin-qr-codes/{qr_id}/delete/")
+    fun deleteQrCode(
+        @Path("qr_id") qrId: Int,
+        @Query("admin_id") adminId: Int
+    ): Call<Void>
 
 
 
@@ -231,6 +238,11 @@ interface ApiService {
     fun getChatRooms(
         @Query("admin_id") adminId: Int
     ): Call<List<ChatRoom>>
+
+    @GET("user-chat-rooms/")
+    fun getUserChatRooms(
+        @Query("user_id") userId: Int
+    ): Call<List<UserChatRoom>>
 
 
     @Multipart

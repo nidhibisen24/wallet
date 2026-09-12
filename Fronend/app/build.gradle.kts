@@ -13,8 +13,8 @@ android {
         applicationId = "com.example.wallet"
         minSdk = 24
         targetSdk = 36
-        versionCode = 5
-        versionName = "1.5"
+        versionCode = 1
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

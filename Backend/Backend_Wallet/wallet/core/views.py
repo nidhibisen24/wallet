@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from django.http import FileResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -698,6 +700,41 @@ def activate_qr_code(request, qr_id):
         "message": "QR Code activated successfully",
         "qr_id": qr.id
     })
+# Delete QR Code
+# Delete QR Code
+@api_view(["DELETE"])
+def delete_qr_code(request, qr_id):
+
+    admin_id = request.query_params.get("admin_id")
+
+    if not admin_id:
+        return Response(
+            {"error": "admin_id is required"},
+            status=400
+        )
+
+    try:
+        qr = QRCode.objects.get(
+            id=qr_id,
+            admin_id=admin_id
+        )
+
+    except QRCode.DoesNotExist:
+        return Response(
+            {"error": "QR Code not found"},
+            status=404
+        )
+
+    # Delete image file from storage
+    if qr.image:
+        qr.image.delete(save=False)
+
+    # Delete database record
+    qr.delete()
+
+    return Response({
+        "message": "QR Code deleted successfully"
+    }, status=200)
 #History 
 @api_view(["GET"])
 def all_transactions(request, admin_id):
@@ -789,8 +826,15 @@ def send_message(request):
 
     if serializer.is_valid():
 
-        serializer.save(
+        message = serializer.save(
             image=request.FILES.get("image")
+        )
+
+        # Update chat room whenever a new message is sent
+        ChatRoom.objects.filter(
+            id=message.room_id
+        ).update(
+            updated_at=timezone.now()
         )
 
         return Response(
@@ -871,6 +915,39 @@ def get_chat_room_messages(request, room_id):
     )
 
     return Response(serializer.data)
+
+@api_view(['GET'])
+def get_user_chat_rooms(request):
+
+    user_id = request.GET.get("user_id")
+
+    try:
+        user = User.objects.get(id=user_id)
+
+    except User.DoesNotExist:
+        return Response(
+            {"error": "User not found"},
+            status=404
+        )
+
+    rooms = ChatRoom.objects.filter(
+        user=user
+    ).order_by("-updated_at")
+
+    data = []
+
+    for room in rooms:
+
+        data.append({
+            "room_id": room.id,
+            "user_id": room.user.id,
+            "admin_id": room.admin.id if room.admin else 0,
+            "full_name": room.admin.full_name if room.admin else "Admin",
+            "mobile_number": room.admin.mobile_number if room.admin else "",
+            "updated_at": room.updated_at
+        })
+
+    return Response(data)
 
 #add Bonus
 @api_view(['POST'])

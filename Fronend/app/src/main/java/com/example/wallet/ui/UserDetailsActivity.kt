@@ -89,9 +89,6 @@ class UserDetailsActivity : AppCompatActivity() {
             R.id.cardMessagetouser
         )
 
-        cardSendMessage.setOnClickListener {
-            createChatRoom()
-        }
         val sharedPref =
             getSharedPreferences(
                 "wallet_app",
@@ -103,11 +100,32 @@ class UserDetailsActivity : AppCompatActivity() {
                 "role",
                 ""
             )
+
         val loggedInRole =
             sharedPref.getString(
                 "role",
                 ""
             )
+
+// Show Message only for ADMIN and SUPER_ADMIN
+        if (
+            loggedInRole == "ADMIN" ||
+            loggedInRole == "SUPER_ADMIN"
+        ) {
+
+            cardSendMessage.visibility =
+                android.view.View.VISIBLE
+
+            cardSendMessage.setOnClickListener {
+                createChatRoom()
+            }
+
+        } else {
+
+            cardSendMessage.visibility =
+                android.view.View.GONE
+        }
+
         if (viewedUserId != 0) {
 
             if (loggedInRole == "SUPER_ADMIN") {

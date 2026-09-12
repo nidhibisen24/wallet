@@ -11,6 +11,7 @@ import com.example.wallet.R
 import com.example.wallet.adapter.AdminQRCodeAdapter
 import com.example.wallet.data.ActivateQrRequest
 import com.example.wallet.data.AdminQRCode
+import com.example.wallet.data.DeleteQrRequest
 import com.example.wallet.network.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -53,17 +54,21 @@ class AdminQRCodeActivity : AppCompatActivity() {
                 override fun onActivate(qr: AdminQRCode) {
                     activateQr(qr.id)
                 }
+
+                override fun onDelete(qr: AdminQRCode) {
+                    deleteQr(qr.id)
+                }
             }
         )
 
         rvQrCodes.layoutManager =
             LinearLayoutManager(this)
 
-        rvQrCodes.adapter = adapter
+        rvQrCodes.adapter =
+            adapter
 
         btnUploadQr.setOnClickListener {
 
-            // Open your existing QR upload activity
             val intent =
                 Intent(
                     this,
@@ -155,6 +160,54 @@ class AdminQRCodeActivity : AppCompatActivity() {
                         Toast.makeText(
                             this@AdminQRCodeActivity,
                             "Failed to activate QR",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<Void>,
+                    t: Throwable
+                ) {
+
+                    Toast.makeText(
+                        this@AdminQRCodeActivity,
+                        t.localizedMessage ?: "Network Error",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+    }
+
+    private fun deleteQr(qrId: Int) {
+
+        RetrofitClient.api
+            .deleteQrCode(
+                qrId,
+                adminId
+            )
+            .enqueue(object : Callback<Void> {
+
+                override fun onResponse(
+                    call: Call<Void>,
+                    response: Response<Void>
+                ) {
+
+                    if (response.isSuccessful) {
+
+                        Toast.makeText(
+                            this@AdminQRCodeActivity,
+                            "QR Code deleted",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        loadQrCodes()
+
+                    } else {
+
+                        Toast.makeText(
+                            this@AdminQRCodeActivity,
+                            "Failed to delete QR Code",
                             Toast.LENGTH_SHORT
                         ).show()
                     }

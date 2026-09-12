@@ -69,6 +69,24 @@ class UserDashboardActivity : AppCompatActivity() {
 
             startActivity(intent)
         }
+        val btnNotifications =
+            findViewById<CardView>(R.id.btnNotifications)
+
+        btnNotifications.setOnClickListener {
+
+            val intent = Intent(
+                this,
+                UserChatRoomsActivity::class.java
+            )
+
+            intent.putExtra(
+                "USER_ID",
+                userId
+            )
+
+            startActivity(intent)
+        }
+
         val cardAddFundRequest =
             findViewById<CardView>(R.id.cardAddFundRequest)
 
